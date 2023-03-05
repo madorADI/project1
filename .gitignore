@@ -151,4 +151,8 @@ docs/_book
 
 # TODO: where does this rule come from?
 test/
+<<<<<<< HEAD
+=======
+
+>>>>>>> 3cc483aac89fc30d7526d6d42c2232c113ddd2c9
 # End of https://www.toptal.com/developers/gitignore/api/web,node,vue
