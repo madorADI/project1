@@ -6,7 +6,6 @@
 
 <script>
 import LatestAlerts from "./components/LatestAlerts.vue";
-
 export default {
   components: {
     LatestAlerts,

@@ -2,7 +2,7 @@
   <div>
     <div class="card latest-alerts" style="width: 18rem">
       <div class="card-body">
-        <h5 class="card-title">התראות חדשות</h5>
+        <h5 class="card-title">התראות אחרונות</h5>
         <hr>
         <p class="card-text">
           Some quick example text to build on the card title and make up the
@@ -15,8 +15,22 @@
 </template>
 
 <script>
+import api from "../api/api.js";
+
+
 export default {
   name: "LatestAlerts",
+  data() {
+    return {
+      alerts: []
+    }
+  },
+
+  methods: {
+    async getAllAlerts() {
+      this.alerts = await (await api.alerts().getAllAlerts()).data;
+    }
+  },
 };
 </script>
 
