@@ -5,9 +5,16 @@
         <h5 class="card-title">התראות אחרונות</h5>
         <hr>
         <p class="card-text">
-          Some quick example text to build on the card title and make up the
-          bulk of the card's content.
+          סינון
         </p>
+        <hr>
+        <p class="card-text-type">
+          סוג האירוע
+        </p>
+        <p class="card-text-date">
+          תאריך, שעה
+        </p>
+        <Alert v-for="alert in alerts" :key="alert.id" :alert="alert"/>
         <a href="#" class="create-alert"><font-awesome-icon icon="fa-solid fa-circle-plus" /></a>
       </div>
     </div>
@@ -16,10 +23,12 @@
 
 <script>
 import api from "../api/api.js";
+import Alert from "Alert.vue"
 
 
 export default {
   name: "LatestAlerts",
+  components: { Alert },
   data() {
     return {
       alerts: []
