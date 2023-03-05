@@ -29,7 +29,14 @@
             <input type="text" class="form-control" id="description" v-model="description">
             <label for="description" class="input-group-text">תיאור האירוע</label>
         </div>
-        <div></div>
+        <div class="input-group m-2" id="range">
+            <div class="form-check mx-3" v-for="weapon in eventsWeapons" :key="weapon">
+                <input class="form-check-input" type="checkbox" :id="weapon">
+                <label class="form-check-label" :for="weapon">
+                   {{ weapon }}
+                </label>
+            </div>
+        </div>
     </div>
     <div class="card-footer">
         <button type="button" class="btn btn-danger">שמירה</button>
@@ -73,5 +80,8 @@ export default {
 }
 #newAlert {
     background-color:darkblue;
+}
+#range {
+    place-content: center;
 }
 </style>
