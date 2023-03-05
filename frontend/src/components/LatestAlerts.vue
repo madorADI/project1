@@ -23,15 +23,15 @@
 
 <script>
 import api from "../api/api.js";
-import Alert from "Alert.vue"
-
-
+import Alert from "./Alert.vue"
 export default {
   name: "LatestAlerts",
   components: { Alert },
   data() {
     return {
-      alerts: []
+      alerts: [{ event_type: "Attack", 
+                time: "1678040638094", 
+                coordinates: [1, 1]}]
     }
   },
 
