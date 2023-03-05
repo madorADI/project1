@@ -1,11 +1,11 @@
 <template>
   <div>
-    <div class="card latest-alerts" style="width: 18rem">
+    <div class="card alert">
       <div class="card-body">
         <h5 class="card-title">
-            <h1 class="type"><strong>{{ alert.event_type }}</strong></h1>
-            <h1 class="location">{{ alert.coordinates }}</h1>
-            <h1 class="date">{{ currentTime }}</h1>
+            <h7 class="location">{{ alert.coordinates }}</h7>
+            <h7 class="date">{{ currentTime }}</h7>
+            <h7 class="type"><strong>{{ alert.event_type }}</strong></h7>
         </h5>
       </div>
     </div>
@@ -20,17 +20,20 @@ export default {
   },
   computed: {
     currentTime() {
-        console.log(typeof this.alert.time);
-        return new Date(this.alert.time).toLocaleDateString("en-US");
+        return new Date(this.alert.time).getDate();
     }
   }
 };
 </script>
 
 <style scoped>
-.latest-alerts {
+.card {
+    text-align: center;
+}
+
+.card-body {
   background-color: rgb(43, 58, 103);
-  width: 70%;
+  width: 90%;
   color: white;
   text-align: center;
 }
