@@ -1,5 +1,5 @@
 <template>
-    <div class="card text-center text-white  w-50" id ="newAlert">
+    <div class="card text-center text-white w-50" id ="newAlert">
         <div class="row card-header">
             <div class="col-1" >
                 <button type="button" class="btn text-white" >
@@ -11,7 +11,25 @@
             </div>
         </div>
     <div class="card-body">
-        <div class="input-group" ></div>
+        <div class="input-group m-2">
+            <select
+            id="eventType"
+            class="form-select"
+            aria-label="events type"
+            v-model="selectedEventType">
+                <option 
+                v-for="event in eventsTypes"
+                :key="event">
+                 {{ event }}
+                </option>
+            </select>
+            <label for="eventType" class="input-group-text">סוג אירוע</label>
+        </div>
+        <div class="input-group m-2">
+            <input type="text" class="form-control" id="description" v-model="description">
+            <label for="description" class="input-group-text">תיאור האירוע</label>
+        </div>
+        <div></div>
     </div>
     <div class="card-footer">
         <button type="button" class="btn btn-danger">שמירה</button>
