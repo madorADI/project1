@@ -32,7 +32,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="alert in formattedAlerts" :key="alert.id" :id="alert.id">
+            <tr v-for="alert in formattedAlerts" :key="alert.id" :id="alert.id" @click="openModal">
               <th v-for="(item, index) in brief" :key="index">
                 {{ alert[item] }}
               </th>
