@@ -45,7 +45,8 @@ export default {
   },
   async created() {
     //this.markers = add api request that gets coordinates of targets, the line below is hardcoded
-      this.markers= [{_id:"6404a7d352dd972914b315a2", coor: [35.504, 31.159]},{id:2, coor: [32.504, 36.159]},{id:3, coor: [27.504, 34.159]}];
+      //this.markers= [{_id:"6404a7d352dd972914b315a2", coor: [35.504, 31.159]},{id:2, coor: [32.504, 36.159]},{id:3, coor: [27.504, 34.159]}];
+      this.markers = [[34,35],[23,34],[45,56]];
   },
   methods: {
     ...mapActions(["changeSelectedLat","changeSelectedLng","changeSelectedAlertId"]),
