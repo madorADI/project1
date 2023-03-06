@@ -1,8 +1,6 @@
 <template>
   <div>
-    <b-button v-b-modal.modal-1>Launch demo modal</b-button>
-
-    <b-modal id="modal-1">
+    <b-modal id="modal-1" v-model="open">
       <div class="title text-center">
         <b-img
           src="https://www.vairuok.lt/wp-content/uploads/2021/03/info.png"
@@ -37,7 +35,7 @@
               <div class="col-3 m-1 p-2 px-1">
                 <div class="bg-success rounded">
                   <div id="easy" class="py-2">
-                    {{ selectedEvent.injuries.light }}
+                    {{ selectedEvent.injuries.easy }}
                   </div>
                 </div>
                 <label for="easy">קל</label>
@@ -74,6 +72,9 @@
           </b-col>
         </b-row>
       </b-container>
+      <template #modal-footer="{ ok }">
+        <b-button size="sm" variant="success" @click="ok()"> סגור </b-button>
+      </template>
     </b-modal>
   </div>
 </template>
@@ -87,11 +88,17 @@ export default {
         time: new Date(),
         weapon: "אבנים",
         descripion: "פלסטינאים זרקו אבנים על עוברי אורח",
-        injuries: { light: 3, medium: 4, hard: 6 },
+        injuries: { easy: 3, medium: 4, hard: 6 },
         coordinates: [31.264035, 34.81396],
       },
       mainProps: { blank: true, width: 48, height: 48, class: "m1" },
     };
+  },
+  props: {
+    open: {
+      type: Boolean,
+      required: true,
+    },
   },
   computed: {
     date() {
@@ -106,6 +113,11 @@ export default {
       } else {
         return `${this.date.getHours()}:${this.date.getMinutes()}`;
       }
+    },
+  },
+  watch: {
+    open() {
+      this.$emit("modal-change", this.open);
     },
   },
 };

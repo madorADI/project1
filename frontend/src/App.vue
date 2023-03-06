@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <Header></Header>
     <b-row>
       <b-col>
         <LatestAlerts />
@@ -8,19 +9,18 @@
         <eventMap />
       </b-col>
     </b-row>
-    <popUp />
   </div>
 </template>
 
 <script>
 import LatestAlerts from "./components/LatestAlerts.vue";
-import popUp from "./components/eventPopup.vue";
+import Header from "./components/header.vue";
 import eventMap from "./components/Map.vue";
 
 export default {
   components: {
     LatestAlerts,
-    popUp,
+    Header,
     eventMap,
   },
 };

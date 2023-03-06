@@ -11,6 +11,7 @@
           hover
           :fields="fields"
           :items="formattedAlerts"
+          @row-clicked="openModal"
         ></b-table>
         <button type="button" class="btn create-alert" @click="createNewAlert"
           ><font-awesome-icon class="fa-2xl" icon="fa-solid fa-circle-plus"
@@ -18,16 +19,20 @@
         <new-alert id="newAlert" @newAlertChange = "changeNewAlert" :open="isNewAlert" ></new-alert>
       </div>
     </div>
+    <popUp :open="open" @modal-change="changeModalState" />
   </div>
 </template>
 
 <script>
 import api from "../api/api.js";
 import newAlert from "./newAlert.vue";
+import popUp from "../components/eventPopup.vue";
+
 export default {
   name: "LatestAlerts",
   components: {
     newAlert,
+    popUp
   },
   data() {
     return {
@@ -38,12 +43,19 @@ export default {
       ],
       alerts: [
         {
-          event_type: "Attack",
+          event_type: "פיגוע",
+          time: Date.now(),
+          coordinates: [1, 1],
+        },
+        {
+          event_type: " פיגוע חזק",
           time: Date.now(),
           coordinates: [1, 1],
         },
       ],
       isNewAlert: false,
+      open: false,
+      selectedAlert: {},
     };
   },
   // created() {
@@ -58,7 +70,14 @@ export default {
     },
     changeNewAlert(state) {
       this.isNewAlert = state
-    }
+    },
+    openModal(item) {
+      this.selectedAlert = item;
+      this.open = !this.open;
+    },
+    changeModalState(state) {
+      this.open = state;
+    },
   },
   computed: {
     formattedAlerts() {
