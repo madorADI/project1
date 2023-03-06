@@ -4,12 +4,26 @@
       <div class="card-body">
         <h5 class="card-title">התראות אחרונות</h5>
         <p class="card-text-filter">סינון</p>
-        <b-table
+        <!-- <b-table
           class="alertTable"
           hover
           :fields="fields"
           :items="formattedAlerts"
-        ></b-table>
+        ></b-table> -->
+
+        <table class="table table-hover alertTable">
+          <thead>
+            <tr>
+              <th v-for="field in fields" :key="field">{{field.label}}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="alert in alertsToDisplay" :key="alert">
+              <th v-for="item in alert" :key="item">{{item}}</th>
+            </tr>
+          </tbody>
+        </table>
+
         <a href="#" class="create-alert"
           ><font-awesome-icon class="fa-2xl" icon="fa-solid fa-circle-plus"
         /></a>
@@ -20,6 +34,8 @@
 
 <script>
 import api from "../api/api.js";
+import { mapState } from "vuex";
+
 export default {
   name: "LatestAlerts",
   data() {
@@ -31,6 +47,7 @@ export default {
       ],
       alerts: [
         {
+          id: 1,
           event_type: "Attack",
           time: Date.now(),
           coordinates: [1, 1],
@@ -38,12 +55,17 @@ export default {
       ],
     };
   },
-  // created() {
-  //   this.getAllAlerts();
-  // },
   methods: {
     async getAllAlerts() {
       this.alerts = await (await api.alerts().getAllAlerts()).data;
+    },
+
+    blinkAlert(id) {
+      this.getAlertById(id)._rowVariant = "danger";
+    },
+
+    getAlertById(id) {
+      return this.alerts.find((elem) => elem.id === id);
     },
   },
   computed: {
@@ -54,6 +76,22 @@ export default {
 
         return fixedAlert;
       });
+    },
+
+    alertsToDisplay() {
+      return this.formattedAlerts.map(elem => {
+        return {
+          coordinates: elem.coordinates, 
+          time: elem.time, 
+          event_type: elem.event_type
+        } 
+      })
+    },
+    ...mapState(["selectedAlertId"]),
+  },
+  watch: {
+    selectedAlertId() {
+      this.blinkAlert(this.selectedAlertId);
     },
   },
 };
