@@ -4,13 +4,6 @@
       <div class="card-body">
         <h5 class="card-title">התראות אחרונות</h5>
         <p class="card-text-filter">סינון</p>
-        <!-- <b-table
-          class="alertTable"
-          hover
-          :fields="fields"
-          :items="formattedAlerts"
-        ></b-table> -->
-
         <table class="table table-hover alertTable">
           <thead>
             <tr>
@@ -18,7 +11,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="alert in formattedAlerts" :key="alert.id" :id="alert.id">
+            <tr v-for="alert in formattedAlerts" :key="alert.id" :id="alert.id" :ref="alert.id">
               <th v-for="(item, index) in brief" :key="index" >{{alert[item]}}</th>
             </tr>
           </tbody>
@@ -61,12 +54,8 @@ export default {
       this.alerts = await (await api.alerts().getAllAlerts()).data;
     },
 
-    blinkAlert(id) {
-      this.getAlertById(id)._rowVariant = "danger";
-    },
-
-    getAlertById(id) {
-      return this.alerts.find((elem) => elem.id === id);
+    blinkAlert() {
+      this.$refs[this.selectedAlertId].scrollIntoView({ behavior: "smooth" });
     },
   },
   computed: {
@@ -82,7 +71,7 @@ export default {
   },
   watch: {
     selectedAlertId() {
-      this.blinkAlert(this.selectedAlertId);
+      this.blinkAlert();
     },
   },
 };
