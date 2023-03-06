@@ -8,7 +8,7 @@
           <select v-model="selectedType" class="form-control form-control-sm">
             <option value="0" hidden>סוג האירוע</option>
             <option v-for="typ in event_types" :key="typ.id" value="typ.id">
-            {{ typ.name }}
+              {{ typ.name }}
             </option>
           </select>
           <select v-model="selectedWeapon" class="form-control form-control-sm">
@@ -23,10 +23,7 @@
           </select>
         </div>
         <hr />
-
-
-
-
+        
         <table class="table table-hover alertTable">
           <thead>
             <tr>
@@ -36,17 +33,30 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="alert in formattedAlerts" :key="alert.id" :id="alert.id" @click="openModal">
+            <tr
+              v-for="alert in formattedAlerts"
+              :key="alert.id"
+              :id="alert.id"
+              @click="openModal"
+            >
               <th v-for="(item, index) in brief" :key="index">
                 {{ alert[item] }}
               </th>
             </tr>
           </tbody>
         </table>
-        <button type="button" class="btn create-alert" @click="createNewAlert"
-          ><font-awesome-icon class="fa-2xl" icon="fa-solid fa-circle-plus"
-        /></button>
-        <new-alert id="newAlert" @newAlertChange = "changeNewAlert" :open="isNewAlert" ></new-alert>
+        <button
+          type="button"
+          class="btn create-alert"
+          @click="createNewAlert"
+        >
+          <font-awesome-icon class="fa-2xl" icon="fa-solid fa-circle-plus" />
+        </button>
+        <new-alert
+          id="newAlert"
+          @newAlertChange="changeNewAlert"
+          :open="isNewAlert"
+        ></new-alert>
       </div>
     </div>
     <popUp :open="open" @modal-change="changeModalState" />
@@ -55,7 +65,6 @@
 
 <script>
 import api from "../api/api.js";
-import { mapState } from "vuex";
 import newAlert from "./newAlert.vue";
 import popUp from "../components/eventPopup.vue";
 
@@ -63,7 +72,7 @@ export default {
   name: "LatestAlerts",
   components: {
     newAlert,
-    popUp
+    popUp,
   },
   data() {
     return {
@@ -80,41 +89,44 @@ export default {
       ],
       alerts: [
         {
-
-          id: 1,
-          event_type: "Attack",
-          time: Date.now(),
-          coordinates: [1, 1],
+          _id: {
+            $oid: "6404a7d352dd972914b315a2",
+          },
+          name: "test",
+          description: "dcsafdsafdazs",
+          time: {
+            $date: "2021-02-25T10:03:46.000",
+          },
+          weapon: "אבנים",
+          event_type: 3,
+          coordinates: [31.264035, 34.81396],
+          injuries: {
+            easy: 5,
+            medium: 2,
+            hard: 6,
+          },
+          brigade: 2,
         },
       ],
-      brief: [ "coordinates","time", "event_type", ],   
       isNewAlert: false,
       open: false,
       selectedAlert: {},
     };
   },
-  created() {
-    this.getAllAlerts();
-    this.getAllTypes();
-    this.getAllWeapons();
-  },
-
+  // created() {
+  //   this.getAllAlerts();
+  //   this.getAllTypes();
+  //   this.getAllWeapons();
+  // },
   methods: {
     async getAllAlerts() {
       this.alerts = await (await api.alerts().getAllAlerts()).data;
-    },
-
-
-    blinkAlert() {
-      console.log(this.selectedAlertId);
-      console.log(this.$refs[this.selectedAlertId]);
-      this.$refs[this.selectedAlertId][0].scrollIntoView({ behavior: "smooth" })
     },
     createNewAlert() {
       this.isNewAlert = !this.isNewAlert;
     },
     changeNewAlert(state) {
-      this.isNewAlert = state
+      this.isNewAlert = state;
     },
     openModal(item) {
       this.selectedAlert = item;
@@ -128,7 +140,6 @@ export default {
     },
     async getAllTypes() {
       this.event_types = await (await api.alerts().getAllTypes()).data;
-
     },
   },
   computed: {
@@ -140,13 +151,6 @@ export default {
         return fixedAlert;
       });
     },
-
-    ...mapState(["selectedAlertId"]),
-  },
-  watch: {
-    selectedAlertId() {
-      this.blinkAlert();
-    },
     filteredTableByType() {
       return this.formattedAlert.filter(
         (alert) => alert.event_type === this.selectedType
@@ -156,7 +160,6 @@ export default {
       return this.filteredTableByType.filter(
         (alert) => alert.weapon === this.selectedWeapon
       );
-
     },
   },
 };
