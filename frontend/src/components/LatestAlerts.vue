@@ -3,9 +3,7 @@
     <div class="card latest-alerts" style="width: 18rem">
       <div class="card-body">
         <h5 class="card-title">התראות אחרונות</h5>
-        <hr />
         <p class="card-text-filter">סינון</p>
-        <hr />
         <b-table
           class="alertTable"
           hover
