@@ -3,7 +3,7 @@
       <br />
       <l-map :zoom="zoom" :center="center" :options="mapOptions" style="height: 80%">
         <l-tile-layer :url="url" />
-  
+        <!--change key, the markers should be from db-->
         <l-marker v-for="marker in markers" :key="marker[0]" :lat-lng="marker" :icon="bomb">
           <l-tooltip>אפשר להוסיף כאן כיתוב מאוחר יותר</l-tooltip>
         </l-marker>
