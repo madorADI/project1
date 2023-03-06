@@ -2,7 +2,7 @@
   <div class="card text-center text-white w-50" id="newAlert">
     <div class="row card-header">
       <div class="col-1">
-        <button type="button" class="btn text-white">
+        <button type="button" class="btn text-white" @click="closeCard">
           <i class="bi bi-x-lg"></i>
         </button>
       </div>
@@ -13,14 +13,21 @@
         <div class="injuries col-8">
           <h5 class="card-title text-center">נפגעים</h5>
           <div class="row">
-            <div
-              class="col-4"
-              v-for="(value, key) in injuries"
-              :key="key"
-            >
-              <label :for="key"> {{ key }} </label>
-              <input  
-              :class="{'bg-danger': key === 'hard','bg-warning': key === 'medium', 'bg-success': key === 'light'}" type="text" class="w-75" :id="key" />
+            <div class="col-4" v-for="value in injuries" :key="value.name">
+              <input
+                :class="{
+                  'bg-danger': value.name === 'hard',
+                  'bg-warning': value.name === 'medium',
+                  'bg-success': value.name === 'light',
+                }"
+                type="text"
+                class="w-50 rounded"
+                :id="value.name"
+                v-model="value.numberOfInjeries"
+              />
+              <label class="mx-2" :for="value.name">
+                {{ value.realName }}
+              </label>
             </div>
           </div>
         </div>
@@ -28,6 +35,7 @@
           <h5 class="card-title text-end">סוג האירוע</h5>
           <div class="input-group m-2">
             <select
+              :class="{'is-invalid': !selectedEventType && validation}"
               id="eventType"
               class="form-select"
               aria-label="events type"
@@ -40,14 +48,20 @@
           </div>
         </div>
       </div>
-      <h5 class="card-title text-end">תיאור האירוע</h5>
-      <div class="input-group m-2">
-        <input
-          type="text"
-          class="form-control"
-          id="description"
-          v-model="description"
-        />
+      <div class="row">
+        <div class="col-6" ></div>
+        <div class="description col-6 ">
+          <h5 class="card-title text-end">תיאור האירוע</h5>
+          <div class="input-group m-2">
+            <input
+              :class="{'is-invalid':!description && validation}"
+              type="text"
+              class="form-control"
+              id="description"
+              v-model="description"
+            />
+          </div>
+        </div>
       </div>
 
       <h5 class="card-title text-end">סוג אמלח</h5>
@@ -58,6 +72,7 @@
           :key="weapon"
         >
           <input
+            :class="{'is-invalid': !selectedWeapons.length && validation }"
             v-model="selectedWeapons"
             :value="weapon"
             class="form-check-input"
@@ -71,7 +86,7 @@
       </div>
     </div>
     <div class="card-footer">
-      <button type="button" class="btn btn-danger">שמירה</button>
+      <button type="button" class="btn btn-danger" @click="sendNewAlert" >שמירה</button>
     </div>
   </div>
 </template>
@@ -85,10 +100,23 @@ export default {
       eventsWeapons: [],
       selectedWeapons: [],
       selectedEventType: null,
+      validation: false,
       injuries: {
-        light: "",
-        medium: "",
-        hard: "",
+        light: {
+          realName: "קל",
+          name: "light",
+          numberOfInjeries:0
+        },
+        medium: {
+          realName: "בינוני",
+          name: "medium",
+          numberOfInjeries:0
+        },
+        hard: {
+          realName: "קשה",
+          name: "hard",
+          numberOfInjeries:0
+        },
       },
       description: "",
       coordinates: "",
@@ -105,6 +133,16 @@ export default {
     getEventsWeapons() {
       this.eventsWeapons = ["אבן", "סכין", "חשמל", "רובה"];
     },
+    closeCard() {},
+    sendNewAlert() {
+        if(!this.selectedEventType
+        || !this.selectedWeapons
+        || !this.description) {
+            this.validation = true;
+        }else {
+            alert("valid");
+        }
+    }
   },
 };
 </script>
