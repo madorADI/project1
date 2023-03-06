@@ -14,12 +14,12 @@
         <table class="table table-hover alertTable">
           <thead>
             <tr>
-              <th v-for="field in fields" :key="field">{{field.label}}</th>
+              <th v-for="field in fields" :key="field.label">{{field.label}}</th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="alert in alertsToDisplay" :key="alert">
-              <th v-for="item in alert" :key="item">{{item}}</th>
+            <tr v-for="alert in formattedAlerts" :key="alert.id" :id="alert.id">
+              <th v-for="(item, index) in brief" :key="index" >{{alert[item]}}</th>
             </tr>
           </tbody>
         </table>
@@ -53,6 +53,7 @@ export default {
           coordinates: [1, 1],
         },
       ],
+      brief: [ "coordinates","time", "event_type", ]
     };
   },
   methods: {
@@ -76,16 +77,6 @@ export default {
 
         return fixedAlert;
       });
-    },
-
-    alertsToDisplay() {
-      return this.formattedAlerts.map(elem => {
-        return {
-          coordinates: elem.coordinates, 
-          time: elem.time, 
-          event_type: elem.event_type
-        } 
-      })
     },
     ...mapState(["selectedAlertId"]),
   },
