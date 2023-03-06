@@ -1,8 +1,10 @@
-import Vue from "vue";
-import App from "./App.vue";
-import { BootstrapVue } from "bootstrap-vue";
-import "bootstrap/dist/css/bootstrap.css";
-import "bootstrap-vue/dist/bootstrap-vue.css";
+import Vue from 'vue'
+import App from './App.vue'
+import { BootstrapVue } from 'bootstrap-vue'
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+import 'bootstrap-icons/font/bootstrap-icons.css'
+import onlyInt from 'vue-input-only-number';
 
 /* import the fontawesome core */
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -20,6 +22,9 @@ library.add(faUserSecret, faCirclePlus);
 
 /* add font awesome icon component */
 Vue.component("font-awesome-icon", FontAwesomeIcon);
+
+Vue.use(onlyInt);
+
 
 Vue.config.productionTip = false;
 

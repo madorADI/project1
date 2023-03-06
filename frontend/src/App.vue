@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <Header></Header>
     <b-row>
       <b-col>
         <LatestAlerts />
@@ -13,11 +14,13 @@
 
 <script>
 import LatestAlerts from "./components/LatestAlerts.vue";
+import Header from "./components/header.vue";
 import eventMap from "./components/Map.vue";
 
 export default {
   components: {
     LatestAlerts,
+    Header,
     eventMap,
   },
 };
