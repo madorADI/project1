@@ -52,6 +52,7 @@
 
 <script>
 import api from "../api/api.js";
+import { mapState } from "vuex";
 import newAlert from "./newAlert.vue";
 import popUp from "../components/eventPopup.vue";
 
@@ -76,25 +77,18 @@ export default {
       ],
       alerts: [
         {
-          _id: {
-            $oid: "6404a7d352dd972914b315a2",
-          },
-          name: "test",
-          description: "dcsafdsafdazs",
-          time: {
-            $date: "2021-02-25T10:03:46.000",
-          },
-          weapon: "אבנים",
-          event_type: 3,
-          coordinates: [31.264035, 34.81396],
-          injuries: {
-            easy: 5,
-            medium: 2,
-            hard: 6,
-          },
-          brigade: 2,
+
+          id: 1,
+          event_type: "Attack",
+          time: Date.now(),
+          coordinates: [1, 1],
         },
       ],
+      brief: [ "coordinates","time", "event_type", ]
+    };
+  },
+
+     
       isNewAlert: false,
       open: false,
       selectedAlert: {},
@@ -105,10 +99,18 @@ export default {
   //   this.getAllTypes();
   //   this.getAllWeapons();
   // },
+
   methods: {
     async getAllAlerts() {
       this.alerts = await (await api.alerts().getAllAlerts()).data;
     },
+
+
+    blinkAlert() {
+      console.log(this.selectedAlertId);
+      console.log(this.$refs[this.selectedAlertId]);
+      this.$refs[this.selectedAlertId][0].scrollIntoView({ behavior: "smooth" });
+
     createNewAlert() {
       this.isNewAlert = !this.isNewAlert;
     },
@@ -126,6 +128,7 @@ export default {
     },
     async getAllTypes() {
       this.event_types = await (await api.alerts().getAllTypes()).data;
+
     },
   },
   computed: {
@@ -137,6 +140,13 @@ export default {
         return fixedAlert;
       });
     },
+
+    ...mapState(["selectedAlertId"]),
+  },
+  watch: {
+    selectedAlertId() {
+      this.blinkAlert();
+
     filteredTableByType() {
       return this.formattedAlert.filter(
         (alert) => alert.event_type === this.selectedType
@@ -146,6 +156,7 @@ export default {
       return this.filteredTableByType.filter(
         (alert) => alert.weapon === this.selectedWeapon
       );
+
     },
   },
 };
