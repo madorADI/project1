@@ -24,6 +24,7 @@
                 class="w-50 rounded"
                 :id="value.name"
                 v-model="value.numberOfInjeries"
+                v-int
               />
               <label class="mx-2" :for="value.name">
                 {{ value.realName }}
@@ -35,7 +36,7 @@
           <h5 class="card-title text-end">סוג האירוע</h5>
           <div class="input-group m-2">
             <select
-              :class="{'is-invalid': !selectedEventType && validation}"
+              :class="{ 'is-invalid': !selectedEventType && validation }"
               id="eventType"
               class="form-select"
               aria-label="events type"
@@ -49,12 +50,22 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-6" ></div>
-        <div class="description col-6 ">
+        <div class="col-6">
+          <h5 class="card-title text-end">מיקום האירוע</h5>
+          <div class="input-group m-2">
+            <input
+              type="text"
+              class="form-control"
+              id="location"
+              v-model="location"
+            />
+          </div>
+        </div>
+        <div class="description col-6">
           <h5 class="card-title text-end">תיאור האירוע</h5>
           <div class="input-group m-2">
             <input
-              :class="{'is-invalid':!description && validation}"
+              :class="{ 'is-invalid': !description && validation }"
               type="text"
               class="form-control"
               id="description"
@@ -64,7 +75,7 @@
         </div>
       </div>
 
-      <h5 class="card-title text-end">סוג אמלח</h5>
+      <h5 class="card-title text-center">סוג אמלח</h5>
       <div class="input-group m-2" id="range">
         <div
           class="form-check mx-4"
@@ -72,7 +83,7 @@
           :key="weapon"
         >
           <input
-            :class="{'is-invalid': !selectedWeapons.length && validation }"
+            :class="{ 'is-invalid': !selectedWeapons.length && validation }"
             v-model="selectedWeapons"
             :value="weapon"
             class="form-check-input"
@@ -86,7 +97,9 @@
       </div>
     </div>
     <div class="card-footer">
-      <button type="button" class="btn btn-danger" @click="sendNewAlert" >שמירה</button>
+      <button type="button" class="btn btn-danger" @click="sendNewAlert">
+        שמירה
+      </button>
     </div>
   </div>
 </template>
@@ -101,25 +114,25 @@ export default {
       selectedWeapons: [],
       selectedEventType: null,
       validation: false,
+      location: "",
       injuries: {
         light: {
           realName: "קל",
           name: "light",
-          numberOfInjeries:0
+          numberOfInjeries: 0,
         },
         medium: {
           realName: "בינוני",
           name: "medium",
-          numberOfInjeries:0
+          numberOfInjeries: 0,
         },
         hard: {
           realName: "קשה",
           name: "hard",
-          numberOfInjeries:0
+          numberOfInjeries: 0,
         },
       },
       description: "",
-      coordinates: "",
     };
   },
   created() {
@@ -135,14 +148,17 @@ export default {
     },
     closeCard() {},
     sendNewAlert() {
-        if(!this.selectedEventType
-        || !this.selectedWeapons
-        || !this.description) {
-            this.validation = true;
-        }else {
-            alert("valid");
-        }
-    }
+      if (
+        !this.selectedEventType ||
+        !this.selectedWeapons ||
+        !this.description ||
+        !this.location
+      ) {
+        this.validation = true;
+      } else {
+        alert("valid");
+      }
+    },
   },
 };
 </script>
@@ -152,10 +168,9 @@ export default {
   place-content: space-between;
 }
 #newAlert {
-  background-color: darkblue;
+  background-color: darkslateblue;
 }
 #range {
   place-content: center;
 }
-
 </style>
