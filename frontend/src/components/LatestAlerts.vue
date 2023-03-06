@@ -55,7 +55,9 @@ export default {
     },
 
     blinkAlert() {
-      this.$refs[this.selectedAlertId].scrollIntoView({ behavior: "smooth" });
+      console.log(this.selectedAlertId);
+      console.log(this.$refs[this.selectedAlertId]);
+      this.$refs[this.selectedAlertId][0].scrollIntoView({ behavior: "smooth" });
     },
   },
   computed: {
