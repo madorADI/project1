@@ -3,9 +3,6 @@ import App from './App.vue'
 import { BootstrapVue } from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { faBomb } from '@fortawesome/free-solid-svg-icons'
 import store from './store'
 import 'bootstrap-icons/font/bootstrap-icons.css'
 import onlyInt from 'vue-input-only-number';
@@ -22,11 +19,9 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 
 /* import font awesome icon component */
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-
+import { faBomb } from '@fortawesome/free-solid-svg-icons'
 /* import specific icons */
 import { faCirclePlus, faUserSecret } from "@fortawesome/free-solid-svg-icons";
-
-import store from './store'
 
 // import { faCirclePlus, faUserSecret } from "@fortawesome/free-light-svg-icons";
 
