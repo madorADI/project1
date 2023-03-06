@@ -14,6 +14,8 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 /* import specific icons */
 import { faCirclePlus, faUserSecret } from "@fortawesome/free-solid-svg-icons";
 
+import store from './store'
+
 // import { faCirclePlus, faUserSecret } from "@fortawesome/free-light-svg-icons";
 
 /* add icons to the library */
@@ -27,6 +29,6 @@ Vue.config.productionTip = false;
 
 Vue.use(BootstrapVue);
 new Vue({
-
-  render: (h) => h(App),
+  store,
+  render: (h) => h(App)
 }).$mount("#app");
