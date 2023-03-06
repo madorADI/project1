@@ -7,9 +7,9 @@
         <div class="card-text-filter">
           <select v-model="selectedType" class="form-control form-control-sm">
             <option value="0" hidden>סוג האירוע</option>
-            <option v-for="type in event_types" :key="type.id" value="type.id">
+            <!-- <option v-for="type in event_types" :key="type.id" value="type.id">
               {{ type.name }}
-            </option>
+            </option> -->
           </select>
           <select v-model="selectedWeapon" class="form-control form-control-sm">
             <option value="0" hidden>סוג אמלח</option>
@@ -23,7 +23,11 @@
           </select>
         </div>
         <hr />
-        <button type="button" class="btn create-alert" @click="createNewAlert"
+        <button
+          type="button"
+          class="btn create-alert"
+          @click="createNewAlert"
+        />
         <table class="table table-hover alertTable">
           <thead>
             <tr>
@@ -40,10 +44,14 @@
             </tr>
           </tbody>
         </table>
-        <a href="#" class="create-alert"
-          ><font-awesome-icon class="fa-2xl" icon="fa-solid fa-circle-plus"
-        /></button>
-        <new-alert id="newAlert" @newAlertChange = "changeNewAlert" :open="isNewAlert" ></new-alert>
+        <button href="#" class="create-alert">
+          <font-awesome-icon class="fa-2xl" icon="fa-solid fa-circle-plus" />
+        </button>
+        <new-alert
+          id="newAlert"
+          @newAlertChange="changeNewAlert"
+          :open="isNewAlert"
+        ></new-alert>
       </div>
     </div>
     <popUp :open="open" @modal-change="changeModalState" />
@@ -59,7 +67,7 @@ export default {
   name: "LatestAlerts",
   components: {
     newAlert,
-    popUp
+    popUp,
   },
   data() {
     return {
@@ -113,7 +121,7 @@ export default {
       this.isNewAlert = !this.isNewAlert;
     },
     changeNewAlert(state) {
-      this.isNewAlert = state
+      this.isNewAlert = state;
     },
     openModal(item) {
       this.selectedAlert = item;
@@ -121,6 +129,7 @@ export default {
     },
     changeModalState(state) {
       this.open = state;
+    },
     async getallWeapons() {
       this.event_weapons = await (await api.alerts().getAllWeapons()).data;
     },
