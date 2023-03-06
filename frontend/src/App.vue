@@ -1,16 +1,17 @@
 <template>
   <div id="app">
+    <popUp />
   </div>
 </template>
 
 <script>
+import popUp from "./components/eventPopup.vue";
 
 export default {
-  name: 'App',
   components: {
-  }
-}
+    popUp,
+  },
+};
 </script>
 
-<style>
-</style>
+<style></style>
