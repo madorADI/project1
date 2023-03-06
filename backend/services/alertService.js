@@ -20,7 +20,7 @@ exports.uploadEvent = async (newEvent) => {
       (cor) =>
         cor[0] === newEvent.coordinates[0] && cor[1] === newEvent.coordinates[1]
     )
-  ).name;
+  ).id;
 
   if (brigade === undefined) {
     throw new Error("the location isnt registered");
