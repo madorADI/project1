@@ -7,12 +7,21 @@
         <table class="table table-hover alertTable">
           <thead>
             <tr>
-              <th v-for="field in fields" :key="field.label">{{field.label}}</th>
+              <th v-for="field in fields" :key="field.label">
+                {{ field.label }}
+              </th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="alert in formattedAlerts" :key="alert.id" :id="alert.id" :ref="alert.id">
-              <th v-for="(item, index) in brief" :key="index" >{{alert[item]}}</th>
+            <tr
+              v-for="alert in formattedAlerts"
+              :key="alert._id"
+              :id="alert._id"
+              :ref="alert._id.$oid"
+            >
+              <th v-for="(item, index) in brief" :key="index">
+                {{ alert[item] }}
+              </th>
             </tr>
           </tbody>
         </table>
@@ -40,13 +49,26 @@ export default {
       ],
       alerts: [
         {
-          id: 1,
-          event_type: "Attack",
-          time: Date.now(),
-          coordinates: [1, 1],
+          _id: {
+            $oid: "6404a7d352dd972914b315a2",
+          },
+          name: "test",
+          description: "dcsafdsafdazs",
+          time: {
+            $date: "2021-02-25T10:03:46.000Z",
+          },
+          weapon: "אבנים",
+          event_type: 3,
+          coordinates: [31.264035, 34.81396],
+          injuries: {
+            easy: 5,
+            medium: 2,
+            hard: 6,
+          },
+          brigade: 2,
         },
       ],
-      brief: [ "coordinates","time", "event_type", ]
+      brief: ["coordinates", "time", "event_type"],
     };
   },
   methods: {
@@ -57,7 +79,9 @@ export default {
     blinkAlert() {
       console.log(this.selectedAlertId);
       console.log(this.$refs[this.selectedAlertId]);
-      this.$refs[this.selectedAlertId][0].scrollIntoView({ behavior: "smooth" });
+      this.$refs[this.selectedAlertId][0].scrollIntoView({
+        behavior: "smooth",
+      });
     },
   },
   computed: {
