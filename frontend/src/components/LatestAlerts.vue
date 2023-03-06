@@ -4,7 +4,19 @@
       <div class="card-body">
         <h5 class="card-title">התראות אחרונות</h5>
         <hr />
-        <p class="card-text-filter">סינון</p>
+        <div class="card-text-filter">
+          <b-dropdown id="dropdown-1" text="סוג האירוע" class="m-md-2">
+            <b-dropdown-item>פטיש חם</b-dropdown-item>
+            <b-dropdown-item>פרש תורכי</b-dropdown-item>
+            <b-dropdown-item>אביר לילה א</b-dropdown-item>
+            <b-dropdown-item>אביר לילה ב</b-dropdown-item>
+            <b-dropdown-item>אביר לילה ג</b-dropdown-item>
+            <b-dropdown-item>ירי תמ'ס</b-dropdown-item>
+            <b-dropdown-item>ירי נט</b-dropdown-item>
+            <b-dropdown-item>אזעקה</b-dropdown-item>
+            <b-dropdown-divider></b-dropdown-divider>
+          </b-dropdown>
+        </div>
         <hr />
         <b-table
           class="alertTable"
@@ -24,7 +36,6 @@
 import api from "../api/api.js";
 export default {
   name: "LatestAlerts",
-  components: {  },
   data() {
     return {
       fields: [
