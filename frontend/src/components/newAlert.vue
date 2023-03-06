@@ -36,7 +36,7 @@
               aria-label="events type"
               v-model="selectedEventType"
             >
-              <option v-for="event in eventsTypes" :key="event">
+              <option v-for="event in formatedTypes" :key="event">
                 {{ event }}
               </option>
             </select>
@@ -73,15 +73,15 @@
       <div class="input-group m-2" id="range">
         <div
           class="form-check mx-4"
-          v-for="weapon in eventsWeapons"
+          v-for="weapon in formatWeapons"
           :key="weapon"
         >
           <input
-            :class="{ 'is-invalid': !selectedWeapons.length && validation }"
+            :class="{ 'is-invalid': !selectedWeapons && validation }"
             v-model="selectedWeapons"
             :value="weapon"
             class="form-check-input"
-            type="checkbox"
+            type="radio"
             :id="weapon"
           />
           <label class="form-check-label" :for="weapon">
@@ -99,6 +99,7 @@
 </template>
 
 <script>
+import api from '../api/api'
 export default {
   name: "newAlert",
   props: {
@@ -111,7 +112,7 @@ export default {
     return {
       eventsTypes: [],
       eventsWeapons: [],
-      selectedWeapons: [],
+      selectedWeapons: null,
       selectedEventType: null,
       validation: false,
       location: "",
@@ -144,17 +145,33 @@ export default {
       this.$emit("newAlertChange",this.open)
     }
   },
-  methods: {
-    getEventsTypes() {
-      this.eventsTypes = ["ליהי", "רן", "בר", "שקד"];
+  computed: {
+    formatedTypes() {
+      return this.eventsTypes.map(({name}) => name );
     },
-    getEventsWeapons() {
-      this.eventsWeapons = ["אבן", "סכין", "חשמל", "רובה"];
+    formatWeapons() {
+      return this.eventsWeapons.map(({name}) => name )
+    }
+  },
+  methods: {
+    async getEventsTypes() {
+      try {
+      this.eventsTypes = (await api.alerts().getAllTypes()).data;
+      } catch(err) {
+        console.log(err);
+      }
+    },
+    async getEventsWeapons() {
+      try {
+      this.eventsWeapons = (await api.alerts().getAllWeapons()).data;
+      } catch(err) {
+        console.log(err);
+      }
     },
     closeNewAlert() {
       this.$emit("closeNewAlert");
     },
-    sendNewAlert() {
+    async sendNewAlert() {
       if (
         !this.selectedEventType ||
         !this.selectedWeapons ||
@@ -163,7 +180,25 @@ export default {
       ) {
         this.validation = true;
       } else {
-        alert("valid");
+        const newALert = {
+          "name" : this.selectedEventType,
+          "description" : this.description,
+          "time" : new Date(),
+          "weapon" : this.selectedWeapons,
+          "event_type" : this.eventsTypes.find(({name}) => name === this.selectedEventType).id,
+          "coordinates" : [parseFloat(this.location),parseFloat(this.location) +1],
+          "injuries" : {
+            "easy" : parseInt(this.injuries.light.numberOfInjeries),
+            "medium" : parseInt(this.injuries.medium.numberOfInjeries),
+            "hard" : parseInt(this.injuries.hard.numberOfInjeries)
+          },
+          "brigade" : -1
+        }
+        try {
+          await api.alerts().postNewWeapon(newALert);
+        }catch (err) {
+          alert("cordinates wasnt found");
+        }
       }
     }
   },
