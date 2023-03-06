@@ -22,10 +22,8 @@
 
 <script>
 import api from "../api/api.js";
-import Alert from "./Alert.vue";
 export default {
   name: "LatestAlerts",
-  components: { Alert },
   data() {
     return {
       fields: [
