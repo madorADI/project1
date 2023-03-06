@@ -12,9 +12,10 @@
           :fields="fields"
           :items="formattedAlerts"
         ></b-table>
-        <a href="#" class="create-alert"
+        <button type="button" class="btn create-alert" @click="createNewAlert"
           ><font-awesome-icon class="fa-2xl" icon="fa-solid fa-circle-plus"
-        /></a>
+        /></button>
+        <new-alert id="newAlert" @newAlertChange = "changeNewAlert" :open="isNewAlert" ></new-alert>
       </div>
     </div>
   </div>
@@ -22,9 +23,12 @@
 
 <script>
 import api from "../api/api.js";
+import newAlert from "./newAlert.vue";
 export default {
   name: "LatestAlerts",
-  components: {  },
+  components: {
+    newAlert,
+  },
   data() {
     return {
       fields: [
@@ -39,6 +43,7 @@ export default {
           coordinates: [1, 1],
         },
       ],
+      isNewAlert: false,
     };
   },
   // created() {
@@ -48,6 +53,12 @@ export default {
     async getAllAlerts() {
       this.alerts = await (await api.alerts().getAllAlerts()).data;
     },
+    createNewAlert() {
+      this.isNewAlert = !this.isNewAlert;
+    },
+    changeNewAlert(state) {
+      this.isNewAlert = state
+    }
   },
   computed: {
     formattedAlerts() {
