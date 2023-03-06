@@ -1,15 +1,15 @@
 var express = require("express");
 var router = express.Router();
-const weaponsService = require("../services/weaponsService");
+const brigadeService = require("../services/brigadeService");
 
 router.get("/", async (req, res) => {
   try {
-    const weapons = await weaponsService.getAllWeapons();
+    const brigades = await brigadeService.getAllBrigades();
 
-    if (!weapons) {
+    if (!brigades) {
       res.status(404).send("not found");
     } else {
-      res.status(200).send(weapons);
+      res.status(200).send(brigades);
     }
   } catch (error) {
     res.status(500).send(error);
