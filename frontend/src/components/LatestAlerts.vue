@@ -37,6 +37,7 @@
               v-for="alert in formattedAlerts"
               :key="alert.id"
               :id="alert.id"
+              :ref="alert._id.$oid"
               @click="openModal"
             >
               <th v-for="(item, index) in brief" :key="index">
@@ -67,6 +68,7 @@
 import api from "../api/api.js";
 import newAlert from "./newAlert.vue";
 import popUp from "../components/eventPopup.vue";
+import { mapState } from "vuex";
 
 export default {
   name: "LatestAlerts",
@@ -113,11 +115,11 @@ export default {
       selectedAlert: {},
     };
   },
-  // created() {
-  //   this.getAllAlerts();
-  //   this.getAllTypes();
-  //   this.getAllWeapons();
-  // },
+  created() {
+    this.getAllAlerts();
+    this.getAllTypes();
+    this.getAllWeapons();
+  },
   methods: {
     async getAllAlerts() {
       this.alerts = await (await api.alerts().getAllAlerts()).data;
@@ -135,14 +137,22 @@ export default {
     changeModalState(state) {
       this.open = state;
     },
-    async getallWeapons() {
+    async getAllWeapons() {
       this.event_weapons = await (await api.alerts().getAllWeapons()).data;
     },
     async getAllTypes() {
       this.event_types = await (await api.alerts().getAllTypes()).data;
     },
+    blinkAlert() {
+      console.log(this.selectedAlertId);
+      console.log(this.$refs[this.selectedAlertId]);
+      this.$refs[this.selectedAlertId][0].scrollIntoView({
+        behavior: "smooth",
+      });
+    },
   },
   computed: {
+    ...mapState(["selectedAlertId"]),
     formattedAlerts() {
       return this.alerts.map((alert) => {
         const fixedAlert = { ...alert };
@@ -160,6 +170,11 @@ export default {
       return this.filteredTableByType.filter(
         (alert) => alert.weapon === this.selectedWeapon
       );
+    },
+  },
+  watch: {
+    selectedAlertId() {
+      this.blinkAlert();
     },
   },
 };

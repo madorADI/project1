@@ -4,7 +4,7 @@
       <l-map :zoom="zoom" :center="center" :options="mapOptions" style="height: 80%">
         <l-tile-layer :url="url" />
         <!--change key, the markers should be from db-->
-        <l-marker v-for="marker in markers" :key="marker[0]" :lat-lng="marker.coor" @click="changeSelectedAlertId(marker.id)" :icon="bomb">
+        <l-marker v-for="marker in markers" :key="marker[0]" :lat-lng="marker.coor" @click="changeSelectedAlertId(marker._id)" :icon="bomb">
           <l-tooltip>אפשר להוסיף כאן כיתוב מאוחר יותר</l-tooltip>
         </l-marker>
   
@@ -45,7 +45,7 @@
     },
     async created() {
       //this.markers = add api request that gets coordinates of targets, the line below is hardcoded
-      this.markers= [{id:1, coor: [35.504, 31.159]},{id:2, coor: [32.504, 36.159]},{id:3, coor: [27.504, 34.159]}];
+      this.markers= [{_id:"6404a7d352dd972914b315a2", coor: [35.504, 31.159]},{id:2, coor: [32.504, 36.159]},{id:3, coor: [27.504, 34.159]}];
     },
     methods: {
       ...mapActions(["changeSelectedAlertId"])
