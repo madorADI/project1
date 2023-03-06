@@ -23,7 +23,6 @@
           </select>
         </div>
         <hr />
-        <button type="button" class="btn create-alert" @click="createNewAlert"
         <table class="table table-hover alertTable">
           <thead>
             <tr>
@@ -40,7 +39,7 @@
             </tr>
           </tbody>
         </table>
-        <a href="#" class="create-alert"
+        <button type="button" class="btn create-alert" @click="createNewAlert"
           ><font-awesome-icon class="fa-2xl" icon="fa-solid fa-circle-plus"
         /></button>
         <new-alert id="newAlert" @newAlertChange = "changeNewAlert" :open="isNewAlert" ></new-alert>
@@ -84,11 +83,7 @@ export default {
           coordinates: [1, 1],
         },
       ],
-      brief: [ "coordinates","time", "event_type", ]
-    };
-  },
-
-     
+      brief: [ "coordinates","time", "event_type", ],   
       isNewAlert: false,
       open: false,
       selectedAlert: {},
@@ -109,8 +104,8 @@ export default {
     blinkAlert() {
       console.log(this.selectedAlertId);
       console.log(this.$refs[this.selectedAlertId]);
-      this.$refs[this.selectedAlertId][0].scrollIntoView({ behavior: "smooth" });
-
+      this.$refs[this.selectedAlertId][0].scrollIntoView({ behavior: "smooth" })
+    },
     createNewAlert() {
       this.isNewAlert = !this.isNewAlert;
     },
@@ -123,6 +118,7 @@ export default {
     },
     changeModalState(state) {
       this.open = state;
+    },
     async getallWeapons() {
       this.event_weapons = await (await api.alerts().getAllWeapons()).data;
     },
@@ -146,7 +142,7 @@ export default {
   watch: {
     selectedAlertId() {
       this.blinkAlert();
-
+    },
     filteredTableByType() {
       return this.formattedAlert.filter(
         (alert) => alert.event_type === this.selectedType
