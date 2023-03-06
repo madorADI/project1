@@ -1,19 +1,15 @@
 <template>
-  <div class="card text-center text-white w-50" id="newAlert">
-    <div class="row card-header">
-      <div class="col-1">
-        <button type="button" class="btn text-white" @click="closeCard">
-          <i class="bi bi-x-lg"></i>
-        </button>
-      </div>
-      <div class="col-11 display-6">יצירת התרעה</div>
-    </div>
-    <div class="card-body">
+  <b-modal content-class = "" v-model="open">
+      <div class="display-6  text-center ">יצירת התרעה</div>
+    <div class="modal-body">
       <div class="row">
         <div class="injuries col-8">
           <h5 class="card-title text-center">נפגעים</h5>
           <div class="row">
-            <div class="col-4" v-for="value in injuries" :key="value.name">
+            <div class="col-4 text-center" v-for="value in injuries" :key="value.name">
+              <label class="mx-2" :for="value.name">
+                {{ value.realName }}
+              </label>
               <input
                 :class="{
                   'bg-danger': value.name === 'hard',
@@ -21,14 +17,12 @@
                   'bg-success': value.name === 'light',
                 }"
                 type="text"
-                class="w-50 rounded"
+                class="w-100 rounded"
                 :id="value.name"
                 v-model="value.numberOfInjeries"
                 v-int
               />
-              <label class="mx-2" :for="value.name">
-                {{ value.realName }}
-              </label>
+             
             </div>
           </div>
         </div>
@@ -96,17 +90,23 @@
         </div>
       </div>
     </div>
-    <div class="card-footer">
-      <button type="button" class="btn btn-danger" @click="sendNewAlert">
+    <template #modal-footer>
+        <button type="button" class="buttom btn btn-danger" @click="sendNewAlert">
         שמירה
       </button>
-    </div>
-  </div>
+    </template>
+  </b-modal>
 </template>
 
 <script>
 export default {
   name: "newAlert",
+  props: {
+    open: {
+      required: true,
+      type: Boolean
+    }
+  },
   data() {
     return {
       eventsTypes: [],
@@ -139,6 +139,11 @@ export default {
     this.getEventsTypes();
     this.getEventsWeapons();
   },
+  watch: {
+    open() {
+      this.$emit("newAlertChange",this.open)
+    }
+  },
   methods: {
     getEventsTypes() {
       this.eventsTypes = ["ליהי", "רן", "בר", "שקד"];
@@ -146,7 +151,9 @@ export default {
     getEventsWeapons() {
       this.eventsWeapons = ["אבן", "סכין", "חשמל", "רובה"];
     },
-    closeCard() {},
+    closeNewAlert() {
+      this.$emit("closeNewAlert");
+    },
     sendNewAlert() {
       if (
         !this.selectedEventType ||
@@ -158,19 +165,16 @@ export default {
       } else {
         alert("valid");
       }
-    },
+    }
   },
 };
 </script>
 
 <style scoped>
-.card-header {
-  place-content: space-between;
-}
-#newAlert {
-  background-color: darkslateblue;
-}
 #range {
   place-content: center;
+}
+.buttom {
+  margin-inline: auto;
 }
 </style>
