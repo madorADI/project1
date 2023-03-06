@@ -1,16 +1,30 @@
 <template>
   <div id="app">
-    <Map></Map>
-    <LatestAlerts/>
+    <Header></Header>
+    <b-row>
+      <b-col>
+        <LatestAlerts />
+      </b-col>
+      <b-col>
+        <eventMap />
+      </b-col>
+    </b-row>
   </div>
 </template>
 
 <script>
-import Map from "../src/components/Map.vue";
-import LatestAlerts from "../src/components/LatestAlerts.vue";
+
+
+import LatestAlerts from "./components/LatestAlerts.vue";
+import Header from "./components/header.vue";
+import eventMap from "./components/Map.vue";
+
 export default {
-  name: "App",
-  components: { Map, LatestAlerts },
+  components: {
+    LatestAlerts,
+    Header,
+    eventMap,
+  },
 };
 </script>
 
