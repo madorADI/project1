@@ -7,8 +7,8 @@
         <div class="card-text-filter">
           <select v-model="selectedType" class="form-control form-control-sm">
             <option value="0" hidden>סוג האירוע</option>
-            <option v-for="type in event_types" :key="type.id" value="type.id">
-              {{ type.name }}
+            <option v-for="typ in event_types" :key="typ.id" value="typ.id">
+            {{ typ.name }}
             </option>
           </select>
           <select v-model="selectedWeapon" class="form-control form-control-sm">
@@ -23,6 +23,10 @@
           </select>
         </div>
         <hr />
+
+
+
+
         <table class="table table-hover alertTable">
           <thead>
             <tr>
@@ -89,11 +93,11 @@ export default {
       selectedAlert: {},
     };
   },
-  // created() {
-  //   this.getAllAlerts();
-  //   this.getAllTypes();
-  //   this.getAllWeapons();
-  // },
+  created() {
+    this.getAllAlerts();
+    this.getAllTypes();
+    this.getAllWeapons();
+  },
 
   methods: {
     async getAllAlerts() {
