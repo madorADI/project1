@@ -17,18 +17,6 @@
         <b-row>
           <b-col class="text-center">
             <h4>נפגעים</h4>
-            <!-- <b-img
-              v-bind="mainProps"
-              class="bg-danger shadow"
-              rounded="circle"
-            ></b-img>
-            <b-img
-              v-bind="mainProps"
-              class="bg-warning mx-2"
-              rounded="circle"
-            ></b-img>
-            <b-img v-bind="mainProps" class="bg-success" rounded="circle">
-            </b-img> -->
             <div class="row mx-4">
               <div class="col-3 m-1 p-2 px-1">
                 <div class="bg-danger rounded">
@@ -56,9 +44,6 @@
               </div>
             </div>
             <div></div>
-            <!-- <p class="injuryLevel">קל</p>
-            <p class="injuryLevel mx-4">בינוני</p>
-            <p class="injuryLevel">קשה</p> -->
           </b-col>
           <b-col class="text-center my-2"
             ><h4>תאריך, שעה</h4>
@@ -127,7 +112,4 @@ export default {
 </script>
 
 <style scoped>
-.injuryLevel {
-  display: inline;
-}
 </style>
