@@ -10,7 +10,7 @@
 
     </l-map>
   </div>
-</template>
+</template>    
   
 <script>
 import "leaflet/dist/leaflet.css";
@@ -45,10 +45,10 @@ export default {
   },
   async created() {
     //this.markers = add api request that gets coordinates of targets, the line below is hardcoded
-    this.markers = [[35.504, 31.159], [32.504, 36.159], [27.504, 34.159]];
+      this.markers= [{_id:"6404a7d352dd972914b315a2", coor: [35.504, 31.159]},{id:2, coor: [32.504, 36.159]},{id:3, coor: [27.504, 34.159]}];
   },
   methods: {
-    ...mapActions(["changeSelectedLat","changeSelectedLng"]),
+    ...mapActions(["changeSelectedLat","changeSelectedLng","changeSelectedAlertId"]),
     selectBomb(event) {
       this.changeSelectedLat(event.latlng.lat);
       this.changeSelectedLng(event.latlng.lng);
@@ -60,6 +60,4 @@ export default {
   },
 };
 </script>
-  
-<style></style>
-  
+ 
