@@ -11,19 +11,35 @@
               {{ typ.name }}
             </option>
           </select>
-          <select v-model="selectedWeapon" class="form-control form-control-sm">
-            <option value="0" hidden>סוג אמלח</option>
-            <option
-              v-for="weapon in event_weapons"
-              :key="weapon.id"
-              value="weapon.name"
-            >
+          <div
+            class="form-check"
+            v-for="weapon in event_weapons"
+            :key="weapon.id"
+          >
+            <input
+              v-model="selectedWeapon"
+              class="form-check-input"
+              type="checkbox"
+              value=""
+            />
+            <label class="form-check-label" for="flexCheckDefault">
               {{ weapon.name }}
-            </option>
-          </select>
+            </label>
+          </div>
+
+          <div class="form-group">
+            <input
+              v-model="selectedDate"
+              type="date"
+              class="form-control"
+              id="exampleInputEmail1"
+              aria-describedby="emailHelp"
+              placeholder="תאריך"
+            />
+          </div>
         </div>
         <hr />
-        
+
         <table class="table table-hover alertTable">
           <thead>
             <tr>
@@ -34,7 +50,7 @@
           </thead>
           <tbody>
             <tr
-              v-for="alert in formattedAlerts"
+              v-for="alert in filteredTableByDate"
               :key="alert.id"
               :id="alert.id"
               :ref="alert._id.$oid"
@@ -46,11 +62,7 @@
             </tr>
           </tbody>
         </table>
-        <button
-          type="button"
-          class="btn create-alert"
-          @click="createNewAlert"
-        >
+        <button type="button" class="btn create-alert" @click="createNewAlert">
           <font-awesome-icon class="fa-2xl" icon="fa-solid fa-circle-plus" />
         </button>
         <new-alert
@@ -82,7 +94,7 @@ export default {
       event_types: [],
       brief: ["brigade", "time", "event_type"],
       selectedType: 0,
-      selectedWeapon: 0,
+      selectedWeapon: null,
       selectedDate: null,
       fields: [
         { key: "brigade", label: "גירזה" },
@@ -151,6 +163,17 @@ export default {
       });
     },
   },
+  watch: {
+    selectedType() {
+      this.filteredTableByDate();
+    },
+    selectedWeapon() {
+      this.filteredTableByDate();
+    },
+    selectedDate() {
+      this.filteredTableByDate();
+    },
+  },
   computed: {
     ...mapState(["selectedAlertId"]),
     formattedAlerts() {
@@ -162,14 +185,31 @@ export default {
       });
     },
     filteredTableByType() {
-      return this.formattedAlert.filter(
-        (alert) => alert.event_type === this.selectedType
-      );
+      if (this.selectedType !== 0) {
+        return this.formattedAlerts.filter(
+          (alert) => alert.event_type === this.selectedType
+        );
+      } else {
+        return this.formattedAlerts;
+      }
     },
     filteredTableByWeapon() {
-      return this.filteredTableByType.filter(
-        (alert) => alert.weapon === this.selectedWeapon
-      );
+      if (this.selectedWeapon !== null) {
+        return this.filteredTableByType.filter(
+          (alert) => alert.weapon === this.selectedWeapon
+        );
+      } else {
+        return this.formattedAlerts;
+      }
+    },
+    filteredTableByDate() {
+      if (this.selectedDate !== null) {
+        return this.filteredTableByWeapon.filter(
+          (alert) => alert.time === this.selectedDate
+        );
+      } else {
+        return this.formattedAlerts;
+      }
     },
   },
   watch: {
