@@ -51,7 +51,7 @@
 
         <div class="tableContainer">
           <table class="table table-hover alertTable">
-            <thead>
+            <thead class="header">
               <tr>
                 <th v-for="field in fields" :key="field.label">
                   {{ field.label }}
@@ -253,7 +253,7 @@ export default {
   background-color: rgb(43, 58, 103);
   color: rgb(245, 245, 245);
   text-align: center;
-  height: 80ch;
+  height: 84ch;
 }
 
 .alertTable {
@@ -273,6 +273,13 @@ export default {
   100% {
     background-color: rgb(43, 58, 103);
   }
+}
+
+table thead tr th {
+  position: sticky;
+  z-index: 100;
+  background-color: rgb(43, 58, 103);
+  top: 0;
 }
 .blink {
   animation: blinking 1s;
