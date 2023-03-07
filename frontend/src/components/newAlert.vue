@@ -63,7 +63,6 @@
               <div class="input-group m-2">
                 <input
                   :value="locationXCord"
-                  title="בחר מיקום במפה"
                   :class="{ 'is-invalid': !locationXCord && validation }"
                   type="number"
                   class="form-control"
@@ -77,7 +76,6 @@
               <div class="input-group m-2">
                 <input
                   :value="locationYCord"
-                  title="בחר מיקום במפה"
                   :class="{ 'is-invalid': !locationYCord && validation }"
                   type="number"
                   class="form-control"
