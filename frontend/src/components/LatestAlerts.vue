@@ -60,7 +60,7 @@
           <hr />
         </div>
 
-        <div class="tableContainer">
+        <div class="tableContainer" :class="{tableClosedFilter :!openFilter}">
           <table class="table table-hover alertTable">
             <thead class="header">
               <tr>
@@ -268,7 +268,7 @@ export default {
   background-color: rgb(43, 58, 103);
   color: rgb(245, 245, 245);
   text-align: center;
-  height: 84ch;
+  height: 94ch;
 }
 
 .alertTable {
@@ -277,7 +277,13 @@ export default {
 
 .tableContainer {
   height: 20%;
-  overflow: scroll;
+  overflow: auto;
+  position: relative;
+}
+
+.tableClosedFilter {
+  height: auto;
+  overflow: auto;
   position: relative;
 }
 
@@ -311,7 +317,6 @@ table thead tr th {
 
 #openFilter {
   background-color: rgb(240, 100, 73);
-  float: right;
 }
 
 .table-hover tbody tr:hover td,
