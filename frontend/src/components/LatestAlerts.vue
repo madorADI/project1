@@ -5,12 +5,34 @@
         <h5 class="card-title">התראות אחרונות</h5>
         <hr />
         <div class="card-text-filter">
-          <select v-model="selectedType" class="form-control form-control-sm">
+          <div class="dropdown">
+            <button
+              class="btn btn-secondary dropdown-toggle"
+              type="button"
+              id="dropdownMenuButton"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              סוג האירוע
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <a
+                class="dropdown-item"
+                v-for="typ in event_types"
+                :key="typ.id"
+                :value="typ.name"
+              >
+                {{ typ.name }}
+              </a>
+            </div>
+          </div>
+          <!-- <select v-model="selectedType" class="form-control form-control-sm">
             <option value="0" hidden>סוג האירוע</option>
-            <option v-for="typ in event_types" :key="typ.id" value="typ.id">
+            <option v-for="typ in event_types" :key="typ.id" :value="typ.id">
               {{ typ.name }}
             </option>
-          </select>
+          </select> -->
           <br />
           <h6><u>סוג אמלח</u></h6>
           <div
@@ -103,7 +125,7 @@ export default {
       event_weapons: [],
       event_types: [],
       brief: ["brigade", "time", "event_type"],
-      selectedType: 0,
+      selectedType: null,
       selectedWeapon: [],
       selectedStartDate: null,
       selectedEndDate: null,
@@ -125,7 +147,7 @@ export default {
   },
   methods: {
     findDateBeforeWeek() {
-      this.selectedEndDate = this.formatDate(new Date());
+      this.selectedEndDate = this.formatDate(new Date(Date.now()));
       this.selectedStartDate = new Date();
       this.selectedStartDate.setDate(this.selectedStartDate.getDate() - 7);
       this.selectedStartDate = this.formatDate(this.selectedStartDate);
@@ -195,7 +217,7 @@ export default {
       });
     },
     filteredTableByType() {
-      if (this.selectedType !== 0) {
+      if (this.selectedType !== null) {
         return this.formattedDates.filter(
           (alert) => alert.event_type === this.selectedType
         );
@@ -213,11 +235,14 @@ export default {
       }
     },
     filteredTableByDate() {
+      let endDateComparable = new Date(this.selectedEndDate).setDate(
+        new Date(this.selectedEndDate).getDate() + 1
+      );
       if (this.selectedStartDate !== null && this.selectedEndDate !== null) {
         return this.filteredTableByWeapon.filter(
           (alert) =>
             alert.time >= new Date(this.selectedStartDate) &&
-            alert.time <= new Date(this.selectedEndDate)
+            alert.time < new Date(endDateComparable)
         );
       } else {
         return this.filteredTableByWeapon;
