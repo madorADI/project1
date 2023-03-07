@@ -186,7 +186,7 @@ export default {
           "time" : new Date(),
           "weapon" : this.selectedWeapons,
           "event_type" : this.eventsTypes.find(({name}) => name === this.selectedEventType).id,
-          "coordinates" : [parseFloat(this.location),parseFloat(this.location) +1],
+          "coordinates" : [35.2963257,32.0825746],
           "injuries" : {
             "easy" : parseInt(this.injuries.light.numberOfInjeries),
             "medium" : parseInt(this.injuries.medium.numberOfInjeries),
