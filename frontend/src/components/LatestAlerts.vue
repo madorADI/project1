@@ -55,12 +55,11 @@
           </thead>
           <tbody>
             <tr
-              v-for="alert in filteredTableByDate"
+              v-for="alert in formattedAlerts"
               :key="alert.id"
               :id="alert.id"
               :ref="alert._id"
               @click="openModal(alert._id)"
-
             >
               <th v-for="(item, index) in brief" :key="index">
                 {{ alert[item] }}
@@ -182,7 +181,7 @@ export default {
     formattedAlerts() {
       return this.filteredTableByDate.map((alert) => {
         const fixedAlert = { ...alert };
-        fixedAlert.time = fixedAlert.time.toLocaleDateString("en-GB");
+        fixedAlert.time = new Date(fixedAlert.time).toLocaleDateString("en-GB");
 
         return fixedAlert;
       });
@@ -222,7 +221,8 @@ export default {
         );
       } else {
         return this.filteredTableByWeapon;
-      },
+      }
+    },
   },
   watch: {
     selectedAlertId() {
