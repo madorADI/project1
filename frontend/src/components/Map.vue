@@ -82,4 +82,9 @@ export default {
   width: 100%;
   height: 100%;
 }
+
+.back {
+  position: absolute;
+  height: 100%;
+}
 </style>
