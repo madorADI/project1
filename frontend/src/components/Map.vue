@@ -19,7 +19,7 @@
         @click="changeSelectedAlertId(marker._id)"
         :icon="bomb"
       >
-        <l-tooltip>אפשר להוסיף כאן כיתוב מאוחר יותר</l-tooltip>
+        <l-tooltip>{{ marker.name }}</l-tooltip>
       </l-marker>
     </l-map>
   </div>
