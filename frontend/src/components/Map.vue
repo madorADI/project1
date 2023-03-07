@@ -11,6 +11,7 @@
     >
       <l-image-overlay :url="url" :bounds="bounds" />
       <l-tile-layer :url="url" />
+      
       <!--change key, the markers should be from db-->
       <l-marker
         v-for="marker in markers"
@@ -31,6 +32,7 @@ import { latLng, icon } from "leaflet";
 import api from "../api/api";
 import { mapActions } from "vuex";
 import { LMap, LTileLayer, LTooltip, LMarker } from "vue2-leaflet";
+import LatestAlerts from "./LatestAlerts.vue";
 
 export default {
   name: "IsraelMap",
@@ -39,6 +41,7 @@ export default {
     LTileLayer,
     LTooltip,
     LMarker,
+    LatestAlerts,
   },
   data() {
     return {
