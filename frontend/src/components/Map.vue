@@ -29,8 +29,8 @@ export default {
   },
   data() {
     return {
-      zoom: 7.5,
-      center: latLng(31.360241, 34.900212),
+      zoom: 9.5,
+      center: latLng(31.894372, 35.217967),
       url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
       mapOptions: {
         zoomSnap: 0.5,
