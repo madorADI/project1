@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div class="card latest-alerts" style="width: 18rem">
+  <div id="latest-alert">
+    <div class="card latest-alerts" style="width: 24rem">
       <div class="card-body">
         <h5 class="card-title">התראות אחרונות</h5>
         <hr />
@@ -39,7 +39,6 @@
               :id="alert.id"
               :ref="alert._id"
               @click="openModal(alert._id)"
-
             >
               <th v-for="(item, index) in brief" :key="index">
                 {{ alert[item] }}

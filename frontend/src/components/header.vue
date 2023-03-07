@@ -25,13 +25,13 @@ h3 {
   color: white;
 }
 img {
-    height: 8vh;
-    width: 6.4vw;
+  height: 8vh;
+  width: 6.4vw;
 }
 #container {
-    direction: rtl;
-    background-color: #2b3a67;
-    max-width: 100%;
-    height: 11vh;
+  direction: rtl;
+  background-color: #2b3a67;
+  max-width: 100%;
+  height: 11vh;
 }
 </style>

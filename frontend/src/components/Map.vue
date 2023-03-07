@@ -7,7 +7,6 @@
       :options="mapOptions"
       style="height: 80%"
       @click="selectBomb"
-      class="map"
     >
       <l-image-overlay :url="url" :bounds="bounds" />
       <l-tile-layer :url="url" />
@@ -74,3 +73,5 @@ export default {
   },
 };
 </script>
+
+<style scoped></style>
