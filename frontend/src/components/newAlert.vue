@@ -1,6 +1,11 @@
 <template>
   <b-modal v-model="open" content-class="modal-color">
-    <div class="display-6 text-center">יצירת התרעה</div>
+    <template #modal-header = "{ close }">
+      <b-button @click="close()"  class="bg-danger" >
+        <i class="bi bi-x-lg"></i>
+      </b-button>
+      <div class="display-6 header">יצירת התרעה</div>
+    </template>
     <div class="modal-body">
       <div class="row mb-4">
         <div class="injuries col-7">
@@ -22,7 +27,8 @@
                   'bg-success': value.name === 'light',
                 }"
                 type="text"
-                class="w-100 rounded"
+                class="w-100 rounded text-center"
+                style="color:white"
                 :id="value.name"
                 v-model="value.numberOfInjeries"
                 v-int
@@ -273,7 +279,9 @@ export default {
 .buttom {
   margin-inline: auto;
 }
-
+.header {
+  margin-inline: auto;
+}
 ::v-deep .modal-color {
   background-color: rgb(43, 58, 103);
   color: aliceblue;
