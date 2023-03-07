@@ -90,25 +90,25 @@ export default {
         { key: "event_type", label: "סוג האירוע" },
       ],
       alerts: [
-        // {
-        //   // _id: {
-        //   //   $oid: "6404a7d352dd972914b315a2",
-        //   // },
-        //   // name: "test",
-        //   // description: "dcsafdsafdazs",
-        //   // time: {
-        //   //   $date: "2021-02-25T10:03:46.000",
-        //   // },
-        //   // weapon: "אבנים",
-        //   // event_type: 3,
-        //   // coordinates: [31.264035, 34.81396],
-        //   // injuries: {
-        //   //   easy: 5,
-        //   //   medium: 2,
-        //   //   hard: 6,
-        //   // },
-        //   // brigade: 2,
-        // },
+        {
+          _id: {
+            $oid: "6404a7d352dd972914b315a2",
+          },
+          name: "test",
+          description: "dcsafdsafdazs",
+          time: {
+            $date: "2021-02-25T10:03:46.000",
+          },
+          weapon: "אבנים",
+          event_type: 3,
+          coordinates: [31.264035, 34.81396],
+          injuries: {
+            easy: 5,
+            medium: 2,
+            hard: 6,
+          },
+          brigade: 2,
+        },
       ],
       isNewAlert: false,
       open: false,
