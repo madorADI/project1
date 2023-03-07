@@ -37,8 +37,9 @@
               v-for="alert in formattedAlerts"
               :key="alert.id"
               :id="alert.id"
-              :ref="alert._id.$oid"
+              :ref="alert._id"
               @click="openModal(alert._id)"
+
             >
               <th v-for="(item, index) in brief" :key="index">
                 {{ alert[item] }}
@@ -90,27 +91,7 @@ export default {
         { key: "time", label: "תאריך" },
         { key: "event_type", label: "סוג האירוע" },
       ],
-      alerts: [
-        {
-          _id: {
-            $oid: "6404a7d352dd972914b315a2",
-          },
-          name: "test",
-          description: "dcsafdsafdazs",
-          time: {
-            $date: "2021-02-25T10:03:46.000",
-          },
-          weapon: "אבנים",
-          event_type: 3,
-          coordinates: [31.264035, 34.81396],
-          injuries: {
-            easy: 5,
-            medium: 2,
-            hard: 6,
-          },
-          brigade: 2,
-        },
-      ],
+      alerts: [],
       isNewAlert: false,
       open: false,
     };
@@ -150,6 +131,7 @@ export default {
       this.$refs[this.selectedAlertId][0].scrollIntoView({
         behavior: "smooth",
       });
+      this.$refs[this.selectedAlertId][0].classList.add("blink");
     },
   },
   computed: {
@@ -178,7 +160,13 @@ export default {
   },
   watch: {
     selectedAlertId() {
-      this.blinkAlert();
+      if (this.selectedAlertId !== 0) {
+        this.blinkAlert();
+        setTimeout(() => {
+          this.$refs[this.selectedAlertId][0].classList.remove("blink");
+          this.changeSelectedAlertId(0);
+        }, 3000);
+      }
     },
   },
 };
@@ -193,6 +181,19 @@ export default {
 
 .alertTable {
   color: rgb(245, 245, 245);
+}
+
+@keyframes blinking {
+  0% {
+    background-color: rgb(240, 100, 73);
+  }
+  100% {
+    background-color: rgb(43, 58, 103);
+  }
+}
+.blink {
+  animation: blinking 1s;
+  animation-iteration-count: 3;
 }
 
 .card-text-filter {
