@@ -9,7 +9,7 @@
           width="80"
           height="80"
         ></b-img>
-        <h3>{{ alert.name }}</h3>
+        <h3>{{ event_types[alert.event_type].name }}</h3>
       </div>
       <b-container class="body">
         <b-row>
@@ -97,6 +97,10 @@ export default {
     },
     alert: {
       type: Object,
+      required: true,
+    },
+    event_types: {
+      type: Array,
       required: true,
     },
   },

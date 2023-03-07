@@ -60,6 +60,7 @@
       :open="open"
       @modal-change="changeModalState"
       :alert="selectedAlert"
+      :event_types="event_types"
     />
   </div>
 </template>
