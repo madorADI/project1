@@ -23,7 +23,7 @@
           </select>
         </div>
         <hr />
-        
+
         <table class="table table-hover alertTable">
           <thead>
             <tr>
@@ -46,11 +46,7 @@
             </tr>
           </tbody>
         </table>
-        <button
-          type="button"
-          class="btn create-alert"
-          @click="createNewAlert"
-        >
+        <button type="button" class="btn create-alert" @click="createNewAlert">
           <font-awesome-icon class="fa-2xl" icon="fa-solid fa-circle-plus" />
         </button>
         <new-alert
@@ -68,7 +64,7 @@
 import api from "../api/api.js";
 import newAlert from "./newAlert.vue";
 import popUp from "../components/eventPopup.vue";
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 
 export default {
   name: "LatestAlerts",
@@ -101,6 +97,7 @@ export default {
     this.getAllWeapons();
   },
   methods: {
+    ...mapActions(["changeSelectedAlertId"]),
     async getAllAlerts() {
       this.alerts = await (await api.alerts().getAllAlerts()).data;
     },
@@ -129,6 +126,7 @@ export default {
       this.$refs[this.selectedAlertId][0].scrollIntoView({
         behavior: "smooth",
       });
+      this.$refs[this.selectedAlertId][0].classList.add("blink");
     },
   },
   computed: {
@@ -154,7 +152,13 @@ export default {
   },
   watch: {
     selectedAlertId() {
-      this.blinkAlert();
+      if (this.selectedAlertId !== 0) {
+        this.blinkAlert();
+        setTimeout(() => {
+          this.$refs[this.selectedAlertId][0].classList.remove("blink");
+          this.changeSelectedAlertId(0);
+        }, 3000);
+      }
     },
   },
 };
@@ -169,6 +173,19 @@ export default {
 
 .alertTable {
   color: rgb(245, 245, 245);
+}
+
+@keyframes blinking {
+  0% {
+    background-color: rgb(240, 100, 73);
+  }
+  100% {
+    background-color: rgb(43, 58, 103);
+  }
+}
+.blink {
+  animation: blinking 1s;
+  animation-iteration-count: 3;
 }
 
 .card-text-filter {
