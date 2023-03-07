@@ -11,6 +11,8 @@
               {{ typ.name }}
             </option>
           </select>
+          <br />
+          <h6><u>סוג אמלח</u></h6>
           <div
             class="form-check"
             v-for="weapon in event_weapons"
@@ -26,16 +28,19 @@
               {{ weapon.name }}
             </label>
           </div>
-
+          <br />
+          <h6><u>תאריך</u></h6>
           <div class="form-group">
+            <label>-מ</label>
             <input
-              v-model="selectedDate"
+              v-model="selectedStartDate"
               type="date"
               class="form-control"
-              id="exampleInputEmail1"
-              aria-describedby="emailHelp"
-              placeholder="תאריך"
             />
+          </div>
+          <div class="form-group">
+            <label>-ל</label>
+            <input v-model="selectedEndDate" type="date" class="form-control" />
           </div>
         </div>
         <hr />
@@ -95,7 +100,8 @@ export default {
       brief: ["brigade", "time", "event_type"],
       selectedType: 0,
       selectedWeapon: null,
-      selectedDate: null,
+      selectedStartDate: null,
+      selectedEndDate: null,
       fields: [
         { key: "brigade", label: "גירזה" },
         { key: "time", label: "תאריך" },
@@ -170,7 +176,10 @@ export default {
     selectedWeapon() {
       this.filteredTableByWeapon();
     },
-    selectedDate() {
+    selectedStartDate() {
+      this.filteredTableByDate();
+    },
+    selectedEndDate() {
       this.filteredTableByDate();
     },
   },
@@ -203,9 +212,11 @@ export default {
       }
     },
     filteredTableByDate() {
-      if (this.selectedDate !== null) {
+      if (this.selectedStartDate !== null && this.selectedEndDate !== null) {
         return this.filteredTableByWeapon.filter(
-          (alert) => alert.time === this.selectedDate
+          (alert) =>
+            alert.time >= this.selectedStartDate &&
+            alert.time <= this.selectedEndDate
         );
       } else {
         return this.filteredTableByWeapon;
