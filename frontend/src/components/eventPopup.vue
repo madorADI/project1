@@ -63,6 +63,10 @@
         </b-row>
         <b-row>
           <b-col class="text-center mx-4">
+            <h4>גזרה</h4>
+            <h5>{{ alert.brigade }}</h5>
+          </b-col>
+          <b-col class="text-center mx-4">
             <h4>תיאור כללי</h4>
             <h5>{{ alert.description }}</h5>
           </b-col>
@@ -90,7 +94,7 @@ export default {
     alert: {
       type: Object,
       required: true,
-    }
+    },
   },
   computed: {
     formattedDate() {
