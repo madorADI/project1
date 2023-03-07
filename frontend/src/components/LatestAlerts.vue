@@ -48,23 +48,21 @@
             </div>
             <br />
             <h6><u>תאריך</u></h6>
-            <div class="form-group">
-              <label>-מ</label>
+            <div class="form-group d-flex justify-content-between">
               <input
                 v-model="selectedStartDate"
                 type="date"
-                class="form-control"
-                style="height: 3ch"
+                class="form-control dateCheck"
               />
+              <label>-מ</label>
             </div>
-            <div class="form-group">
-              <label>-ל</label>
+            <div class="form-group d-flex justify-content-between">
               <input
                 v-model="selectedEndDate"
                 type="date"
-                class="form-control"
-                style="height: 3ch"
+                class="form-control dateCheck "
               />
+              <label>-ל</label>
             </div>
           </div>
           <hr />
@@ -352,5 +350,11 @@ table thead tr th {
 .table-hover tbody tr:hover td,
 .table-hover tbody tr:hover th {
   color: rgb(228, 149, 3) !important;
+}
+
+.dateCheck{
+  height: 3ch;
+  width: 70%;
+  margin-bottom: 3%;
 }
 </style>
