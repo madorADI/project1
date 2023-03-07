@@ -101,7 +101,7 @@ export default {
       selectedType: 0,
       selectedWeapon: [],
       selectedStartDate: null,
-      selectedEndDate: new Date(Date.now()),
+      selectedEndDate: null,
       fields: [
         { key: "brigade", label: "גירזה" },
         { key: "time", label: "תאריך" },
@@ -121,8 +121,10 @@ export default {
   },
   methods: {
     findDateBeforeWeek() {
+      this.selectedEndDate = this.formatDate(new Date());
       this.selectedStartDate = new Date();
       this.selectedStartDate.setDate(this.selectedStartDate.getDate() - 7);
+      this.selectedStartDate = this.formatDate(this.selectedStartDate);
     },
     async getAllAlerts() {
       this.alerts = await (await api.alerts().getAllAlerts()).data;
@@ -153,6 +155,17 @@ export default {
         behavior: "smooth",
       });
     },
+    formatDate(date) {
+      let d = new Date(date),
+        month = "" + (d.getMonth() + 1),
+        day = "" + d.getDate(),
+        year = d.getFullYear();
+
+      if (month.length < 2) month = "0" + month;
+      if (day.length < 2) day = "0" + day;
+
+      return [year, month, day].join("-");
+    },
   },
   watch: {
     selectedAlertId() {
@@ -162,20 +175,28 @@ export default {
   computed: {
     ...mapState(["selectedAlertId"]),
     formattedAlerts() {
+      return this.filteredTableByDate.map((alert) => {
+        const fixedAlert = { ...alert };
+        fixedAlert.time = fixedAlert.time.toLocaleDateString("en-GB");
+
+        return fixedAlert;
+      });
+    },
+    formattedDates() {
       return this.alerts.map((alert) => {
         const fixedAlert = { ...alert };
-        fixedAlert.time = new Date(fixedAlert.time).toLocaleDateString();
+        fixedAlert.time = new Date(fixedAlert.time);
 
         return fixedAlert;
       });
     },
     filteredTableByType() {
       if (this.selectedType !== 0) {
-        return this.formattedAlerts.filter(
+        return this.formattedDates.filter(
           (alert) => alert.event_type === this.selectedType
         );
       } else {
-        return this.formattedAlerts;
+        return this.formattedDates;
       }
     },
     filteredTableByWeapon() {
