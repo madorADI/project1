@@ -4,9 +4,17 @@
       <div class="card-body">
         <h5 class="card-title">התראות אחרונות</h5>
         <hr />
-        <button id="openFilter" @click="openFilterSystems()">
+        <b-button
+          class="button"
+          id="resetAlerts"
+          v-show="openFilter"
+          @click="resetAlerts()"
+        >
+          <h6>אתחול</h6>
+        </b-button>
+        <b-button class="button" id="openFilter" @click="openFilterSystems()">
           <h6>סינון</h6>
-        </button>
+        </b-button>
         <div class="filterSystems" v-show="openFilter">
           <br />
           <br />
@@ -60,7 +68,7 @@
           <hr />
         </div>
 
-        <div class="tableContainer" :class="{tableClosedFilter :!openFilter}">
+        <div class="tableContainer" :class="{ tableClosedFilter: !openFilter }">
           <table class="table table-hover alertTable">
             <thead class="header">
               <tr>
@@ -144,6 +152,12 @@ export default {
     this.$emit("changeFiltered");
   },
   methods: {
+    resetAlerts() {
+      this.selectedWeapon = [];
+      this.selectedStartDate = null;
+      this.selectedEndDate = null;
+      this.selectedType = 0;
+    },
     openFilterSystems() {
       this.openFilter = !this.openFilter;
     },
@@ -273,7 +287,7 @@ export default {
   background-color: rgb(43, 58, 103);
   color: rgb(245, 245, 245);
   text-align: center;
-  height: 94ch;
+  height: auto;
 }
 
 .alertTable {
@@ -318,6 +332,11 @@ table thead tr th {
 
 .create-alert {
   color: rgb(240, 100, 73);
+}
+
+.button {
+  margin-left: 2%;
+  margin-right: 2%;
 }
 
 #openFilter {
