@@ -16,15 +16,15 @@
           <div
             class="form-check"
             v-for="weapon in event_weapons"
-            :key="weapon.id"
+            :key="weapon.name"
           >
             <input
               v-model="selectedWeapon"
               class="form-check-input"
               type="checkbox"
-              value=""
+              :value="weapon.name"
             />
-            <label class="form-check-label" for="flexCheckDefault">
+            <label class="form-check-label" :for="weapon.name">
               {{ weapon.name }}
             </label>
           </div>
@@ -99,46 +99,31 @@ export default {
       event_types: [],
       brief: ["brigade", "time", "event_type"],
       selectedType: 0,
-      selectedWeapon: null,
+      selectedWeapon: [],
       selectedStartDate: null,
-      selectedEndDate: null,
+      selectedEndDate: new Date(Date.now()),
       fields: [
         { key: "brigade", label: "גירזה" },
         { key: "time", label: "תאריך" },
         { key: "event_type", label: "סוג האירוע" },
       ],
-      alerts: [
-        {
-          _id: {
-            $oid: "6404a7d352dd972914b315a2",
-          },
-          name: "test",
-          description: "dcsafdsafdazs",
-          time: {
-            $date: "2021-02-25T10:03:46.000",
-          },
-          weapon: "אבנים",
-          event_type: 3,
-          coordinates: [31.264035, 34.81396],
-          injuries: {
-            easy: 5,
-            medium: 2,
-            hard: 6,
-          },
-          brigade: 2,
-        },
-      ],
+      alerts: [],
       isNewAlert: false,
       open: false,
       selectedAlert: {},
     };
   },
   created() {
+    this.findDateBeforeWeek();
     this.getAllAlerts();
     this.getAllTypes();
     this.getAllWeapons();
   },
   methods: {
+    findDateBeforeWeek() {
+      this.selectedStartDate = new Date();
+      this.selectedStartDate.setDate(this.selectedStartDate.getDate() - 7);
+    },
     async getAllAlerts() {
       this.alerts = await (await api.alerts().getAllAlerts()).data;
     },
@@ -170,17 +155,8 @@ export default {
     },
   },
   watch: {
-    selectedType() {
-      this.filteredTableByType();
-    },
-    selectedWeapon() {
-      this.filteredTableByWeapon();
-    },
-    selectedStartDate() {
-      this.filteredTableByDate();
-    },
-    selectedEndDate() {
-      this.filteredTableByDate();
+    selectedAlertId() {
+      this.blinkAlert();
     },
   },
   computed: {
@@ -203,9 +179,9 @@ export default {
       }
     },
     filteredTableByWeapon() {
-      if (this.selectedWeapon !== null) {
-        return this.filteredTableByType.filter(
-          (alert) => alert.weapon === this.selectedWeapon
+      if (this.selectedWeapon.length !== 0) {
+        return this.filteredTableByType.filter((alert) =>
+          this.selectedWeapon.includes(alert.weapon)
         );
       } else {
         return this.filteredTableByType;
@@ -215,17 +191,12 @@ export default {
       if (this.selectedStartDate !== null && this.selectedEndDate !== null) {
         return this.filteredTableByWeapon.filter(
           (alert) =>
-            alert.time >= this.selectedStartDate &&
-            alert.time <= this.selectedEndDate
+            alert.time >= new Date(this.selectedStartDate) &&
+            alert.time <= new Date(this.selectedEndDate)
         );
       } else {
         return this.filteredTableByWeapon;
       }
-    },
-  },
-  watch: {
-    selectedAlertId() {
-      this.blinkAlert();
     },
   },
 };
