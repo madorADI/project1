@@ -17,9 +17,37 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.get("/pres", async (req, res) => {
+  try {
+    const events = await eventService.getAllPresentaitionEvents();
+
+    if (!events) {
+      res.status(404).send("not found");
+    } else {
+      res.status(200).send(events);
+    }
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
 router.get("/:id", async (req, res) => {
   try {
     const event = await eventService.getEventById(req.params.id);
+
+    if (!event) {
+      res.status(404).send("not found");
+    } else {
+      res.status(200).send(event);
+    }
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
+router.get("/:id/pres", async (req, res) => {
+  try {
+    const event = await eventService.getPresentationEventById(req.params.id);
 
     if (!event) {
       res.status(404).send("not found");
