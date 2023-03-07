@@ -2,7 +2,7 @@
   <div id="app">
     <Header></Header>
     <b-row>
-      <LatestAlerts class="front m-5" />
+      <LatestAlerts class="front m-4" />
       <eventMap class="back" />
     </b-row>
   </div>
@@ -28,7 +28,7 @@ export default {
   z-index: 1;
   width: fit-content;
   height: fit-content;
-  left: 75%;
+  left: 65%;
   margin-top: 5%;
 }
 

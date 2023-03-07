@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="card latest-alerts" style="width: 18rem">
+    <div class="card latest-alerts" style="width: 22rem">
       <div class="card-body">
         <h5 class="card-title">התראות אחרונות</h5>
         <hr />
@@ -277,7 +277,8 @@ export default {
   color: rgb(240, 100, 73);
 }
 
-.table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+.table-hover tbody tr:hover td,
+.table-hover tbody tr:hover th {
   color: rgb(228, 149, 3) !important;
 }
 </style>
