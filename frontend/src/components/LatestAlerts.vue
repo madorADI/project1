@@ -4,50 +4,61 @@
       <div class="card-body">
         <h5 class="card-title">התראות אחרונות</h5>
         <hr />
-        <div class="card-text-filter">
-          <select v-model="selectedType" class="form-control form-control-sm">
-            <option value="0" hidden>סוג האירוע</option>
-            <option
-              v-for="typ in event_types"
-              :key="typ.name"
-              :value="typ.name"
+        <button id="openFilter" @click="openFilterSystems()">
+          <h6>סינון</h6>
+        </button>
+        <div class="filterSystems" v-show="openFilter">
+          <br />
+          <br />
+          <div class="card-text-filter">
+            <select v-model="selectedType" class="form-control form-control-sm">
+              <option value="0" hidden>סוג האירוע</option>
+              <option
+                v-for="typ in event_types"
+                :key="typ.name"
+                :value="typ.name"
+              >
+                {{ typ.name }}
+              </option>
+            </select>
+            <br />
+            <h6><u>סוג אמלח</u></h6>
+            <div
+              class="form-check"
+              v-for="weapon in event_weapons"
+              :key="weapon.name"
             >
-              {{ typ.name }}
-            </option>
-          </select>
-          <br />
-          <h6><u>סוג אמלח</u></h6>
-          <div
-            class="form-check"
-            v-for="weapon in event_weapons"
-            :key="weapon.name"
-          >
-            <input
-              v-model="selectedWeapon"
-              class="form-check-input"
-              type="checkbox"
-              :value="weapon.name"
-            />
-            <label class="form-check-label" :for="weapon.name">
-              {{ weapon.name }}
-            </label>
+              <input
+                v-model="selectedWeapon"
+                class="form-check-input"
+                type="checkbox"
+                :value="weapon.name"
+              />
+              <label class="form-check-label" :for="weapon.name">
+                {{ weapon.name }}
+              </label>
+            </div>
+            <br />
+            <h6><u>תאריך</u></h6>
+            <div class="form-group">
+              <label>-מ</label>
+              <input
+                v-model="selectedStartDate"
+                type="date"
+                class="form-control"
+              />
+            </div>
+            <div class="form-group">
+              <label>-ל</label>
+              <input
+                v-model="selectedEndDate"
+                type="date"
+                class="form-control"
+              />
+            </div>
           </div>
-          <br />
-          <h6><u>תאריך</u></h6>
-          <div class="form-group">
-            <label>-מ</label>
-            <input
-              v-model="selectedStartDate"
-              type="date"
-              class="form-control"
-            />
-          </div>
-          <div class="form-group">
-            <label>-ל</label>
-            <input v-model="selectedEndDate" type="date" class="form-control" />
-          </div>
+          <hr />
         </div>
-        <hr />
 
         <table class="table table-hover alertTable">
           <thead>
@@ -119,6 +130,7 @@ export default {
       alerts: [],
       isNewAlert: false,
       open: false,
+      openFilter: false,
     };
   },
   created() {
@@ -128,6 +140,9 @@ export default {
     this.getAllWeapons();
   },
   methods: {
+    openFilterSystems() {
+      this.openFilter = !this.openFilter;
+    },
     findDateBeforeWeek() {
       this.selectedEndDate = this.formatDate(new Date());
       this.selectedStartDate = new Date();
@@ -275,6 +290,11 @@ export default {
 
 .create-alert {
   color: rgb(240, 100, 73);
+}
+
+#openFilter {
+  background-color: rgb(240, 100, 73);
+  float: right;
 }
 
 .table-hover tbody tr:hover td,
