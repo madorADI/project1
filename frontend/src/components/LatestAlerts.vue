@@ -49,28 +49,31 @@
         </div>
         <hr />
 
-        <table class="table table-hover alertTable">
-          <thead>
-            <tr>
-              <th v-for="field in fields" :key="field.label">
-                {{ field.label }}
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              v-for="alert in formattedAlerts"
-              :key="alert.id"
-              :id="alert.id"
-              :ref="alert._id"
-              @click="openModal(alert._id)"
-            >
-              <th v-for="(item, index) in brief" :key="index">
-                {{ alert[item] }}
-              </th>
-            </tr>
-          </tbody>
-        </table>
+        <div class="tableContainer">
+          <table class="table table-hover alertTable">
+            <thead>
+              <tr>
+                <th v-for="field in fields" :key="field.label">
+                  {{ field.label }}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                v-for="alert in formattedAlerts"
+                :key="alert.id"
+                :id="alert.id"
+                :ref="alert._id"
+                @click="openModal(alert._id)"
+              >
+                <th v-for="(item, index) in brief" :key="index">
+                  {{ alert[item] }}
+                </th>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
         <button type="button" class="btn create-alert" @click="createNewAlert">
           <font-awesome-icon class="fa-2xl" icon="fa-solid fa-circle-plus" />
         </button>
@@ -250,10 +253,17 @@ export default {
   background-color: rgb(43, 58, 103);
   color: rgb(245, 245, 245);
   text-align: center;
+  height: 80ch;
 }
 
 .alertTable {
   color: rgb(245, 245, 245);
+}
+
+.tableContainer {
+  height: 20%;
+  overflow: scroll;
+  position: relative;
 }
 
 @keyframes blinking {
