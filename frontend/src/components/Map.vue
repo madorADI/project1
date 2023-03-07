@@ -86,8 +86,4 @@ export default {
   height: 100%;
 }
 
-.back {
-  position: absolute;
-  height: 100%;
-}
 </style>
