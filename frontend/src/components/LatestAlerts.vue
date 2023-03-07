@@ -54,6 +54,7 @@
                 v-model="selectedStartDate"
                 type="date"
                 class="form-control"
+                style="height: 3ch"
               />
             </div>
             <div class="form-group">
@@ -62,6 +63,7 @@
                 v-model="selectedEndDate"
                 type="date"
                 class="form-control"
+                style="height: 3ch"
               />
             </div>
           </div>
@@ -287,7 +289,7 @@ export default {
   background-color: rgb(43, 58, 103);
   color: rgb(245, 245, 245);
   text-align: center;
-  height: auto;
+  height: 84ch;
 }
 
 .alertTable {
@@ -295,7 +297,7 @@ export default {
 }
 
 .tableContainer {
-  height: 20%;
+  height: 14%;
   overflow: auto;
   position: relative;
 }
@@ -337,6 +339,10 @@ table thead tr th {
 .button {
   margin-left: 2%;
   margin-right: 2%;
+}
+
+.form-check {
+  margin-top: 0;
 }
 
 #openFilter {
