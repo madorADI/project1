@@ -19,6 +19,7 @@
     "bootstrap-vue": "^2.23.1",
     "core-js": "^3.8.3",
     "leaflet": "^1.9.3",
+    "sweetalert2": "^11.7.3",
     "vue": "^2.7.14",
     "vue-cli": "^2.9.6",
     "vue-fontawesome": "^0.0.2",

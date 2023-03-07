@@ -15,6 +15,7 @@
                 {{ value.realName }}
               </label>
               <input
+                @change="reset(value.name)"
                 :class="{
                   'bg-danger': value.name === 'hard',
                   'bg-warning': value.name === 'medium',
@@ -55,28 +56,27 @@
               <label for="locationX">x מיקום</label>
               <div class="input-group m-2">
                 <input
-                  disabled
+                  :value="locationXCord"
                   title="בחר מיקום במפה"
                   :class="{ 'is-invalid': !locationXCord && validation }"
                   type="text"
                   class="form-control"
                   id="locationX"
-                  v-model="locationXCord"
-                 />
+                  @input="updateXlocation"
+                />
               </div>
             </div>
             <div class="col-6 text-center">
               <label for="locationY">y מיקום</label>
               <div class="input-group m-2">
                 <input
-                  disabled
+                  :value="locationYCord"
                   title="בחר מיקום במפה"
-
                   :class="{ 'is-invalid': !locationYCord && validation }"
                   type="text"
                   class="form-control"
                   id="locationY"
-                  v-model="locationYCord"
+                  @input="updateYlocation"
                 />
               </div>
             </div>
@@ -128,7 +128,8 @@
 
 <script>
 import api from "../api/api";
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
+import Swal from "sweetalert2";
 export default {
   name: "newAlert",
   props: {
@@ -174,7 +175,7 @@ export default {
     },
   },
   computed: {
-    ...mapState(["selectedLat","selectedLng"]),
+    ...mapState(["selectedLat", "selectedLng"]),
     formatedTypes() {
       return this.eventsTypes.map(({ name }) => name);
     },
@@ -186,9 +187,10 @@ export default {
     },
     locationYCord() {
       return this.selectedLng;
-    }
+    },
   },
   methods: {
+    ...mapActions(["changeSelectedLat", "changeSelectedLng"]),
     async getEventsTypes() {
       try {
         this.eventsTypes = (await api.alerts().getAllTypes()).data;
@@ -206,24 +208,39 @@ export default {
     closeNewAlert() {
       this.$emit("closeNewAlert");
     },
+    updateXlocation(event) {
+      this.changeSelectedLat(parseFloat(event.target.value));
+    },
+    updateYlocation(event) {
+      this.changeSelectedLng(parseFloat(event.target.value));
+    },
+    reset(key) {
+      if (!this.injuries[key].numberOfInjeries) {
+        this.injuries[key].numberOfInjeries = 0;
+      }
+    },
     async sendNewAlert() {
       if (
         !this.selectedEventType ||
         !this.selectedWeapons ||
         !this.description ||
         !this.locationXCord ||
-        !this.locationYCord 
+        !this.locationYCord
       ) {
         this.validation = true;
       } else {
         const newALert = {
+          name: this.selectedEventType,
           description: this.description,
           time: new Date(),
           weapon: this.selectedWeapons,
           event_type: this.eventsTypes.find(
             ({ name }) => name === this.selectedEventType
           ).id,
-          coordinates: [parseFloat(this.locationXCord) , parseFloat(this.locationYCord)],
+          coordinates: [
+            parseFloat(this.locationXCord),
+            parseFloat(this.locationYCord),
+          ],
           injuries: {
             easy: parseInt(this.injuries.light.numberOfInjeries),
             medium: parseInt(this.injuries.medium.numberOfInjeries),
@@ -232,11 +249,16 @@ export default {
           brigade: -1,
         };
         try {
-          console.log(newALert)
+          console.log(newALert);
           await api.alerts().postNewWeapon(newALert);
           location.reload();
         } catch (err) {
-          alert("cordinates wasnt found");
+          Swal.fire({
+            title: "!שגיאה",
+            text: " נקודות ציון לא נמצאו בגזרה",
+            icon: "error",
+            confirmButtonText: "אוקיי",
+          });
         }
       }
     },
