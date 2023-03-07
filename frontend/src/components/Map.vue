@@ -5,8 +5,8 @@
       :zoom="zoom"
       :center="center"
       :options="mapOptions"
-      style="height: 80%"
       @click="selectBomb"
+      style="height: 80%"
       class="map"
     >
       <l-tile-layer :url="url" />
