@@ -154,8 +154,7 @@ export default {
   methods: {
     resetAlerts() {
       this.selectedWeapon = [];
-      this.selectedStartDate = null;
-      this.selectedEndDate = null;
+      this.findDateBeforeWeek();
       this.selectedType = 0;
     },
     openFilterSystems() {
