@@ -213,11 +213,14 @@ export default {
       }
     },
     filteredTableByDate() {
+      let endDateComparable = new Date(this.selectedEndDate).setDate(
+        new Date(this.selectedEndDate).getDate() + 1
+      );
       if (this.selectedStartDate !== null && this.selectedEndDate !== null) {
         return this.filteredTableByWeapon.filter(
           (alert) =>
             alert.time >= new Date(this.selectedStartDate) &&
-            alert.time <= new Date(this.selectedEndDate)
+            alert.time < new Date(endDateComparable)
         );
       } else {
         return this.filteredTableByWeapon;
