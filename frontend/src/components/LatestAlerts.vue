@@ -60,7 +60,7 @@
               <input
                 v-model="selectedEndDate"
                 type="date"
-                class="form-control dateCheck "
+                class="form-control dateCheck"
               />
               <label>-ל</label>
             </div>
@@ -83,7 +83,7 @@
                 :key="alert.id"
                 :id="alert.id"
                 :ref="alert._id"
-                @click="openModal(alert._id)"
+                @click="openModal(alert)"
               >
                 <th v-for="(item, index) in brief" :key="index">
                   {{ alert[item] }}
@@ -142,6 +142,7 @@ export default {
       isNewAlert: false,
       open: false,
       openFilter: false,
+      selectedAlert: null,
     };
   },
   created() {
@@ -176,8 +177,8 @@ export default {
     changeNewAlert(state) {
       this.isNewAlert = state;
     },
-    openModal(alertId) {
-      this.changeSelectedAlertId(alertId);
+    openModal(alert) {
+      this.selectedAlert = alert;
       this.open = !this.open;
     },
     changeModalState(state) {
@@ -211,9 +212,9 @@ export default {
   },
   computed: {
     ...mapState(["selectedAlertId"]),
-    selectedAlert() {
-      return this.alerts.find((alert) => alert._id === this.selectedAlertId);
-    },
+    // selectedAlert() {
+    //   return this.alerts.find((alert) => alert._id === this.selectedAlertId);
+    // },
     formattedAlerts() {
       const filteredTable = this.filteredTableByDate.map((alert) => {
         const fixedAlert = { ...alert };
@@ -351,7 +352,7 @@ table thead tr th {
   color: rgb(228, 149, 3) !important;
 }
 
-.dateCheck{
+.dateCheck {
   height: 3ch;
   width: 70%;
   margin-bottom: 3%;
