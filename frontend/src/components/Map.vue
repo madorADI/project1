@@ -5,8 +5,9 @@
       :zoom="zoom"
       :center="center"
       :options="mapOptions"
-      style="height: 80%"
       @click="selectBomb"
+      style="height: 200%;width:200%;
+"
       class="map"
     >
       <l-tile-layer :url="url" />
@@ -73,3 +74,9 @@ export default {
   },
 };
 </script>
+<style scoped>
+.mapStyle {
+  position: inherit !important;
+  height: 80%;
+}
+</style>
