@@ -38,7 +38,8 @@
               :key="alert.id"
               :id="alert.id"
               :ref="alert._id"
-              @click="openModal"
+              @click="openModal(alert._id)"
+
             >
               <th v-for="(item, index) in brief" :key="index">
                 {{ alert[item] }}
@@ -56,7 +57,12 @@
         ></new-alert>
       </div>
     </div>
-    <popUp :open="open" @modal-change="changeModalState" />
+    <popUp
+      :open="open"
+      @modal-change="changeModalState"
+      :alert="selectedAlert"
+      :event_types="event_types"
+    />
   </div>
 </template>
 
@@ -88,7 +94,6 @@ export default {
       alerts: [],
       isNewAlert: false,
       open: false,
-      selectedAlert: {},
     };
   },
   created() {
@@ -107,8 +112,8 @@ export default {
     changeNewAlert(state) {
       this.isNewAlert = state;
     },
-    openModal(item) {
-      this.selectedAlert = item;
+    openModal(alertId) {
+      this.changeSelectedAlertId(alertId);
       this.open = !this.open;
     },
     changeModalState(state) {
@@ -131,6 +136,9 @@ export default {
   },
   computed: {
     ...mapState(["selectedAlertId"]),
+    selectedAlert() {
+      return this.alerts.find((alert) => alert._id === this.selectedAlertId);
+    },
     formattedAlerts() {
       return this.alerts.map((alert) => {
         const fixedAlert = { ...alert };
