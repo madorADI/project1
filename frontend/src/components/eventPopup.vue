@@ -79,14 +79,6 @@
 export default {
   data() {
     return {
-      // selectedEvent: {
-      //   eventType: "פיגוע",
-      //   time: new Date(),
-      //   weapon: "אבנים",
-      //   descripion: "פלסטינאים זרקו אבנים על עוברי אורח",
-      //   injuries: { easy: 3, medium: 4, hard: 6 },
-      //   coordinates: [31.264035, 34.81396],
-      // },
       mainProps: { blank: true, width: 48, height: 48, class: "m1" },
     };
   },

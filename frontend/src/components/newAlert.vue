@@ -1,12 +1,16 @@
 <template>
-  <b-modal content-class = "" v-model="open">
-      <div class="display-6  text-center ">יצירת התרעה</div>
+  <b-modal v-model="open">
+    <div class="display-6 text-center">יצירת התרעה</div>
     <div class="modal-body">
-      <div class="row">
-        <div class="injuries col-8">
+      <div class="row mb-4">
+        <div class="injuries col-7">
           <h5 class="card-title text-center">נפגעים</h5>
           <div class="row">
-            <div class="col-4 text-center" v-for="value in injuries" :key="value.name">
+            <div
+              class="col-4 text-center"
+              v-for="value in injuries"
+              :key="value.name"
+            >
               <label class="mx-2" :for="value.name">
                 {{ value.realName }}
               </label>
@@ -22,14 +26,14 @@
                 v-model="value.numberOfInjeries"
                 v-int
               />
-             
             </div>
           </div>
         </div>
-        <div class="eventType col-4">
+        <div class="eventType col-5">
           <h5 class="card-title text-end">סוג האירוע</h5>
           <div class="input-group m-2">
             <select
+              dir="rtl"
               :class="{ 'is-invalid': !selectedEventType && validation }"
               id="eventType"
               class="form-select"
@@ -43,22 +47,46 @@
           </div>
         </div>
       </div>
-      <div class="row">
-        <div class="col-6">
-          <h5 class="card-title text-end">מיקום האירוע</h5>
-          <div class="input-group m-2">
-            <input
-              type="text"
-              class="form-control"
-              id="location"
-              v-model="location"
-            />
+      <div class="row mb-3">
+        <div class="col-7">
+          <h5 class="card-title text-center">מיקום האירוע</h5>
+          <div class="row">
+            <div class="col-6 text-center">
+              <label for="locationX">x מיקום</label>
+              <div class="input-group m-2">
+                <input
+                  disabled
+                  title="בחר מיקום במפה"
+                  :class="{ 'is-invalid': !locationXCord && validation }"
+                  type="text"
+                  class="form-control"
+                  id="locationX"
+                  v-model="locationXCord"
+                 />
+              </div>
+            </div>
+            <div class="col-6 text-center">
+              <label for="locationY">y מיקום</label>
+              <div class="input-group m-2">
+                <input
+                  disabled
+                  title="בחר מיקום במפה"
+
+                  :class="{ 'is-invalid': !locationYCord && validation }"
+                  type="text"
+                  class="form-control"
+                  id="locationY"
+                  v-model="locationYCord"
+                />
+              </div>
+            </div>
           </div>
         </div>
-        <div class="description col-6">
+        <div class="description col-5">
           <h5 class="card-title text-end">תיאור האירוע</h5>
           <div class="input-group m-2">
             <input
+              dir="rtl"
               :class="{ 'is-invalid': !description && validation }"
               type="text"
               class="form-control"
@@ -91,7 +119,7 @@
       </div>
     </div>
     <template #modal-footer>
-        <button type="button" class="buttom btn btn-danger" @click="sendNewAlert">
+      <button type="button" class="buttom btn btn-danger" @click="sendNewAlert">
         שמירה
       </button>
     </template>
@@ -99,14 +127,15 @@
 </template>
 
 <script>
-import api from '../api/api'
+import api from "../api/api";
+import { mapState } from "vuex";
 export default {
   name: "newAlert",
   props: {
     open: {
       required: true,
-      type: Boolean
-    }
+      type: Boolean,
+    },
   },
   data() {
     return {
@@ -115,7 +144,6 @@ export default {
       selectedWeapons: null,
       selectedEventType: null,
       validation: false,
-      location: "",
       injuries: {
         light: {
           realName: "קל",
@@ -142,29 +170,36 @@ export default {
   },
   watch: {
     open() {
-      this.$emit("newAlertChange",this.open)
-    }
+      this.$emit("newAlertChange", this.open);
+    },
   },
   computed: {
+    ...mapState(["selectedLat","selectedLng"]),
     formatedTypes() {
-      return this.eventsTypes.map(({name}) => name );
+      return this.eventsTypes.map(({ name }) => name);
     },
     formatWeapons() {
-      return this.eventsWeapons.map(({name}) => name )
+      return this.eventsWeapons.map(({ name }) => name);
+    },
+    locationXCord() {
+      return this.selectedLat;
+    },
+    locationYCord() {
+      return this.selectedLng;
     }
   },
   methods: {
     async getEventsTypes() {
       try {
-      this.eventsTypes = (await api.alerts().getAllTypes()).data;
-      } catch(err) {
+        this.eventsTypes = (await api.alerts().getAllTypes()).data;
+      } catch (err) {
         console.log(err);
       }
     },
     async getEventsWeapons() {
       try {
-      this.eventsWeapons = (await api.alerts().getAllWeapons()).data;
-      } catch(err) {
+        this.eventsWeapons = (await api.alerts().getAllWeapons()).data;
+      } catch (err) {
         console.log(err);
       }
     },
@@ -176,31 +211,35 @@ export default {
         !this.selectedEventType ||
         !this.selectedWeapons ||
         !this.description ||
-        !this.location
+        !this.locationXCord ||
+        !this.locationYCord 
       ) {
         this.validation = true;
       } else {
         const newALert = {
-          "name" : this.selectedEventType,
-          "description" : this.description,
-          "time" : new Date(),
-          "weapon" : this.selectedWeapons,
-          "event_type" : this.eventsTypes.find(({name}) => name === this.selectedEventType).id,
-          "coordinates" : [35.2963257,32.0825746],
-          "injuries" : {
-            "easy" : parseInt(this.injuries.light.numberOfInjeries),
-            "medium" : parseInt(this.injuries.medium.numberOfInjeries),
-            "hard" : parseInt(this.injuries.hard.numberOfInjeries)
+          description: this.description,
+          time: new Date(),
+          weapon: this.selectedWeapons,
+          event_type: this.eventsTypes.find(
+            ({ name }) => name === this.selectedEventType
+          ).id,
+          coordinates: [parseFloat(this.locationXCord) , parseFloat(this.locationYCord)],
+          injuries: {
+            easy: parseInt(this.injuries.light.numberOfInjeries),
+            medium: parseInt(this.injuries.medium.numberOfInjeries),
+            hard: parseInt(this.injuries.hard.numberOfInjeries),
           },
-          "brigade" : -1
-        }
+          brigade: -1,
+        };
         try {
+          console.log(newALert)
           await api.alerts().postNewWeapon(newALert);
-        }catch (err) {
+          location.reload();
+        } catch (err) {
           alert("cordinates wasnt found");
         }
       }
-    }
+    },
   },
 };
 </script>
