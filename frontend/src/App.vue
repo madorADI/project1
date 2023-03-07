@@ -2,9 +2,8 @@
   <div id="app">
     <Header></Header>
     <b-row>
-      
-      <LatestAlerts />
-      <eventMap />
+      <LatestAlerts class="front m-5" />
+      <eventMap class="back" />
     </b-row>
   </div>
 </template>
@@ -23,4 +22,18 @@ export default {
 };
 </script>
 
-<style></style>
+<style scope>
+.front {
+  position: fixed;
+  z-index: 1;
+  width: fit-content;
+  height: fit-content;
+  left: 75%;
+  margin-top: 5%;
+}
+
+.back {
+  z-index: -1;
+  position: fixed;
+}
+</style>

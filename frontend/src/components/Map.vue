@@ -9,7 +9,6 @@
       @click="selectBomb"
       class="map"
     >
-      <l-image-overlay :url="url" :bounds="bounds" />
       <l-tile-layer :url="url" />
       
       <!--change key, the markers should be from db-->

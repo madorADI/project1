@@ -11,16 +11,37 @@
               {{ typ.name }}
             </option>
           </select>
-          <select v-model="selectedWeapon" class="form-control form-control-sm">
-            <option value="0" hidden>סוג אמלח</option>
-            <option
-              v-for="weapon in event_weapons"
-              :key="weapon.id"
-              value="weapon.name"
-            >
+          <br />
+          <h6><u>סוג אמלח</u></h6>
+          <div
+            class="form-check"
+            v-for="weapon in event_weapons"
+            :key="weapon.name"
+          >
+            <input
+              v-model="selectedWeapon"
+              class="form-check-input"
+              type="checkbox"
+              :value="weapon.name"
+            />
+            <label class="form-check-label" :for="weapon.name">
               {{ weapon.name }}
-            </option>
-          </select>
+            </label>
+          </div>
+          <br />
+          <h6><u>תאריך</u></h6>
+          <div class="form-group">
+            <label>-מ</label>
+            <input
+              v-model="selectedStartDate"
+              type="date"
+              class="form-control"
+            />
+          </div>
+          <div class="form-group">
+            <label>-ל</label>
+            <input v-model="selectedEndDate" type="date" class="form-control" />
+          </div>
         </div>
         <hr />
 
@@ -39,7 +60,6 @@
               :id="alert.id"
               :ref="alert._id"
               @click="openModal(alert._id)"
-
             >
               <th v-for="(item, index) in brief" :key="index">
                 {{ alert[item] }}
@@ -84,8 +104,9 @@ export default {
       event_types: [],
       brief: ["brigade", "time", "event_type"],
       selectedType: 0,
-      selectedWeapon: 0,
-      selectedDate: null,
+      selectedWeapon: [],
+      selectedStartDate: null,
+      selectedEndDate: null,
       fields: [
         { key: "brigade", label: "גירזה" },
         { key: "time", label: "תאריך" },
@@ -97,11 +118,18 @@ export default {
     };
   },
   created() {
+    this.findDateBeforeWeek();
     this.getAllAlerts();
     this.getAllTypes();
     this.getAllWeapons();
   },
   methods: {
+    findDateBeforeWeek() {
+      this.selectedEndDate = this.formatDate(new Date());
+      this.selectedStartDate = new Date();
+      this.selectedStartDate.setDate(this.selectedStartDate.getDate() - 7);
+      this.selectedStartDate = this.formatDate(this.selectedStartDate);
+    },
     ...mapActions(["changeSelectedAlertId"]),
     async getAllAlerts() {
       this.alerts = await (await api.alerts().getAllAlerts()).data;
@@ -133,6 +161,17 @@ export default {
       });
       this.$refs[this.selectedAlertId][0].classList.add("blink");
     },
+    formatDate(date) {
+      let d = new Date(date),
+        month = "" + (d.getMonth() + 1),
+        day = "" + d.getDate(),
+        year = d.getFullYear();
+
+      if (month.length < 2) month = "0" + month;
+      if (day.length < 2) day = "0" + day;
+
+      return [year, month, day].join("-");
+    },
   },
   computed: {
     ...mapState(["selectedAlertId"]),
@@ -140,22 +179,49 @@ export default {
       return this.alerts.find((alert) => alert._id === this.selectedAlertId);
     },
     formattedAlerts() {
+      return this.filteredTableByDate.map((alert) => {
+        const fixedAlert = { ...alert };
+        fixedAlert.time = new Date(fixedAlert.time).toLocaleDateString("en-GB");
+
+        return fixedAlert;
+      });
+    },
+    formattedDates() {
       return this.alerts.map((alert) => {
         const fixedAlert = { ...alert };
-        fixedAlert.time = new Date(fixedAlert.time).toLocaleDateString();
+        fixedAlert.time = new Date(fixedAlert.time);
 
         return fixedAlert;
       });
     },
     filteredTableByType() {
-      return this.formattedAlert.filter(
-        (alert) => alert.event_type === this.selectedType
-      );
+      if (this.selectedType !== 0) {
+        return this.formattedDates.filter(
+          (alert) => alert.event_type === this.selectedType
+        );
+      } else {
+        return this.formattedDates;
+      }
     },
     filteredTableByWeapon() {
-      return this.filteredTableByType.filter(
-        (alert) => alert.weapon === this.selectedWeapon
-      );
+      if (this.selectedWeapon.length !== 0) {
+        return this.filteredTableByType.filter((alert) =>
+          this.selectedWeapon.includes(alert.weapon)
+        );
+      } else {
+        return this.filteredTableByType;
+      }
+    },
+    filteredTableByDate() {
+      if (this.selectedStartDate !== null && this.selectedEndDate !== null) {
+        return this.filteredTableByWeapon.filter(
+          (alert) =>
+            alert.time >= new Date(this.selectedStartDate) &&
+            alert.time <= new Date(this.selectedEndDate)
+        );
+      } else {
+        return this.filteredTableByWeapon;
+      }
     },
   },
   watch: {

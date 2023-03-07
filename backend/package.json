@@ -21,6 +21,7 @@
     "morgan": "~1.9.1",
     "node-cache": "^5.1.2",
     "nodeman": "^1.1.2",
-    "nodemon": "^2.0.21"
+    "nodemon": "^2.0.21",
+    "point-in-polygon": "^1.1.0"
   }
 }

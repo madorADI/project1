@@ -6,6 +6,7 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 import store from './store'
 import 'bootstrap-icons/font/bootstrap-icons.css'
 import onlyInt from 'vue-input-only-number';
+import Swal from 'sweetalert2'
 
 Vue.use(BootstrapVue);
 

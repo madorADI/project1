@@ -76,7 +76,6 @@ router.get("/:date", async (req, res) => {
 router.post("/", async (req, res) => {
   try {
     const response = await eventService.uploadEvent(req.body);
-
     if (!response) {
       res.status(404).send("not found");
     } else {
