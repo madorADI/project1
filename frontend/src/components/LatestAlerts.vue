@@ -134,7 +134,7 @@ export default {
       selectedStartDate: null,
       selectedEndDate: null,
       fields: [
-        { key: "brigade", label: "גירזה" },
+        { key: "brigade", label: "גזרה" },
         { key: "time", label: "תאריך" },
         { key: "event_type", label: "סוג האירוע" },
       ],
