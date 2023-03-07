@@ -59,10 +59,10 @@
                   :value="locationXCord"
                   title="בחר מיקום במפה"
                   :class="{ 'is-invalid': !locationXCord && validation }"
-                  type="text"
+                  type="number"
                   class="form-control"
                   id="locationX"
-                  @input="updateXlocation"
+                  @change="updateXlocation"
                 v-float/>
               </div>
             </div>
@@ -73,10 +73,10 @@
                   :value="locationYCord"
                   title="בחר מיקום במפה"
                   :class="{ 'is-invalid': !locationYCord && validation }"
-                  type="text"
+                  type="number"
                   class="form-control"
                   id="locationY"
-                  @input="updateYlocation"
+                  @change="updateYlocation"
                 v-float/>
               </div>
             </div>
@@ -238,8 +238,8 @@ export default {
             ({ name }) => name === this.selectedEventType
           ).id,
           coordinates: [
-            parseFloat(this.locationXCord),
-            parseFloat(this.locationYCord),
+            this.locationXCord,
+            this.locationYCord,
           ],
           injuries: {
             easy: parseInt(this.injuries.light.numberOfInjeries),
