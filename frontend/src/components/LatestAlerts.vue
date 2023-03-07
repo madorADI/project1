@@ -48,21 +48,21 @@
             </div>
             <br />
             <h6><u>תאריך</u></h6>
-            <div class="form-group">
-              <label>-מ</label>
+            <div class="form-group d-flex justify-content-between">
               <input
                 v-model="selectedStartDate"
                 type="date"
-                class="form-control"
+                class="form-control dateCheck"
               />
+              <label>-מ</label>
             </div>
-            <div class="form-group">
-              <label>-ל</label>
+            <div class="form-group d-flex justify-content-between">
               <input
                 v-model="selectedEndDate"
                 type="date"
-                class="form-control"
+                class="form-control dateCheck "
               />
+              <label>-ל</label>
             </div>
           </div>
           <hr />
@@ -286,7 +286,7 @@ export default {
   background-color: rgb(43, 58, 103);
   color: rgb(245, 245, 245);
   text-align: center;
-  height: auto;
+  height: 84ch;
 }
 
 .alertTable {
@@ -294,7 +294,7 @@ export default {
 }
 
 .tableContainer {
-  height: 20%;
+  height: 14%;
   overflow: auto;
   position: relative;
 }
@@ -338,6 +338,10 @@ table thead tr th {
   margin-right: 2%;
 }
 
+.form-check {
+  margin-top: 0;
+}
+
 #openFilter {
   background-color: rgb(240, 100, 73);
 }
@@ -345,5 +349,11 @@ table thead tr th {
 .table-hover tbody tr:hover td,
 .table-hover tbody tr:hover th {
   color: rgb(228, 149, 3) !important;
+}
+
+.dateCheck{
+  height: 3ch;
+  width: 70%;
+  margin-bottom: 3%;
 }
 </style>
