@@ -9,7 +9,7 @@
           width="80"
           height="80"
         ></b-img>
-        <h3>{{ selectedEvent.eventType }}</h3>
+        <h3>{{ alert.event_type }}</h3>
       </div>
       <b-container class="body">
         <b-row>
@@ -19,7 +19,7 @@
               <div class="col-3 m-1 p-2 px-1">
                 <div class="bg-danger rounded">
                   <div id="hard" class="py-2">
-                    {{ selectedEvent.injuries.hard }}
+                    {{ alert.injuries.hard }}
                   </div>
                 </div>
                 <label for="hard">קשה</label>
@@ -27,7 +27,7 @@
               <div class="col-3 m-1 p-2 px-1">
                 <div class="bg-warning rounded">
                   <div id="medium" class="py-2">
-                    {{ selectedEvent.injuries.medium }}
+                    {{ alert.injuries.medium }}
                   </div>
                 </div>
                 <label for="medium">בינוני</label>
@@ -35,7 +35,7 @@
               <div class="col-3 m-1 p-2 px-1">
                 <div class="bg-success rounded">
                   <div id="easy" class="py-2">
-                    {{ selectedEvent.injuries.easy }}
+                    {{ alert.injuries.easy }}
                   </div>
                 </div>
                 <label for="easy">קל</label>
@@ -53,22 +53,22 @@
           <b-col class="text-center my-5">
             <h4>נקודת ציון</h4>
             <h5>
-              {{
-                selectedEvent.coordinates[0] +
-                "," +
-                selectedEvent.coordinates[1]
-              }}
+              {{ alert.coordinates[0] + "," + alert.coordinates[1] }}
             </h5>
           </b-col>
           <b-col class="text-center my-5 mx-4">
             <h4>סוג אמל"ח</h4>
-            <h5>{{ selectedEvent.weapon }}</h5>
+            <h5>{{ alert.weapon }}</h5>
           </b-col>
         </b-row>
         <b-row>
           <b-col class="text-center mx-4">
+            <h4>גזרה</h4>
+            <h5>{{ alert.brigade }}</h5>
+          </b-col>
+          <b-col class="text-center mx-4">
             <h4>תיאור כללי</h4>
-            <h5>{{ selectedEvent.descripion }}</h5>
+            <h5>{{ alert.description }}</h5>
           </b-col>
         </b-row>
       </b-container>
@@ -83,14 +83,6 @@
 export default {
   data() {
     return {
-      selectedEvent: {
-        eventType: "פיגוע",
-        time: new Date(),
-        weapon: "אבנים",
-        descripion: "פלסטינאים זרקו אבנים על עוברי אורח",
-        injuries: { easy: 3, medium: 4, hard: 6 },
-        coordinates: [31.264035, 34.81396],
-      },
       mainProps: { blank: true, width: 48, height: 48, class: "m1" },
     };
   },
@@ -99,20 +91,17 @@ export default {
       type: Boolean,
       required: true,
     },
+    alert: {
+      type: Object,
+      required: true,
+    },
   },
   computed: {
-    date() {
-      return this.selectedEvent.time;
-    },
     formattedDate() {
-      return `${this.date.getDate()}/${this.date.getMonth()}/${this.date.getFullYear()}`;
+      return new Date(this.alert.time).toLocaleDateString();
     },
     formattedHour() {
-      if (this.date.getMinutes() < 10) {
-        return `${this.date.getHours()}:0${this.date.getMinutes()}`;
-      } else {
-        return `${this.date.getHours()}:${this.date.getMinutes()}`;
-      }
+      return new Date(this.alert.time).toLocaleTimeString();
     },
   },
   watch: {

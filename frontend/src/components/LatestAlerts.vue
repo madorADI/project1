@@ -58,8 +58,9 @@
               v-for="alert in filteredTableByDate"
               :key="alert.id"
               :id="alert.id"
-              :ref="alert._id.$oid"
-              @click="openModal"
+              :ref="alert._id"
+              @click="openModal(alert._id)"
+
             >
               <th v-for="(item, index) in brief" :key="index">
                 {{ alert[item] }}
@@ -77,7 +78,12 @@
         ></new-alert>
       </div>
     </div>
-    <popUp :open="open" @modal-change="changeModalState" />
+    <popUp
+      :open="open"
+      @modal-change="changeModalState"
+      :alert="selectedAlert"
+      :event_types="event_types"
+    />
   </div>
 </template>
 
@@ -85,7 +91,7 @@
 import api from "../api/api.js";
 import newAlert from "./newAlert.vue";
 import popUp from "../components/eventPopup.vue";
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 
 export default {
   name: "LatestAlerts",
@@ -110,7 +116,6 @@ export default {
       alerts: [],
       isNewAlert: false,
       open: false,
-      selectedAlert: {},
     };
   },
   created() {
@@ -126,6 +131,7 @@ export default {
       this.selectedStartDate.setDate(this.selectedStartDate.getDate() - 7);
       this.selectedStartDate = this.formatDate(this.selectedStartDate);
     },
+    ...mapActions(["changeSelectedAlertId"]),
     async getAllAlerts() {
       this.alerts = await (await api.alerts().getAllAlerts()).data;
     },
@@ -135,8 +141,8 @@ export default {
     changeNewAlert(state) {
       this.isNewAlert = state;
     },
-    openModal(item) {
-      this.selectedAlert = item;
+    openModal(alertId) {
+      this.changeSelectedAlertId(alertId);
       this.open = !this.open;
     },
     changeModalState(state) {
@@ -154,6 +160,7 @@ export default {
       this.$refs[this.selectedAlertId][0].scrollIntoView({
         behavior: "smooth",
       });
+      this.$refs[this.selectedAlertId][0].classList.add("blink");
     },
     formatDate(date) {
       let d = new Date(date),
@@ -167,13 +174,11 @@ export default {
       return [year, month, day].join("-");
     },
   },
-  watch: {
-    selectedAlertId() {
-      this.blinkAlert();
-    },
-  },
   computed: {
     ...mapState(["selectedAlertId"]),
+    selectedAlert() {
+      return this.alerts.find((alert) => alert._id === this.selectedAlertId);
+    },
     formattedAlerts() {
       return this.filteredTableByDate.map((alert) => {
         const fixedAlert = { ...alert };
@@ -217,6 +222,16 @@ export default {
         );
       } else {
         return this.filteredTableByWeapon;
+      },
+  },
+  watch: {
+    selectedAlertId() {
+      if (this.selectedAlertId !== 0) {
+        this.blinkAlert();
+        setTimeout(() => {
+          this.$refs[this.selectedAlertId][0].classList.remove("blink");
+          this.changeSelectedAlertId(0);
+        }, 3000);
       }
     },
   },
@@ -232,6 +247,19 @@ export default {
 
 .alertTable {
   color: rgb(245, 245, 245);
+}
+
+@keyframes blinking {
+  0% {
+    background-color: rgb(240, 100, 73);
+  }
+  100% {
+    background-color: rgb(43, 58, 103);
+  }
+}
+.blink {
+  animation: blinking 1s;
+  animation-iteration-count: 3;
 }
 
 .card-text-filter {

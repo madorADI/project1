@@ -2,12 +2,9 @@
   <div id="app">
     <Header></Header>
     <b-row>
-      <b-col>
-        <LatestAlerts />
-      </b-col>
-      <b-col>
-        <eventMap />
-      </b-col>
+      
+      <LatestAlerts />
+      <eventMap />
     </b-row>
   </div>
 </template>
