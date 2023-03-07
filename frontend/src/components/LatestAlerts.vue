@@ -1,72 +1,90 @@
 <template>
   <div>
-    <div class="card latest-alerts" style="width: 18rem">
+    <div class="card latest-alerts" style="width: 22rem">
       <div class="card-body">
         <h5 class="card-title">התראות אחרונות</h5>
         <hr />
-        <div class="card-text-filter">
-          <select v-model="selectedType" class="form-control form-control-sm">
-            <option value="0" hidden>סוג האירוע</option>
-            <option v-for="typ in event_types" :key="typ.id" value="typ.id">
-              {{ typ.name }}
-            </option>
-          </select>
+        <button id="openFilter" @click="openFilterSystems()">
+          <h6>סינון</h6>
+        </button>
+        <div class="filterSystems" v-show="openFilter">
           <br />
-          <h6><u>סוג אמלח</u></h6>
-          <div
-            class="form-check"
-            v-for="weapon in event_weapons"
-            :key="weapon.name"
-          >
-            <input
-              v-model="selectedWeapon"
-              class="form-check-input"
-              type="checkbox"
-              :value="weapon.name"
-            />
-            <label class="form-check-label" :for="weapon.name">
-              {{ weapon.name }}
-            </label>
-          </div>
           <br />
-          <h6><u>תאריך</u></h6>
-          <div class="form-group">
-            <label>-מ</label>
-            <input
-              v-model="selectedStartDate"
-              type="date"
-              class="form-control"
-            />
-          </div>
-          <div class="form-group">
-            <label>-ל</label>
-            <input v-model="selectedEndDate" type="date" class="form-control" />
-          </div>
-        </div>
-        <hr />
-
-        <table class="table table-hover alertTable">
-          <thead>
-            <tr>
-              <th v-for="field in fields" :key="field.label">
-                {{ field.label }}
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              v-for="alert in formattedAlerts"
-              :key="alert.id"
-              :id="alert.id"
-              :ref="alert._id"
-              @click="openModal(alert._id)"
+          <div class="card-text-filter">
+            <select v-model="selectedType" class="form-control form-control-sm">
+              <option value="0" hidden>סוג האירוע</option>
+              <option
+                v-for="typ in event_types"
+                :key="typ.name"
+                :value="typ.name"
+              >
+                {{ typ.name }}
+              </option>
+            </select>
+            <br />
+            <h6><u>סוג אמלח</u></h6>
+            <div
+              class="form-check"
+              v-for="weapon in event_weapons"
+              :key="weapon.name"
             >
-              <th v-for="(item, index) in brief" :key="index">
-                {{ alert[item] }}
-              </th>
-            </tr>
-          </tbody>
-        </table>
+              <input
+                v-model="selectedWeapon"
+                class="form-check-input"
+                type="checkbox"
+                :value="weapon.name"
+              />
+              <label class="form-check-label" :for="weapon.name">
+                {{ weapon.name }}
+              </label>
+            </div>
+            <br />
+            <h6><u>תאריך</u></h6>
+            <div class="form-group">
+              <label>-מ</label>
+              <input
+                v-model="selectedStartDate"
+                type="date"
+                class="form-control"
+              />
+            </div>
+            <div class="form-group">
+              <label>-ל</label>
+              <input
+                v-model="selectedEndDate"
+                type="date"
+                class="form-control"
+              />
+            </div>
+          </div>
+          <hr />
+        </div>
+
+        <div class="tableContainer" :class="{tableClosedFilter :!openFilter}">
+          <table class="table table-hover alertTable">
+            <thead class="header">
+              <tr>
+                <th v-for="field in fields" :key="field.label">
+                  {{ field.label }}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                v-for="alert in formattedAlerts"
+                :key="alert.id"
+                :id="alert.id"
+                :ref="alert._id"
+                @click="openModal(alert._id)"
+              >
+                <th v-for="(item, index) in brief" :key="index">
+                  {{ alert[item] }}
+                </th>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
         <button type="button" class="btn create-alert" @click="createNewAlert">
           <font-awesome-icon class="fa-2xl" icon="fa-solid fa-circle-plus" />
         </button>
@@ -115,6 +133,7 @@ export default {
       alerts: [],
       isNewAlert: false,
       open: false,
+      openFilter: false,
     };
   },
   created() {
@@ -122,8 +141,12 @@ export default {
     this.getAllAlerts();
     this.getAllTypes();
     this.getAllWeapons();
+    this.$emit("changeFiltered");
   },
   methods: {
+    openFilterSystems() {
+      this.openFilter = !this.openFilter;
+    },
     findDateBeforeWeek() {
       this.selectedEndDate = this.formatDate(new Date());
       this.selectedStartDate = new Date();
@@ -179,12 +202,16 @@ export default {
       return this.alerts.find((alert) => alert._id === this.selectedAlertId);
     },
     formattedAlerts() {
-      return this.filteredTableByDate.map((alert) => {
+      const filteredTable = this.filteredTableByDate.map((alert) => {
         const fixedAlert = { ...alert };
-        fixedAlert.time = new Date(fixedAlert.time).toLocaleDateString("en-GB");
+        fixedAlert.time = new Date(fixedAlert.time).toLocaleDateString("he-IL");
 
         return fixedAlert;
       });
+
+      this.$emit("changeFiltered", filteredTable);
+
+      return filteredTable;
     },
     formattedDates() {
       return this.alerts.map((alert) => {
@@ -213,11 +240,14 @@ export default {
       }
     },
     filteredTableByDate() {
+      let endDateComparable = new Date(this.selectedEndDate).setDate(
+        new Date(this.selectedEndDate).getDate() + 1
+      );
       if (this.selectedStartDate !== null && this.selectedEndDate !== null) {
         return this.filteredTableByWeapon.filter(
           (alert) =>
             alert.time >= new Date(this.selectedStartDate) &&
-            alert.time <= new Date(this.selectedEndDate)
+            alert.time < new Date(endDateComparable)
         );
       } else {
         return this.filteredTableByWeapon;
@@ -243,10 +273,23 @@ export default {
   background-color: rgb(43, 58, 103);
   color: rgb(245, 245, 245);
   text-align: center;
+  height: 94ch;
 }
 
 .alertTable {
   color: rgb(245, 245, 245);
+}
+
+.tableContainer {
+  height: 20%;
+  overflow: auto;
+  position: relative;
+}
+
+.tableClosedFilter {
+  height: auto;
+  overflow: auto;
+  position: relative;
 }
 
 @keyframes blinking {
@@ -256,6 +299,13 @@ export default {
   100% {
     background-color: rgb(43, 58, 103);
   }
+}
+
+table thead tr th {
+  position: sticky;
+  z-index: 100;
+  background-color: rgb(43, 58, 103);
+  top: 0;
 }
 .blink {
   animation: blinking 1s;
@@ -268,5 +318,14 @@ export default {
 
 .create-alert {
   color: rgb(240, 100, 73);
+}
+
+#openFilter {
+  background-color: rgb(240, 100, 73);
+}
+
+.table-hover tbody tr:hover td,
+.table-hover tbody tr:hover th {
+  color: rgb(228, 149, 3) !important;
 }
 </style>

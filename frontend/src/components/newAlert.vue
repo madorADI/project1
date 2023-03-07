@@ -1,5 +1,5 @@
 <template>
-  <b-modal v-model="open">
+  <b-modal v-model="open" content-class="modal-color">
     <div class="display-6 text-center">יצירת התרעה</div>
     <div class="modal-body">
       <div class="row mb-4">
@@ -63,7 +63,7 @@
                   class="form-control"
                   id="locationX"
                   @input="updateXlocation"
-                />
+                v-float/>
               </div>
             </div>
             <div class="col-6 text-center">
@@ -77,7 +77,7 @@
                   class="form-control"
                   id="locationY"
                   @input="updateYlocation"
-                />
+                v-float/>
               </div>
             </div>
           </div>
@@ -272,5 +272,10 @@ export default {
 }
 .buttom {
   margin-inline: auto;
+}
+
+::v-deep .modal-color {
+  background-color: rgb(43, 58, 103);
+  color: aliceblue;
 }
 </style>
