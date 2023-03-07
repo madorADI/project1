@@ -10,6 +10,7 @@
       class="map"
     >
       <l-tile-layer :url="url" />
+      
       <!--change key, the markers should be from db-->
       <l-marker
         v-for="marker in markers"
@@ -18,7 +19,7 @@
         @click="changeSelectedAlertId(marker._id)"
         :icon="bomb"
       >
-        <l-tooltip>אפשר להוסיף כאן כיתוב מאוחר יותר</l-tooltip>
+        <l-tooltip>{{ marker.description }}</l-tooltip>
       </l-marker>
     </l-map>
   </div>
@@ -29,6 +30,7 @@ import "leaflet/dist/leaflet.css";
 import { latLng, icon } from "leaflet";
 import { mapActions } from "vuex";
 import { LMap, LTileLayer, LTooltip, LMarker } from "vue2-leaflet";
+import LatestAlerts from "./LatestAlerts.vue";
 
 export default {
   name: "IsraelMap",
@@ -37,6 +39,7 @@ export default {
     LTileLayer,
     LTooltip,
     LMarker,
+    LatestAlerts,
   },
   data() {
     return {
