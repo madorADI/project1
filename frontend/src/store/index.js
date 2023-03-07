@@ -1,14 +1,13 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import Vue from "vue";
+import Vuex from "vuex";
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
     selectedLat: 0,
     selectedLng: 0,
-    selectedAlertId: 0
-
+    selectedAlertId: 0,
   },
   mutations: {
     SET_SELECTED_LAT(state, selectedLat) {
@@ -19,7 +18,7 @@ export default new Vuex.Store({
     },
     SET_SELECTED_ALERT_ID(state, selectedAlertId) {
       state.selectedAlertId = selectedAlertId;
-    }
+    },
   },
   actions: {
     changeSelectedLat({ commit }, selectedLat) {
@@ -28,9 +27,8 @@ export default new Vuex.Store({
     changeSelectedLng({ commit }, selectedLng) {
       commit("SET_SELECTED_LNG", selectedLng);
     },
-      changeSelectedAlertId({ commit }, selectedAlertId) {
+    changeSelectedAlertId({ commit }, selectedAlertId) {
       commit("SET_SELECTED_ALERT_ID", selectedAlertId);
     },
   },
-
-})
+});

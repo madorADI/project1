@@ -23,7 +23,7 @@
           </select>
         </div>
         <hr />
-        
+
         <table class="table table-hover alertTable">
           <thead>
             <tr>
@@ -38,7 +38,7 @@
               :key="alert.id"
               :id="alert.id"
               :ref="alert._id.$oid"
-              @click="openModal"
+              @click="openModal(alert._id)"
             >
               <th v-for="(item, index) in brief" :key="index">
                 {{ alert[item] }}
@@ -46,11 +46,7 @@
             </tr>
           </tbody>
         </table>
-        <button
-          type="button"
-          class="btn create-alert"
-          @click="createNewAlert"
-        >
+        <button type="button" class="btn create-alert" @click="createNewAlert">
           <font-awesome-icon class="fa-2xl" icon="fa-solid fa-circle-plus" />
         </button>
         <new-alert
@@ -60,7 +56,11 @@
         ></new-alert>
       </div>
     </div>
-    <popUp :open="open" @modal-change="changeModalState" />
+    <popUp
+      :open="open"
+      @modal-change="changeModalState"
+      :alert="selectedAlert"
+    />
   </div>
 </template>
 
@@ -68,7 +68,7 @@
 import api from "../api/api.js";
 import newAlert from "./newAlert.vue";
 import popUp from "../components/eventPopup.vue";
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 
 export default {
   name: "LatestAlerts",
@@ -112,7 +112,6 @@ export default {
       ],
       isNewAlert: false,
       open: false,
-      selectedAlert: {},
     };
   },
   created() {
@@ -121,6 +120,7 @@ export default {
     this.getAllWeapons();
   },
   methods: {
+    ...mapActions(["changeSelectedAlertId"]),
     async getAllAlerts() {
       this.alerts = await (await api.alerts().getAllAlerts()).data;
     },
@@ -130,8 +130,8 @@ export default {
     changeNewAlert(state) {
       this.isNewAlert = state;
     },
-    openModal(item) {
-      this.selectedAlert = item;
+    openModal(alertId) {
+      this.changeSelectedAlertId(alertId);
       this.open = !this.open;
     },
     changeModalState(state) {
@@ -153,6 +153,9 @@ export default {
   },
   computed: {
     ...mapState(["selectedAlertId"]),
+    selectedAlert() {
+      return this.alerts.find((alert) => alert._id === this.selectedAlertId);
+    },
     formattedAlerts() {
       return this.alerts.map((alert) => {
         const fixedAlert = { ...alert };
