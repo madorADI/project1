@@ -9,7 +9,7 @@
           width="80"
           height="80"
         ></b-img>
-        <h3>{{ event_types[alert.event_type].name }}</h3>
+        <h3>{{ alert.event_type }}</h3>
       </div>
       <b-container class="body">
         <b-row>
@@ -79,14 +79,6 @@
 export default {
   data() {
     return {
-      // selectedEvent: {
-      //   eventType: "פיגוע",
-      //   time: new Date(),
-      //   weapon: "אבנים",
-      //   descripion: "פלסטינאים זרקו אבנים על עוברי אורח",
-      //   injuries: { easy: 3, medium: 4, hard: 6 },
-      //   coordinates: [31.264035, 34.81396],
-      // },
       mainProps: { blank: true, width: 48, height: 48, class: "m1" },
     };
   },
@@ -98,11 +90,7 @@ export default {
     alert: {
       type: Object,
       required: true,
-    },
-    event_types: {
-      type: Array,
-      required: true,
-    },
+    }
   },
   computed: {
     formattedDate() {
