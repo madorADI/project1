@@ -27,7 +27,6 @@
 <script>
 import "leaflet/dist/leaflet.css";
 import { latLng, icon } from "leaflet";
-import api from "../api/api";
 import { mapActions } from "vuex";
 import { LMap, LTileLayer, LTooltip, LMarker } from "vue2-leaflet";
 
@@ -47,7 +46,7 @@ export default {
       mapOptions: {
         zoomSnap: 0.5,
       },
-      markers: [],
+      // markers: [],
       //change later icon to fontawesome one
       bomb: icon({
         iconUrl:
@@ -57,9 +56,12 @@ export default {
       }),
     };
   },
-  async created() {
-    this.markers = await (await api.alerts().getAllAlerts()).data;
+  props: {
+    markers: Array[Object],
   },
+  // async created() {
+  //   this.markers = await (await api.alerts().getAllAlerts()).data;
+  // },
   methods: {
     ...mapActions([
       "changeSelectedLat",

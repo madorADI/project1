@@ -2,8 +2,8 @@
   <div id="app">
     <Header></Header>
     <b-row>
-      <LatestAlerts class="front m-4" />
-      <eventMap class="back" />
+      <LatestAlerts class="front m-4" @changeFiltered="changeFiltered" />
+      <eventMap class="back" :markers="filteredTable" />
     </b-row>
   </div>
 </template>
@@ -18,6 +18,16 @@ export default {
     LatestAlerts,
     Header,
     eventMap,
+  },
+  data() {
+    return {
+      filteredTable: [],
+    };
+  },
+  methods: {
+    changeFiltered(table) {
+      this.filteredTable = table;
+    },
   },
 };
 </script>

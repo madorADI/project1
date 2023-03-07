@@ -141,6 +141,7 @@ export default {
     this.getAllAlerts();
     this.getAllTypes();
     this.getAllWeapons();
+    this.$emit("changeFiltered");
   },
   methods: {
     openFilterSystems() {
@@ -201,12 +202,16 @@ export default {
       return this.alerts.find((alert) => alert._id === this.selectedAlertId);
     },
     formattedAlerts() {
-      return this.filteredTableByDate.map((alert) => {
+      const filteredTable = this.filteredTableByDate.map((alert) => {
         const fixedAlert = { ...alert };
-        fixedAlert.time = new Date(fixedAlert.time).toLocaleDateString("en-GB");
+        fixedAlert.time = new Date(fixedAlert.time).toLocaleDateString("he-IL");
 
         return fixedAlert;
       });
+
+      this.$emit("changeFiltered", filteredTable);
+
+      return filteredTable;
     },
     formattedDates() {
       return this.alerts.map((alert) => {
