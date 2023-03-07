@@ -165,10 +165,10 @@ export default {
   },
   watch: {
     selectedType() {
-      this.filteredTableByDate();
+      this.filteredTableByType();
     },
     selectedWeapon() {
-      this.filteredTableByDate();
+      this.filteredTableByWeapon();
     },
     selectedDate() {
       this.filteredTableByDate();
@@ -199,7 +199,7 @@ export default {
           (alert) => alert.weapon === this.selectedWeapon
         );
       } else {
-        return this.formattedAlerts;
+        return this.filteredTableByType;
       }
     },
     filteredTableByDate() {
@@ -208,7 +208,7 @@ export default {
           (alert) => alert.time === this.selectedDate
         );
       } else {
-        return this.formattedAlerts;
+        return this.filteredTableByWeapon;
       }
     },
   },
