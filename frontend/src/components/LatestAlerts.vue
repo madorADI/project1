@@ -7,7 +7,11 @@
         <div class="card-text-filter">
           <select v-model="selectedType" class="form-control form-control-sm">
             <option value="0" hidden>סוג האירוע</option>
-            <option v-for="typ in event_types" :key="typ.id" value="typ.id">
+            <option
+              v-for="typ in event_types"
+              :key="typ.name"
+              :value="typ.name"
+            >
               {{ typ.name }}
             </option>
           </select>
