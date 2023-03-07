@@ -322,7 +322,7 @@ table thead tr th {
 }
 .blink {
   animation: blinking 1s;
-  animation-iteration-count: 1;
+  animation-iteration-count: 3;
 }
 
 .card-text-filter {
