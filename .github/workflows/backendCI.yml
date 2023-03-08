@@ -15,8 +15,8 @@ jobs:
         with:
           tags: adi/sensors:latest
           file: ./backend/Dockerfile
-          outputs: type=docker,dest=smartalertfrontimage.tar
+          outputs: type=docker,dest=smartalertbackimage.tar
       - uses: actions/upload-artifact@v3
         with:
-          name: smartalertfront
-          path: smartalertfrontimage.tar
+          name: smartalertback
+          path: smartalertbackimage.tar
