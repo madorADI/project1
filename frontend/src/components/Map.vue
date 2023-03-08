@@ -111,7 +111,7 @@ export default {
       ],
       selected: icon({
         iconUrl:
-          "https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Red_Arrow_Down.svg/1200px-Red_Arrow_Down.svg.png",
+        require("../assets/pin.png"),
         iconSize: [30, 37],
         iconAnchor: [16, 37],
       }),
