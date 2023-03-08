@@ -26,10 +26,10 @@ jobs:
                   npm install
                   pwd
                   ls
-                  docker build . -t adi/smartAlertFront:latest
+                  docker build . -t adi/smartalertfront:latest
                   docker login -u sagivb -p MbgVKrrKpv8d 
                   docker image ls
-                  docker push adi/smartAlertFront:latest
+                  docker push adi/smartalertfront:latest
                   #sudo mkdir -p /root/.kube/
                   #sudo mv ../kubeconfig /root/.kube/config
                   #sudo kubectl apply -f frontDeployment.yml
