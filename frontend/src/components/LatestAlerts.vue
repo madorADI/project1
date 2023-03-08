@@ -109,7 +109,7 @@ import api from "../api/api.js";
 import newAlert from "./newAlert.vue";
 import popUp from "../components/eventPopup.vue";
 import { mapState, mapActions } from "vuex";
-import MultiSelect from "vue-multiselect";
+import MultiSelect from "vue-multiselect";  
 
 export default {
   name: "LatestAlerts",
