@@ -20,6 +20,7 @@
           <div class="card-text-filter">
             <div>
               <multi-select
+                class="multiSelectOption multiSelectTag multiselectTagIcon multiselectTagIconBox"
                 placeholder="סוג אמלח"
                 v-model="selectedWeapon"
                 :multiple="true"
@@ -27,6 +28,7 @@
               ></multi-select>
               <br />
               <multi-select
+              class="multiSelectOption"
                 placeholder="סוג האירוע"
                 v-model="selectedType"
                 :options="eventsNames"
@@ -277,7 +279,19 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="css" scoped>
+.multiSelectOption >>>.multiselect__element :hover {
+  background-color: gray;
+}
+.multiSelectTag >>>.multiselect__tag{
+  background-color: rgb(240, 100, 73);
+}
+.multiselectTagIcon >>>.multiselect__tag-icon::after{
+  color: white !important;
+}
+.multiselectTagIconBox >>>.multiselect__tag-icon:hover{
+  background-color: rgb(240, 100, 73) !important;
+}
 .latest-alerts {
   background-color: rgb(43, 58, 103);
   color: rgb(245, 245, 245);

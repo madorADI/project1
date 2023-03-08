@@ -1,7 +1,7 @@
 <template>
   <b-modal v-model="open" content-class="modal-color">
     <template #modal-header="{ close }">
-      <b-button @click="close()" class="bg-danger">
+      <b-button @click="close()" class="backgroundColor">
         <i class="bi bi-x-lg"></i>
       </b-button>
       <div class="display-6 header">יצירת התרעה</div>
@@ -126,10 +126,10 @@
     </div>
     <template  #modal-footer>
       <div class="fotter" >
-        <button type="button" class="buttom btn btn-danger m-2 " @click="sendNewAlert">
+        <button type="button" class="btn m-2 backgroundColor" @click="sendNewAlert">
         שמירה
       </button>
-      <button type="button" class="buttom btn btn-secondary m-2" @click="restart">
+      <button type="button" class="btn btn-secondary m-2" @click="restart">
         אתחול
       </button>
 
@@ -295,6 +295,14 @@ export default {
 </script>
 
 <style scoped>
+
+.backgroundColor{
+  color: white;
+  background-color: rgb(240, 100, 73);
+}
+.backgroundColor:hover{
+  background-color: rgb(240, 100, 73);
+}
 #range {
   place-content: center;
 }
