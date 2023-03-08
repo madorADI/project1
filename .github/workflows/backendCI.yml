@@ -26,10 +26,11 @@ jobs:
                   npm install
                   pwd
                   ls
-                  docker build ./ -t adi/smartalertback:latest
+                  docker build ./ -t smartalertback:latest
                   docker login -u sagivb -p MbgVKrrKpv8d 
                   docker image ls
-                  docker push adi/smartalertback:latest
+                  docker tag smartalertback:latest sagivb/smartalertback:latest
+                  docker push sagivb/smartalertback:latest
                   #sudo mkdir -p /root/.kube/
                   #sudo mv ../kubeconfig /root/.kube/config
                   #sudo kubectl apply -f backDeployment.yml
