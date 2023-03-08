@@ -173,7 +173,8 @@ export default {
     changeModalState(state) {
       this.open = state;
     },
-    async getAllWeapons() {
+
+    async getallWeapons() {
       this.event_weapons = await (await api.alerts().getAllWeapons()).data;
     },
     async getAllTypes() {
