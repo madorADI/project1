@@ -6,4 +6,4 @@ COPY . ./frontend
 
 RUN cd frontend && npm i
 
-ENTRYPOINT ["npm", "run", "start", "./frontend"]
+ENTRYPOINT ["npm", "run", "serve", "./frontend"]
