@@ -1,4 +1,4 @@
-name: CI for backend
+name: CI for frontend
 on:
   push:
     branches: [ real_real_dev,cicd,main ]
