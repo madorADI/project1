@@ -1,22 +1,42 @@
 <template>
-  <div style="height: 105vh; width: 35vw">
+  <div style="height: 100vh; width: 100vw">
     <br />
-    <l-map :zoom="zoom" :center="center" :options="mapOptions" style="height: 80%" @click="selectBomb">
+    <l-map
+      :zoom="zoom"
+      :center="center"
+      :options="mapOptions"
+      @click="selectBomb"
+      style="height: 80%"
+      class="map"
+    >
       <l-tile-layer :url="url" />
       <!--change key, the markers should be from db-->
-      <l-marker v-for="marker in markers" :key="marker[0]" :lat-lng="marker" :icon="bomb">
-        <l-tooltip>אפשר להוסיף כאן כיתוב מאוחר יותר</l-tooltip>
+      <l-marker
+        v-for="marker in markers"
+        :key="marker._id"
+        :lat-lng="marker.coordinates"
+        @click="changeSelectedAlertId(marker._id)"
+        :icon="getIconByName(marker.weapon).icon"
+      >
+         <l-tooltip>{{ marker.event_type }}</l-tooltip>
       </l-marker>
-
+      <l-marker
+        v-if="this.selectedLat && this.selectedLng"
+        :lat-lng="[this.selectedLat, this.selectedLng]"
+        :icon="selected"
+      >
+        <l-tooltip> {{ markerCoordinates }} </l-tooltip>
+      </l-marker>
     </l-map>
   </div>
-</template>    
-  
+</template>
+
 <script>
 import "leaflet/dist/leaflet.css";
 import { latLng, icon } from "leaflet";
-import { mapActions } from 'vuex';
-import { LMap, LTileLayer, LTooltip, LMarker } from "vue2-leaflet";
+import { mapActions, mapState } from "vuex";
+import { LMap, LTileLayer, LTooltip, LMarker, LIcon } from "vue2-leaflet";
+import LatestAlerts from "./LatestAlerts.vue";
 
 export default {
   name: "IsraelMap",
@@ -25,40 +45,118 @@ export default {
     LTileLayer,
     LTooltip,
     LMarker,
+    LatestAlerts,
+    LIcon
   },
   data() {
     return {
-      zoom: 7.5,
-      center: latLng(31.360241, 34.900212),
+      zoom: 9.5,
+      center: latLng(31.894372, 35.217967),
       url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
       mapOptions: {
         zoomSnap: 0.5,
       },
-      markers: [],
-      //change later icon to fontawesome one
-      bomb: icon({
-        iconUrl: "http://www.clker.com/cliparts/y/e/Q/T/p/N/red-bomb.svg.hi.png",
+      icons: [
+        {
+          name: "אבנים",
+          icon: icon({
+            iconUrl: require("../assets/catapult.png"),
+            iconSize: [30, 37],
+            iconAnchor: [16, 37],
+          }),
+        },
+        {
+          name: "רכב",
+          icon: icon({
+            iconUrl:
+            require("../assets/car.png"),
+            iconSize: [30, 37],
+            iconAnchor: [16, 37],
+          }),
+        },
+        {
+          name: "בקת''ב",
+          icon: icon({
+            iconUrl: require("../assets/danger.png"),
+            iconSize: [30, 37],
+            iconAnchor: [16, 37],
+            html: `<span style="filter: invert(46%) sepia(96%) saturate(597%) hue-rotate(325deg) brightness(95%) contrast(99%);" />`,
+          }),
+        },
+        {
+          name: "סכין",
+          icon: icon({
+            iconUrl: require("../assets/knife.png"),
+            iconSize: [30, 37],
+            iconAnchor: [16, 37],
+          }),
+        },
+        {
+          name: "נשק חם",
+          icon: icon({
+            iconUrl:
+            require("../assets/handgun.png"),
+            iconSize: [30, 37],
+            iconAnchor: [16, 37],
+          }),
+        },
+        {
+          name: "ארטילריה",
+          icon: icon({
+            iconUrl: require("../assets/tank.png"),
+            iconSize: [30, 37],
+            iconAnchor: [16, 37],
+          }),
+        },
+        {
+          name: "רחפן",
+          icon: icon({
+            iconUrl: require("../assets/drone.png"),
+            iconSize: [30, 37],
+            iconAnchor: [16, 37],
+          }),
+        }
+      ],
+      selected: icon({
+        iconUrl:
+        require("../assets/pin.png"),
         iconSize: [30, 37],
-        iconAnchor: [16, 37]
+        iconAnchor: [16, 37],
       }),
     };
   },
-  async created() {
-    //this.markers = add api request that gets coordinates of targets, the line below is hardcoded
-      //this.markers= [{_id:"6404a7d352dd972914b315a2", coor: [35.504, 31.159]},{id:2, coor: [32.504, 36.159]},{id:3, coor: [27.504, 34.159]}];
-      this.markers = [[34,35],[23,34],[45,56]];
+  props: {
+    markers: Array[Object],
+  },
+  computed: {
+    ...mapState(["selectedLat", "selectedLng"]),
+    markerCoordinates() {
+      return `(${this.selectedLat},${this.selectedLng})`
+    }
   },
   methods: {
-    ...mapActions(["changeSelectedLat","changeSelectedLng","changeSelectedAlertId"]),
+    ...mapActions([
+      "changeSelectedLat",
+      "changeSelectedLng",
+      "changeSelectedAlertId",
+    ]),
     selectBomb(event) {
       this.changeSelectedLat(event.latlng.lat);
       this.changeSelectedLng(event.latlng.lng);
-      //changes the selected coordinates on map, by selecting a place in the map.
-    }
-  },
-  computed: {
-
+    },
+    getIconByName(name) {
+      return this.icons.find((elem) => elem.name === name);
+    },
   },
 };
 </script>
- 
+
+<style scoped>
+.leaflet-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+</style>

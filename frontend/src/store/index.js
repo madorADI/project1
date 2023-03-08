@@ -5,8 +5,8 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    selectedLat: 0,
-    selectedLng: 0,
+    selectedLat: "",
+    selectedLng: "",
     selectedAlertId: 0,
   },
   mutations: {

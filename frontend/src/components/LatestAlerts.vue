@@ -1,51 +1,87 @@
 <template>
   <div>
-    <div class="card latest-alerts" style="width: 18rem">
+    <div class="card latest-alerts" style="width: 22rem">
       <div class="card-body">
-        <h5 class="card-title">התראות אחרונות</h5>
+        <h5 class="card-title text-center">התראות אחרונות</h5>
         <hr />
-        <div class="card-text-filter">
-          <select v-model="selectedType" class="form-control form-control-sm">
-            <option value="0" hidden>סוג האירוע</option>
-            <option v-for="typ in event_types" :key="typ.id" value="typ.id">
-              {{ typ.name }}
-            </option>
-          </select>
-          <select v-model="selectedWeapon" class="form-control form-control-sm">
-            <option value="0" hidden>סוג אמלח</option>
-            <option
-              v-for="weapon in event_weapons"
-              :key="weapon.id"
-              value="weapon.name"
-            >
-              {{ weapon.name }}
-            </option>
-          </select>
+        <b-button
+          class="button"
+          id="resetAlerts"
+          v-show="openFilter"
+          @click="resetAlerts()"
+        >
+          <h6>אתחול</h6>
+        </b-button>
+        <b-button class="button" id="openFilter" @click="openFilterSystems()">
+          <h6>סינון</h6>
+        </b-button>
+        <div class="filterSystems" v-show="openFilter">
+          <br />
+          <div class="card-text-filter">
+            <div>
+              <multi-select
+                class="multiSelectOption multiSelectTag multiselectTagIcon multiselectTagIconBox"
+                placeholder="סוג אמלח"
+                v-model="selectedWeapon"
+                :multiple="true"
+                :options="weopensNames"
+              ></multi-select>
+              <br />
+              <multi-select
+              class="multiSelectOption"
+                placeholder="סוג האירוע"
+                v-model="selectedType"
+                :options="eventsNames"
+              ></multi-select>
+            </div>
+            <br />
+            <h6><u>תאריך</u></h6>
+            <div class="form-group d-flex justify-content-between">
+              <input
+                v-model="selectedStartDate"
+                type="date"
+                class="form-control dateCheck"
+              />
+              <label>-מ</label>
+            </div>
+            <div class="form-group d-flex justify-content-between">
+              <input
+                v-model="selectedEndDate"
+                type="date"
+                class="form-control dateCheck"
+              />
+              <label>-ל</label>
+            </div>
+          </div>
+          <hr />
         </div>
-        <hr />
-
-        <table class="table table-hover alertTable">
-          <thead>
-            <tr>
-              <th v-for="field in fields" :key="field.label">
-                {{ field.label }}
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              v-for="alert in formattedAlerts"
-              :key="alert.id"
-              :id="alert.id"
-              :ref="alert._id.$oid"
-              @click="openModal(alert._id)"
-            >
-              <th v-for="(item, index) in brief" :key="index">
-                {{ alert[item] }}
-              </th>
-            </tr>
-          </tbody>
-        </table>
+        <div  v-if="formattedAlerts.length" class="alertTable">
+          <h5 class="text-center" > {{ formattedAlerts.length }} :כמות התרעות </h5>
+          <div class="row">
+            <th class="col-4 mb-2" v-for="field in fields" :key="field.label">
+              {{ field.label }}
+            </th>
+            <hr class="borderHead mb-2" />
+          </div>
+        </div>
+        <h5 v-else class="text-center">אין התרעות</h5>
+        <div class="tableContainer" :class="{ tableClosedFilter: !openFilter }">
+          <table class="table table-hover alertTable">
+            <tbody>
+              <tr
+                v-for="alert in formattedAlerts"
+                :key="alert.id"
+                :id="alert.id"
+                :ref="alert._id"
+                @click="openModal(alert)"
+              >
+                <th v-for="(item, index) in brief" :key="index">
+                  {{ alert[item] }}
+                </th>
+              </tr>
+            </tbody>
+          </table>
+        </div>
         <button type="button" class="btn create-alert" @click="createNewAlert">
           <font-awesome-icon class="fa-2xl" icon="fa-solid fa-circle-plus" />
         </button>
@@ -56,70 +92,75 @@
         ></new-alert>
       </div>
     </div>
+
     <popUp
+      v-if="selectedAlert"
       :open="open"
       @modal-change="changeModalState"
       :alert="selectedAlert"
+      :event_types="event_types"
     />
   </div>
 </template>
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 
 <script>
 import api from "../api/api.js";
 import newAlert from "./newAlert.vue";
 import popUp from "../components/eventPopup.vue";
 import { mapState, mapActions } from "vuex";
+import MultiSelect from "vue-multiselect";  
 
 export default {
   name: "LatestAlerts",
   components: {
     newAlert,
     popUp,
+    MultiSelect,
   },
   data() {
     return {
       event_weapons: [],
       event_types: [],
       brief: ["brigade", "time", "event_type"],
-      selectedType: 0,
-      selectedWeapon: 0,
-      selectedDate: null,
+      selectedType: "",
+      selectedWeapon: [],
+      selectedStartDate: null,
+      selectedEndDate: null,
       fields: [
-        { key: "brigade", label: "גירזה" },
+        { key: "brigade", label: "גזרה" },
         { key: "time", label: "תאריך" },
         { key: "event_type", label: "סוג האירוע" },
       ],
-      alerts: [
-        {
-          _id: {
-            $oid: "6404a7d352dd972914b315a2",
-          },
-          name: "test",
-          description: "dcsafdsafdazs",
-          time: {
-            $date: "2021-02-25T10:03:46.000",
-          },
-          weapon: "אבנים",
-          event_type: 3,
-          coordinates: [31.264035, 34.81396],
-          injuries: {
-            easy: 5,
-            medium: 2,
-            hard: 6,
-          },
-          brigade: 2,
-        },
-      ],
+      alerts: [],
       isNewAlert: false,
       open: false,
+      openFilter: false,
+      selectedAlert: null,
     };
   },
   created() {
+    this.findDateBeforeWeek();
     this.getAllAlerts();
     this.getAllTypes();
     this.getAllWeapons();
+    this.$emit("changeFiltered");
   },
   methods: {
+    resetAlerts() {
+      this.selectedWeapon = [];
+      this.findDateBeforeWeek();
+      this.selectedType = "";
+    },
+    openFilterSystems() {
+      this.openFilter = !this.openFilter;
+    },
+    findDateBeforeWeek() {
+      this.selectedEndDate = this.formatDate(new Date());
+      this.selectedStartDate = new Date();
+      this.selectedStartDate.setDate(this.selectedStartDate.getDate() - 7);
+      this.selectedStartDate = this.formatDate(this.selectedStartDate);
+    },
     ...mapActions(["changeSelectedAlertId"]),
     async getAllAlerts() {
       this.alerts = await (await api.alerts().getAllAlerts()).data;
@@ -130,13 +171,14 @@ export default {
     changeNewAlert(state) {
       this.isNewAlert = state;
     },
-    openModal(alertId) {
-      this.changeSelectedAlertId(alertId);
+    openModal(alert) {
+      this.selectedAlert = alert;
       this.open = !this.open;
     },
     changeModalState(state) {
       this.open = state;
     },
+
     async getAllWeapons() {
       this.event_weapons = await (await api.alerts().getAllWeapons()).data;
     },
@@ -149,49 +191,150 @@ export default {
       this.$refs[this.selectedAlertId][0].scrollIntoView({
         behavior: "smooth",
       });
+      this.$refs[this.selectedAlertId][0].classList.add("blink");
+    },
+    formatDate(date) {
+      let d = new Date(date),
+        month = "" + (d.getMonth() + 1),
+        day = "" + d.getDate(),
+        year = d.getFullYear();
+
+      if (month.length < 2) month = "0" + month;
+      if (day.length < 2) day = "0" + day;
+
+      return [year, month, day].join("-");
     },
   },
   computed: {
     ...mapState(["selectedAlertId"]),
-    selectedAlert() {
-      return this.alerts.find((alert) => alert._id === this.selectedAlertId);
-    },
     formattedAlerts() {
+      const filteredTable = this.filteredTableByDate.map((alert) => {
+        const fixedAlert = { ...alert };
+        fixedAlert.time = new Date(fixedAlert.time).toLocaleDateString("he-IL");
+
+        return fixedAlert;
+      });
+
+      this.$emit("changeFiltered", filteredTable);
+
+      return filteredTable;
+    },
+    formattedAlert() {
       return this.alerts.map((alert) => {
         const fixedAlert = { ...alert };
-        fixedAlert.time = new Date(fixedAlert.time).toLocaleDateString();
-
+        fixedAlert.time = new Date(fixedAlert.time);
+        fixedAlert.coordinates = fixedAlert.coordinates.reverse();
         return fixedAlert;
       });
     },
     filteredTableByType() {
-      return this.formattedAlert.filter(
-        (alert) => alert.event_type === this.selectedType
-      );
+      if (this.selectedType) {
+        return this.formattedAlert.filter(
+          (alert) => alert.event_type === this.selectedType
+        );
+      } else {
+        return this.formattedAlert;
+      }
+    },
+    weopensNames() {
+      return this.event_weapons.map(({ name }) => name);
+    },
+    eventsNames() {
+      return this.event_types.map(({ name }) => name);
     },
     filteredTableByWeapon() {
-      return this.filteredTableByType.filter(
-        (alert) => alert.weapon === this.selectedWeapon
+      if (this.selectedWeapon.length !== 0) {
+        return this.filteredTableByType.filter((alert) =>
+          this.selectedWeapon.includes(alert.weapon)
+        );
+      } else {
+        return this.filteredTableByType;
+      }
+    },
+    filteredTableByDate() {
+      let endDateComparable = new Date(this.selectedEndDate).setDate(
+        new Date(this.selectedEndDate).getDate() + 1
       );
+      if (this.selectedStartDate !== null && this.selectedEndDate !== null) {
+        return this.filteredTableByWeapon.filter(
+          (alert) =>
+            alert.time >= new Date(this.selectedStartDate) &&
+            alert.time < new Date(endDateComparable)
+        );
+      } else {
+        return this.filteredTableByWeapon;
+      }
     },
   },
   watch: {
     selectedAlertId() {
-      this.blinkAlert();
+      if (this.selectedAlertId !== 0) {
+        this.blinkAlert();
+        setTimeout(() => {
+          this.$refs[this.selectedAlertId][0].classList.remove("blink");
+          this.changeSelectedAlertId(0);
+        }, 3000);
+      }
     },
   },
 };
 </script>
 
-<style scoped>
+<style lang="css" scoped>
+.multiSelectOption >>>.multiselect__element :hover {
+  background-color: gray;
+}
+.multiSelectTag >>>.multiselect__tag{
+  background-color: rgb(240, 100, 73);
+}
+.multiselectTagIcon >>>.multiselect__tag-icon::after{
+  color: white !important;
+}
+.multiselectTagIconBox >>>.multiselect__tag-icon:hover{
+  background-color: rgb(240, 100, 73) !important;
+}
 .latest-alerts {
   background-color: rgb(43, 58, 103);
   color: rgb(245, 245, 245);
   text-align: center;
+  height: auto;
+  max-height: 90ch;
 }
 
 .alertTable {
   color: rgb(245, 245, 245);
+}
+
+.tableContainer {
+  height: 100%;
+  overflow: auto;
+  position: relative;
+  max-height: 10pc;
+}
+
+.tableClosedFilter {
+  height: 100%;
+  overflow: auto;
+  position: relative;
+  max-height: 30pc;
+}
+
+@keyframes blinking {
+  0% {
+    background-color: rgb(240, 100, 73);
+  }
+  100% {
+    background-color: rgb(43, 58, 103);
+  }
+}
+
+table thead tr th {
+  background-color: rgb(43, 58, 103);
+  top: 0;
+}
+.blink {
+  animation: blinking 1s;
+  animation-iteration-count: 3;
 }
 
 .card-text-filter {
@@ -200,5 +343,50 @@ export default {
 
 .create-alert {
   color: rgb(240, 100, 73);
+  position: inherit;
+  z-index: 100 !important;
+}
+
+.button {
+  margin-left: 2%;
+  margin-right: 2%;
+}
+
+#openFilter {
+  background-color: rgb(240, 100, 73);
+}
+
+.table-hover tbody tr:hover td,
+.table-hover tbody tr:hover th {
+  color: lightsteelblue !important;
+}
+.borderHead {
+  width: 93%;
+  margin: auto;
+  border-width: medium;
+}
+
+.dateCheck {
+  height: 3ch;
+  width: 70%;
+  margin-bottom: 3%;
+}
+
+::-webkit-scrollbar {
+  width: 20px;
+}
+
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background:  rgb(240, 100, 73);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background:  rgb(240, 100, 73);
 }
 </style>
