@@ -55,9 +55,8 @@
           </div>
           <hr />
         </div>
-        <h5 v-if="formattedAlerts.length" class="text-center" > {{ formattedAlerts.length }} :כמות התרעות </h5>
-        <h5 v-else class="text-center">אין התרעות</h5>
-        <div class="alertTable">
+        <div  v-if="formattedAlerts.length" class="alertTable">
+          <h5 class="text-center" > {{ formattedAlerts.length }} :כמות התרעות </h5>
           <div class="row">
             <th class="col-4 mb-2" v-for="field in fields" :key="field.label">
               {{ field.label }}
@@ -65,6 +64,7 @@
             <hr class="borderHead mb-2" />
           </div>
         </div>
+        <h5 v-else class="text-center">אין התרעות</h5>
         <div class="tableContainer" :class="{ tableClosedFilter: !openFilter }">
           <table class="table table-hover alertTable">
             <tbody>
