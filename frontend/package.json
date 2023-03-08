@@ -27,7 +27,7 @@
     "vue-input-only-number": "^1.1.0",
     "vue-multiselect": "^2.1.7",
     "vue2-daterange-picker": "^0.6.8",
-    "vue2-leaflet": "^2.7.1",
+    "vue2-leaflet": "^2.7.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",
