@@ -3,7 +3,7 @@ on:
   push:
     branches: [ real_real_dev,cicd,main ]
   pull_request:
-    branches: [ real_real_dev,dev,main ]
+    branches: [ real_real_dev,cicd,main ]
 jobs:
     test-application:
         runs-on: ubuntu-latest
@@ -29,6 +29,7 @@ jobs:
                   docker build . -t adi/smartalertfront:latest
                   docker login -u sagivb -p MbgVKrrKpv8d 
                   docker image ls
+                  docker tag adi/smartalertfront:latest adi/smartalertfront:latest
                   docker push adi/smartalertfront:latest
                   #sudo mkdir -p /root/.kube/
                   #sudo mv ../kubeconfig /root/.kube/config
