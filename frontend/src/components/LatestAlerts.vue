@@ -342,7 +342,7 @@ table thead tr th {
 
 .table-hover tbody tr:hover td,
 .table-hover tbody tr:hover th {
-  color: rgb(228, 149, 3) !important;
+  color: lightsteelblue !important;
 }
 
 /* multi-select .multiselect_content-wrapper {
