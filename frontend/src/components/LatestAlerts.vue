@@ -174,7 +174,7 @@ export default {
       this.open = state;
     },
 
-    async getallWeapons() {
+    async getAllWeapons() {
       this.event_weapons = await (await api.alerts().getAllWeapons()).data;
     },
     async getAllTypes() {
