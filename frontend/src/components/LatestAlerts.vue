@@ -19,32 +19,19 @@
           <br />
           <br />
           <div class="card-text-filter">
-            <select v-model="selectedType" class="form-control form-control-sm">
-              <option value="0" hidden>סוג האירוע</option>
-              <option
-                v-for="typ in event_types"
-                :key="typ.name"
-                :value="typ.name"
-              >
-                {{ typ.name }}
-              </option>
-            </select>
-            <br />
-            <h6><u>סוג אמלח</u></h6>
-            <div
-              class="form-check"
-              v-for="weapon in event_weapons"
-              :key="weapon.name"
-            >
-              <input
+            <div>
+              <multi-select
+                placeholder="סוג אמלח"
                 v-model="selectedWeapon"
-                class="form-check-input"
-                type="checkbox"
-                :value="weapon.name"
-              />
-              <label class="form-check-label" :for="weapon.name">
-                {{ weapon.name }}
-              </label>
+                :multiple="true"
+                :options="weopensNames"
+              ></multi-select>
+              <br />
+              <multi-select
+                placeholder="סוג האירוע"
+                v-model="selectedType"
+                :options="eventsNames"
+              ></multi-select>
             </div>
             <br />
             <h6><u>תאריך</u></h6>
@@ -111,25 +98,28 @@
     />
   </div>
 </template>
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 
 <script>
 import api from "../api/api.js";
 import newAlert from "./newAlert.vue";
 import popUp from "../components/eventPopup.vue";
 import { mapState, mapActions } from "vuex";
+import MultiSelect from "vue-multiselect";
 
 export default {
   name: "LatestAlerts",
   components: {
     newAlert,
     popUp,
+    MultiSelect,
   },
   data() {
     return {
       event_weapons: [],
       event_types: [],
       brief: ["brigade", "time", "event_type"],
-      selectedType: 0,
+      selectedType: "",
       selectedWeapon: [],
       selectedStartDate: null,
       selectedEndDate: null,
@@ -156,7 +146,7 @@ export default {
     resetAlerts() {
       this.selectedWeapon = [];
       this.findDateBeforeWeek();
-      this.selectedType = 0;
+      this.selectedType = "";
     },
     openFilterSystems() {
       this.openFilter = !this.openFilter;
@@ -212,9 +202,6 @@ export default {
   },
   computed: {
     ...mapState(["selectedAlertId"]),
-    // selectedAlert() {
-    //   return this.alerts.find((alert) => alert._id === this.selectedAlertId);
-    // },
     formattedAlerts() {
       const filteredTable = this.filteredTableByDate.map((alert) => {
         const fixedAlert = { ...alert };
@@ -236,13 +223,19 @@ export default {
       });
     },
     filteredTableByType() {
-      if (this.selectedType !== 0) {
+      if (this.selectedType) {
         return this.formattedDates.filter(
           (alert) => alert.event_type === this.selectedType
         );
       } else {
         return this.formattedDates;
       }
+    },
+    weopensNames() {
+      return this.event_weapons.map(({ name }) => name);
+    },
+    eventsNames() {
+      return this.event_types.map(({ name }) => name);
     },
     filteredTableByWeapon() {
       if (this.selectedWeapon.length !== 0) {
@@ -287,7 +280,7 @@ export default {
   background-color: rgb(43, 58, 103);
   color: rgb(245, 245, 245);
   text-align: center;
-  height: 84ch;
+  height: 88ch;
 }
 
 .alertTable {
@@ -295,7 +288,7 @@ export default {
 }
 
 .tableContainer {
-  height: 14%;
+  height: 15%;
   overflow: auto;
   position: relative;
 }
@@ -317,7 +310,7 @@ export default {
 
 table thead tr th {
   position: sticky;
-  z-index: 100;
+  z-index: 50;
   background-color: rgb(43, 58, 103);
   top: 0;
 }
@@ -352,9 +345,20 @@ table thead tr th {
   color: rgb(228, 149, 3) !important;
 }
 
+/* multi-select .multiselect_content-wrapper {
+  position: sticky;
+  z-index: 100;
+} */
+
+
 .dateCheck {
   height: 3ch;
   width: 70%;
   margin-bottom: 3%;
+}
+.multiselect__content-wrapper{
+  background-color: red;
+  position: sticky !important; ;
+  z-index: 100 !important ;
 }
 </style>

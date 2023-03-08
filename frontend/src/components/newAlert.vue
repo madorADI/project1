@@ -65,10 +65,11 @@
                   :value="locationXCord"
                   :class="{ 'is-invalid': !locationXCord && validation }"
                   type="number"
+                  step=any
                   class="form-control"
                   id="locationX"
                   @change="updateXlocation"
-                v-float/>
+                />
               </div>
             </div>
             <div class="col-6 text-center">
@@ -77,11 +78,12 @@
                 <input
                   :value="locationYCord"
                   :class="{ 'is-invalid': !locationYCord && validation }"
+                  step=any
                   type="number"
                   class="form-control"
                   id="locationY"
                   @change="updateYlocation"
-                v-float/>
+                />
               </div>
             </div>
           </div>
