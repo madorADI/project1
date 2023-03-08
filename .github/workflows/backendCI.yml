@@ -5,28 +5,18 @@ on:
   pull_request:
     branches: [ real_real_dev,cicd,main ]
 jobs:
-    test-application:
-        runs-on: ubuntu-latest
-
-        steps:
-            - uses: actions/checkout@v2
-
-            - uses: actions/setup-node@v1
-              with:
-                  node-version: 16
-            
-            - uses: docker-practice/actions-setup-docker@master 
-            
-            - uses: azure/setup-kubectl@v3
-            
-            - name: Run Add Test
-              working-directory: ./backend
-              run: |
-                  docker build ./ -t smartalertback:latest
-                  docker login -u sagivb -p MbgVKrrKpv8d 
-                  docker image ls
-                  docker tag smartalertback:latest sagivb/smartalertback:latest
-                  docker push sagivb/smartalertback:latest
-                  #sudo mkdir -p /root/.kube/
-                  #sudo mv ../kubeconfig /root/.kube/config
-                  #sudo kubectl apply -f backDeployment.yml
+  build-docker:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      - name: Build container
+        uses: docker/build-push-action@v4
+        with:
+          tags: adi/sensors:latest
+          file: ./frontend/Dockerfile
+          outputs: type=docker,dest=smartalertfrontimage.tar
+      - uses: actions/upload-artifact@v3
+        with:
+          name: smartalertfront
+          path: smartalertfrontimage.tar
