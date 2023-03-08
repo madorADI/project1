@@ -2,7 +2,7 @@
   <div>
     <div class="card latest-alerts" style="width: 22rem">
       <div class="card-body">
-        <h5 class="card-title">התראות אחרונות</h5>
+        <h5 class="card-title text-center">התראות אחרונות</h5>
         <hr />
         <b-button
           class="button"
@@ -16,7 +16,6 @@
           <h6>סינון</h6>
         </b-button>
         <div class="filterSystems" v-show="openFilter">
-          <br />
           <br />
           <div class="card-text-filter">
             <div>
@@ -54,16 +53,18 @@
           </div>
           <hr />
         </div>
-
+        <h5 v-if="formattedAlerts.length" class="text-center" > {{ formattedAlerts.length }} :כמות התרעות </h5>
+        <h5 v-else class="text-center">אין התרעות</h5>
+        <div class="alertTable">
+          <div class="row">
+            <th class="col-4 mb-2" v-for="field in fields" :key="field.label">
+              {{ field.label }}
+            </th>
+            <hr class="borderHead mb-2" />
+          </div>
+        </div>
         <div class="tableContainer" :class="{ tableClosedFilter: !openFilter }">
           <table class="table table-hover alertTable">
-            <thead class="header">
-              <tr>
-                <th v-for="field in fields" :key="field.label">
-                  {{ field.label }}
-                </th>
-              </tr>
-            </thead>
             <tbody>
               <tr
                 v-for="alert in formattedAlerts"
@@ -79,17 +80,17 @@
             </tbody>
           </table>
         </div>
-
         <button type="button" class="btn create-alert" @click="createNewAlert">
-          <font-awesome-icon class="fa-2xl" icon="fa-solid fa-circle-plus" />
-        </button>
-        <new-alert
-          id="newAlert"
-          @newAlertChange="changeNewAlert"
-          :open="isNewAlert"
-        ></new-alert>
+        <font-awesome-icon class="fa-2xl" icon="fa-solid fa-circle-plus" />
+      </button>
+      <new-alert
+        id="newAlert"
+        @newAlertChange="changeNewAlert"
+        :open="isNewAlert"
+      ></new-alert>
       </div>
     </div>
+
     <popUp
       :open="open"
       @modal-change="changeModalState"
@@ -174,6 +175,7 @@ export default {
     changeModalState(state) {
       this.open = state;
     },
+
     async getAllWeapons() {
       this.event_weapons = await (await api.alerts().getAllWeapons()).data;
     },
@@ -214,21 +216,21 @@ export default {
 
       return filteredTable;
     },
-    formattedDates() {
+    formattedAlert() {
       return this.alerts.map((alert) => {
         const fixedAlert = { ...alert };
         fixedAlert.time = new Date(fixedAlert.time);
-
+        fixedAlert.coordinates = fixedAlert.coordinates.reverse()
         return fixedAlert;
       });
     },
     filteredTableByType() {
       if (this.selectedType) {
-        return this.formattedDates.filter(
+        return this.formattedAlert.filter(
           (alert) => alert.event_type === this.selectedType
         );
       } else {
-        return this.formattedDates;
+        return this.formattedAlert;
       }
     },
     weopensNames() {
@@ -280,7 +282,8 @@ export default {
   background-color: rgb(43, 58, 103);
   color: rgb(245, 245, 245);
   text-align: center;
-  height: 88ch;
+  height: auto;
+  max-height: 90ch;
 }
 
 .alertTable {
@@ -288,15 +291,17 @@ export default {
 }
 
 .tableContainer {
-  height: 15%;
+  height: 100%;
   overflow: auto;
   position: relative;
+  max-height: 10pc;
 }
 
 .tableClosedFilter {
-  height: auto;
+  height: 100%;
   overflow: auto;
   position: relative;
+  max-height: 34pc;
 }
 
 @keyframes blinking {
@@ -309,8 +314,6 @@ export default {
 }
 
 table thead tr th {
-  position: sticky;
-  z-index: 50;
   background-color: rgb(43, 58, 103);
   top: 0;
 }
@@ -325,15 +328,13 @@ table thead tr th {
 
 .create-alert {
   color: rgb(240, 100, 73);
+  position: inherit;
+  z-index: 100 !important;
 }
 
 .button {
   margin-left: 2%;
   margin-right: 2%;
-}
-
-.form-check {
-  margin-top: 0;
 }
 
 #openFilter {
@@ -344,21 +345,15 @@ table thead tr th {
 .table-hover tbody tr:hover th {
   color: lightsteelblue !important;
 }
-
-/* multi-select .multiselect_content-wrapper {
-  position: sticky;
-  z-index: 100;
-} */
-
+.borderHead {
+  width: 93%;
+  margin: auto;
+  border-width: medium;
+}
 
 .dateCheck {
   height: 3ch;
   width: 70%;
   margin-bottom: 3%;
-}
-.multiselect__content-wrapper{
-  background-color: red;
-  position: sticky !important; ;
-  z-index: 100 !important ;
 }
 </style>

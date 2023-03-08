@@ -18,14 +18,14 @@
         @click="changeSelectedAlertId(marker._id)"
         :icon="getIconByName(marker.weapon).icon"
       >
-        <l-tooltip>{{ marker.description }}</l-tooltip>
+         <l-tooltip>{{ marker.event_type }}</l-tooltip>
       </l-marker>
       <l-marker
         v-if="this.selectedLat && this.selectedLng"
         :lat-lng="[this.selectedLat, this.selectedLng]"
         :icon="selected"
       >
-        <l-tooltip>המיקום שנבחר</l-tooltip>
+        <l-tooltip> {{ markerCoordinates }} </l-tooltip>
       </l-marker>
     </l-map>
   </div>
@@ -128,11 +128,11 @@ export default {
   props: {
     markers: Array[Object],
   },
-  // async created() {
-  //   this.markers = await (await api.alerts().getAllAlerts()).data;
-  // },
   computed: {
     ...mapState(["selectedLat", "selectedLng"]),
+    markerCoordinates() {
+      return `(${this.selectedLat},${this.selectedLng})`
+    }
   },
   methods: {
     ...mapActions([
