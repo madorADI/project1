@@ -31,5 +31,5 @@ jobs:
                   docker image ls
                   docker push adi/smartAlertBack:latest
                   #sudo mkdir -p /root/.kube/
-                  #sudo mv ./kubeconfig /root/.kube/config
+                  #sudo mv ../kubeconfig /root/.kube/config
                   #sudo kubectl apply -f backDeployment.yml
