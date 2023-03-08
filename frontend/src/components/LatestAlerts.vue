@@ -349,7 +349,7 @@ table thead tr th {
 
 .table-hover tbody tr:hover td,
 .table-hover tbody tr:hover th {
-  color: rgb(228, 149, 3) !important;
+  color: rgb(240, 100, 73) !important;
 }
 
 .dateCheck {
