@@ -3,7 +3,6 @@
     <br />
     <l-map :zoom="zoom" :center="center" :options="mapOptions" @click="selectBomb" style="height: 80%" class="map">
       <l-tile-layer :url="url" />
-
       <!--change key, the markers should be from db-->
       <l-marker v-for="marker in markers" :key="marker._id" :lat-lng="marker.coordinates"
         @click="changeSelectedAlertId(marker._id)" :icon="bomb">
