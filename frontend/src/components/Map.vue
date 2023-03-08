@@ -10,7 +10,6 @@
       class="map"
     >
       <l-tile-layer :url="url" />
-      
       <!--change key, the markers should be from db-->
       <l-marker
         v-for="marker in markers"
