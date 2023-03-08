@@ -23,7 +23,7 @@
                 placeholder="סוג אמלח"
                 v-model="selectedWeapon"
                 :multiple="true"
-                :options="weopensNames"
+                :options="weaponsNames"
               ></multi-select>
               <br />
               <multi-select
@@ -174,11 +174,11 @@ export default {
       this.open = state;
     },
 
-    async getallWeapons() {
-      this.event_weapons = await (await api.alerts().getAllWeapons()).data;
+    async getAllWeapons() {
+      this.event_weapons = (await api.alerts().getAllWeapons()).data;
     },
     async getAllTypes() {
-      this.event_types = await (await api.alerts().getAllTypes()).data;
+      this.event_types =  (await api.alerts().getAllTypes()).data;
     },
     blinkAlert() {
       console.log(this.selectedAlertId);
@@ -231,7 +231,7 @@ export default {
         return this.formattedDates;
       }
     },
-    weopensNames() {
+    weaponsNames() {
       return this.event_weapons.map(({ name }) => name);
     },
     eventsNames() {
