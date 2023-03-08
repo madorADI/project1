@@ -20,16 +20,16 @@ jobs:
             - uses: azure/setup-kubectl@v3
             
             - name: Run Add Test
-              working-directory: ./
+              working-directory: ./frontend
               run: |
                   sudo rm -rf node_modules
                   npm install
                   pwd
                   ls
-                  docker build ./frontend -t adi/smartAlertFront:latest
+                  docker build . -t adi/smartAlertFront:latest
                   docker login -u sagivb -p MbgVKrrKpv8d 
                   docker image ls
                   docker push adi/smartAlertFront:latest
                   #sudo mkdir -p /root/.kube/
-                  #sudo mv ./kubeconfig /root/.kube/config
+                  #sudo mv ../kubeconfig /root/.kube/config
                   #sudo kubectl apply -f frontDeployment.yml
