@@ -1,7 +1,7 @@
 <template>
   <b-modal v-model="open" content-class="modal-color">
-    <template #modal-header = "{ close }">
-      <b-button @click="close()"  class="bg-danger" >
+    <template #modal-header="{ close }">
+      <b-button @click="close()" class="bg-danger">
         <i class="bi bi-x-lg"></i>
       </b-button>
       <div class="display-6 header">יצירת התרעה</div>
@@ -28,7 +28,7 @@
                 }"
                 type="text"
                 class="w-100 rounded text-center"
-                style="color:white"
+                style="color: white"
                 :id="value.name"
                 v-model="value.numberOfInjeries"
                 v-int
@@ -65,7 +65,7 @@
                   :value="locationXCord"
                   :class="{ 'is-invalid': !locationXCord && validation }"
                   type="number"
-                  step=any
+                  step="any"
                   class="form-control"
                   id="locationX"
                   @change="updateXlocation"
@@ -78,7 +78,7 @@
                 <input
                   :value="locationYCord"
                   :class="{ 'is-invalid': !locationYCord && validation }"
-                  step=any
+                  step="any"
                   type="number"
                   class="form-control"
                   id="locationY"
@@ -243,10 +243,7 @@ export default {
           event_type: this.eventsTypes.find(
             ({ name }) => name === this.selectedEventType
           ).id,
-          coordinates: [
-            this.locationYCord,
-            this.locationXCord,
-          ],
+          coordinates: [this.locationYCord, this.locationXCord],
           injuries: {
             easy: parseInt(this.injuries.light.numberOfInjeries),
             medium: parseInt(this.injuries.medium.numberOfInjeries),
@@ -257,7 +254,15 @@ export default {
         try {
           console.log(newALert);
           await api.alerts().postNewWeapon(newALert);
-          location.reload();
+          Swal.fire({
+            title: "!הצלחה",
+            text: "התרעה נוספה בהצלחה",
+            icon: "success",
+            timer: 800,
+            confirmButtonText: "אוקיי",
+          });
+          setTimeout(() => location.reload(), 800);
+          // location.reload();
         } catch (err) {
           Swal.fire({
             title: "!שגיאה",
