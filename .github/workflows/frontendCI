@@ -1,0 +1,35 @@
+name: CI for backend
+on:
+  push:
+    branches: [ real_real_dev,cicd,main ]
+  pull_request:
+    branches: [ real_real_dev,dev,main ]
+jobs:
+    test-application:
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v2
+
+            - uses: actions/setup-node@v1
+              with:
+                  node-version: 16
+            
+            - uses: docker-practice/actions-setup-docker@master 
+            
+            - uses: azure/setup-kubectl@v3
+            
+            - name: Run Add Test
+              working-directory: ./
+              run: |
+                  sudo rm -rf node_modules
+                  npm install
+                  pwd
+                  ls
+                  docker build ./frontend -t adi/smartAlertFront:latest
+                  docker login -u sagivb -p MbgVKrrKpv8d 
+                  docker image ls
+                  docker push adi/smartAlertFront:latest
+                  #sudo mkdir -p /root/.kube/
+                  #sudo mv ./kubeconfig /root/.kube/config
+                  #sudo kubectl apply -f frontDeployment.yml
