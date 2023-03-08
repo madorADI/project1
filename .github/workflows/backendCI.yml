@@ -22,10 +22,6 @@ jobs:
             - name: Run Add Test
               working-directory: ./backend
               run: |
-                  sudo rm -rf node_modules
-                  npm install
-                  pwd
-                  ls
                   docker build ./ -t smartalertback:latest
                   docker login -u sagivb -p MbgVKrrKpv8d 
                   docker image ls
