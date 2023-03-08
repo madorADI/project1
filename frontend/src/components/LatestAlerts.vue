@@ -294,7 +294,7 @@ export default {
   height: 100%;
   overflow: auto;
   position: relative;
-  max-height: 15pc;
+  max-height: 10pc;
 }
 
 .tableClosedFilter {
