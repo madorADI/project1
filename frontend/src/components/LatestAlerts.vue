@@ -94,6 +94,7 @@
     </div>
 
     <popUp
+      v-if="selectedAlert"
       :open="open"
       @modal-change="changeModalState"
       :alert="selectedAlert"
