@@ -53,7 +53,9 @@
           </div>
           <hr />
         </div>
-        <h5 v-if="formattedAlerts.length" class="text-center" > {{ formattedAlerts.length }} :כמות התרעות </h5>
+        <h5 v-if="formattedAlerts.length" class="text-center">
+          {{ formattedAlerts.length }} :כמות התרעות
+        </h5>
         <h5 v-else class="text-center">אין התרעות</h5>
         <div class="alertTable">
           <div class="row">
@@ -81,13 +83,13 @@
           </table>
         </div>
         <button type="button" class="btn create-alert" @click="createNewAlert">
-        <font-awesome-icon class="fa-2xl" icon="fa-solid fa-circle-plus" />
-      </button>
-      <new-alert
-        id="newAlert"
-        @newAlertChange="changeNewAlert"
-        :open="isNewAlert"
-      ></new-alert>
+          <font-awesome-icon class="fa-2xl" icon="fa-solid fa-circle-plus" />
+        </button>
+        <new-alert
+          id="newAlert"
+          @newAlertChange="changeNewAlert"
+          :open="isNewAlert"
+        ></new-alert>
       </div>
     </div>
 
@@ -220,7 +222,7 @@ export default {
       return this.alerts.map((alert) => {
         const fixedAlert = { ...alert };
         fixedAlert.time = new Date(fixedAlert.time);
-        fixedAlert.coordinates = fixedAlert.coordinates.reverse()
+        fixedAlert.coordinates = fixedAlert.coordinates.reverse();
         return fixedAlert;
       });
     },
@@ -355,5 +357,23 @@ table thead tr th {
   height: 3ch;
   width: 70%;
   margin-bottom: 3%;
+}
+
+::-webkit-scrollbar {
+  width: 20px;
+}
+
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background:  rgb(240, 100, 73);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background:  rgb(240, 100, 73);
 }
 </style>
