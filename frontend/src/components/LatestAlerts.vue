@@ -110,7 +110,6 @@ import newAlert from "./newAlert.vue";
 import popUp from "../components/eventPopup.vue";
 import { mapState, mapActions } from "vuex";
 import MultiSelect from "vue-multiselect";
-import io from "socket.io-client";
 
 export default {
   name: "LatestAlerts",
@@ -133,7 +132,6 @@ export default {
         { key: "time", label: "תאריך" },
         { key: "event_type", label: "סוג האירוע" },
       ],
-      socket: io("localhost:3000"),
       alerts: [],
       isNewAlert: false,
       open: false,
@@ -147,11 +145,6 @@ export default {
     this.getAllTypes();
     this.getAllWeapons();
     this.$emit("changeFiltered");
-  },
-  mounted () {
-    this.socket.on("ALERT", () => {
-      this.getAllAlerts();
-    });
   },
   methods: {
     resetAlerts() {
