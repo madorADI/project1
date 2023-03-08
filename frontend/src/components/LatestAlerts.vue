@@ -28,7 +28,7 @@
               ></multi-select>
               <br />
               <multi-select
-              class="multiSelectOption"
+                class="multiSelectOption"
                 placeholder="סוג האירוע"
                 v-model="selectedType"
                 :options="eventsNames"
@@ -55,10 +55,11 @@
           </div>
           <hr />
         </div>
-        <div  v-if="formattedAlerts.length" class="alertTable">
-          <h5 class="text-center" > {{ formattedAlerts.length }} :כמות התרעות </h5>
+        <div v-if="formattedAlerts.length" class="alertTable">
+          <h5 class="text-center">{{ formattedAlerts.length }} :כמות התרעות</h5>
+          <p class="sortTitle">:מיין לפי</p>
           <div class="row">
-            <th class="col-4 mb-2" v-for="field in fields" :key="field.label">
+            <th class="col-4 mb-2" v-for="field in fields" :key="field.label" >
               {{ field.label }}
             </th>
             <hr class="borderHead mb-2" />
@@ -281,16 +282,16 @@ export default {
 </script>
 
 <style lang="css" scoped>
-.multiSelectOption >>>.multiselect__element :hover {
+.multiSelectOption >>> .multiselect__element :hover {
   background-color: gray;
 }
-.multiSelectTag >>>.multiselect__tag{
+.multiSelectTag >>> .multiselect__tag {
   background-color: rgb(240, 100, 73);
 }
-.multiselectTagIcon >>>.multiselect__tag-icon::after{
+.multiselectTagIcon >>> .multiselect__tag-icon::after {
   color: white !important;
 }
-.multiselectTagIconBox >>>.multiselect__tag-icon:hover{
+.multiselectTagIconBox >>> .multiselect__tag-icon:hover {
   background-color: rgb(240, 100, 73) !important;
 }
 .latest-alerts {
@@ -301,6 +302,14 @@ export default {
   max-height: 90ch;
 }
 
+.sortTitle {
+  text-align: right;
+}
+
+.sorters {
+  display: inline;
+  text-align: left;
+}
 .alertTable {
   color: rgb(245, 245, 245);
 }
@@ -357,6 +366,10 @@ table thead tr th {
 }
 
 .table-hover tbody tr:hover td,
+.head-hover  {
+  color: rgb(67, 71, 77) !important;
+}
+
 .table-hover tbody tr:hover th {
   color: lightsteelblue !important;
 }
@@ -382,11 +395,11 @@ table thead tr th {
 }
 
 ::-webkit-scrollbar-thumb {
-  background:  rgb(240, 100, 73);
+  background: rgb(240, 100, 73);
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background:  rgb(240, 100, 73);
+  background: rgb(240, 100, 73);
 }
 </style>
