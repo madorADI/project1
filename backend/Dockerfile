@@ -7,8 +7,8 @@ ENV HOST_IP=127.0.0.1
 ENV SERVER_IP=127.0.0.1
 ENV SERVER_PORT=9000
 
-COPY . .
+COPY ./backend .
 
 RUN npm i
 
-ENTRYPOINT ["npm", "run", "start", "./backend"]
+ENTRYPOINT ["npm", "run", "start"]
