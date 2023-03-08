@@ -53,6 +53,8 @@
           </div>
           <hr />
         </div>
+        <h5 v-if="formattedAlerts.length" class="text-center" > {{ formattedAlerts.length }} :כמות התרעות </h5>
+        <h5 v-else class="text-center">אין התרעות</h5>
         <div class="alertTable">
           <div class="row">
             <th class="col-4 mb-2" v-for="field in fields" :key="field.label">
@@ -214,21 +216,21 @@ export default {
 
       return filteredTable;
     },
-    formattedDates() {
+    formattedAlert() {
       return this.alerts.map((alert) => {
         const fixedAlert = { ...alert };
         fixedAlert.time = new Date(fixedAlert.time);
-
+        fixedAlert.coordinates = fixedAlert.coordinates.reverse()
         return fixedAlert;
       });
     },
     filteredTableByType() {
       if (this.selectedType) {
-        return this.formattedDates.filter(
+        return this.formattedAlert.filter(
           (alert) => alert.event_type === this.selectedType
         );
       } else {
-        return this.formattedDates;
+        return this.formattedAlert;
       }
     },
     weopensNames() {

@@ -244,8 +244,8 @@ export default {
             ({ name }) => name === this.selectedEventType
           ).id,
           coordinates: [
-            this.locationXCord,
             this.locationYCord,
+            this.locationXCord,
           ],
           injuries: {
             easy: parseInt(this.injuries.light.numberOfInjeries),
