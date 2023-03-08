@@ -23,11 +23,12 @@
     "vue": "^2.7.14",
     "vue-cli": "^2.9.6",
     "vue-fontawesome": "^0.0.2",
-    "vuex": "^3.6.2",
     "vue-input-only-number": "^1.1.0",
     "vue-multiselect": "^2.1.7",
+    "vue-socket.io": "^3.0.10",
     "vue2-daterange-picker": "^0.6.8",
-    "vue2-leaflet": "^2.7.1"
+    "vue2-leaflet": "^2.7.1",
+    "vuex": "^3.6.2"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",
