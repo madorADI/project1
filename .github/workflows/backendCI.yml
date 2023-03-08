@@ -3,7 +3,7 @@ on:
   push:
     branches: [ real_real_dev,cicd,main ]
   pull_request:
-    branches: [ real_real_dev,dev,main ]
+    branches: [ real_real_dev,cicd,main ]
 jobs:
     test-application:
         runs-on: ubuntu-latest
@@ -26,10 +26,10 @@ jobs:
                   npm install
                   pwd
                   ls
-                  docker build ./ -t adi/smartAlertBack:latest
+                  docker build ./ -t adi/smartalertback:latest
                   docker login -u sagivb -p MbgVKrrKpv8d 
                   docker image ls
-                  docker push adi/smartAlertBack:latest
+                  docker push adi/smartalertback:latest
                   #sudo mkdir -p /root/.kube/
                   #sudo mv ../kubeconfig /root/.kube/config
                   #sudo kubectl apply -f backDeployment.yml
