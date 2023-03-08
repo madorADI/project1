@@ -35,7 +35,7 @@
 import "leaflet/dist/leaflet.css";
 import { latLng, icon } from "leaflet";
 import { mapActions, mapState } from "vuex";
-import { LMap, LTileLayer, LTooltip, LMarker } from "vue2-leaflet";
+import { LMap, LTileLayer, LTooltip, LMarker, LIcon } from "vue2-leaflet";
 import LatestAlerts from "./LatestAlerts.vue";
 
 export default {
@@ -46,6 +46,7 @@ export default {
     LTooltip,
     LMarker,
     LatestAlerts,
+    LIcon
   },
   data() {
     return {
@@ -59,8 +60,7 @@ export default {
         {
           name: "אבנים",
           icon: icon({
-            iconUrl:
-              "https://cdn-icons-png.flaticon.com/512/1213/1213131.png",
+            iconUrl: require("../assets/catapult.png"),
             iconSize: [30, 37],
             iconAnchor: [16, 37],
           }),
@@ -69,7 +69,7 @@ export default {
           name: "רכב",
           icon: icon({
             iconUrl:
-              "https://www.iconpacks.net/icons/2/free-car-icon-2897-thumb.png",
+            require("../assets/car.png"),
             iconSize: [30, 37],
             iconAnchor: [16, 37],
           }),
@@ -77,17 +77,16 @@ export default {
         {
           name: "בקת''ב",
           icon: icon({
-            iconUrl:
-              "https://cdn-icons-png.flaticon.com/512/238/238971.png",
+            iconUrl: require("../assets/danger.png"),
             iconSize: [30, 37],
             iconAnchor: [16, 37],
+            html: `<span style="filter: invert(46%) sepia(96%) saturate(597%) hue-rotate(325deg) brightness(95%) contrast(99%);" />`,
           }),
         },
         {
           name: "סכין",
           icon: icon({
-            iconUrl:
-              "https://cdn-icons-png.flaticon.com/512/2511/2511208.png",
+            iconUrl: require("../assets/knife.png"),
             iconSize: [30, 37],
             iconAnchor: [16, 37],
           }),
@@ -96,7 +95,7 @@ export default {
           name: "נשק חם",
           icon: icon({
             iconUrl:
-              "https://www.iconpacks.net/icons/2/free-gun-icon-1950-thumb.png",
+            require("../assets/handgun.png"),
             iconSize: [30, 37],
             iconAnchor: [16, 37],
           }),
@@ -104,8 +103,7 @@ export default {
         {
           name: "ארטילריה",
           icon: icon({
-            iconUrl:
-              "https://cdn-icons-png.flaticon.com/512/238/238987.png",
+            iconUrl: require("../assets/tank.png"),
             iconSize: [30, 37],
             iconAnchor: [16, 37],
           }),
@@ -152,4 +150,5 @@ export default {
   height: 100%;
   overflow: visible;
 }
+
 </style>
