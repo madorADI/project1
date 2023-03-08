@@ -108,6 +108,14 @@ export default {
             iconAnchor: [16, 37],
           }),
         },
+        {
+          name: "רחפן",
+          icon: icon({
+            iconUrl: require("../assets/drone.png"),
+            iconSize: [30, 37],
+            iconAnchor: [16, 37],
+          }),
+        }
       ],
       selected: icon({
         iconUrl:
