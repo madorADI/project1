@@ -301,7 +301,7 @@ export default {
   height: 100%;
   overflow: auto;
   position: relative;
-  max-height: 34pc;
+  max-height: 30pc;
 }
 
 @keyframes blinking {

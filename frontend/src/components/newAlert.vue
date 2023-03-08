@@ -124,10 +124,16 @@
         </div>
       </div>
     </div>
-    <template #modal-footer>
-      <button type="button" class="buttom btn btn-danger" @click="sendNewAlert">
+    <template  #modal-footer>
+      <div class="fotter" >
+        <button type="button" class="buttom btn btn-danger m-2 " @click="sendNewAlert">
         שמירה
       </button>
+      <button type="button" class="buttom btn btn-secondary m-2" @click="restart">
+        אתחול
+      </button>
+
+      </div>
     </template>
   </b-modal>
 </template>
@@ -211,6 +217,17 @@ export default {
         console.log(err);
       }
     },
+    restart() {
+      this.selectedEventType = "",
+      this.selectedWeapons = "",
+      this.changeSelectedLat(""),
+      this.changeSelectedLng(""),
+      this.description = "",
+      Object.keys(this.injuries).forEach((item)=> {
+        this.injuries[item].numberOfInjeries = 0;
+      });
+      this.validation = false;
+    },
     closeNewAlert() {
       this.$emit("closeNewAlert");
     },
@@ -281,14 +298,14 @@ export default {
 #range {
   place-content: center;
 }
-.buttom {
-  margin-inline: auto;
-}
 .header {
   margin-inline: auto;
 }
 ::v-deep .modal-color {
   background-color: rgb(43, 58, 103);
   color: aliceblue;
+}
+.fotter {
+  margin-inline: auto
 }
 </style>
