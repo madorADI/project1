@@ -79,13 +79,13 @@
           </table>
         </div>
         <button type="button" class="btn create-alert" @click="createNewAlert">
-        <font-awesome-icon class="fa-2xl" icon="fa-solid fa-circle-plus" />
-      </button>
-      <new-alert
-        id="newAlert"
-        @newAlertChange="changeNewAlert"
-        :open="isNewAlert"
-      ></new-alert>
+          <font-awesome-icon class="fa-2xl" icon="fa-solid fa-circle-plus" />
+        </button>
+        <new-alert
+          id="newAlert"
+          @newAlertChange="changeNewAlert"
+          :open="isNewAlert"
+        ></new-alert>
       </div>
     </div>
 
@@ -174,7 +174,7 @@ export default {
       this.open = state;
     },
 
-    async getallWeapons() {
+    async getAllWeapons() {
       this.event_weapons = await (await api.alerts().getAllWeapons()).data;
     },
     async getAllTypes() {
