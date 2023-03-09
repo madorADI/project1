@@ -2,7 +2,7 @@
   <div id="app">
     <Header></Header>
     <b-row>
-      <LatestAlerts class="front m-4" @changeFiltered="changeFiltered" />
+      <LatestAlerts class="front my-4" @changeFiltered="changeFiltered" />
       <eventMap class="back" :markers="filteredTable" />
     </b-row>
   </div>

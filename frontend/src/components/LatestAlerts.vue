@@ -20,6 +20,7 @@
           <div class="card-text-filter">
             <div>
               <multi-select
+                class="multiSelectOption multiSelectTag multiselectTagIcon multiselectTagIconBox"
                 placeholder="סוג אמלח"
                 v-model="selectedWeapon"
                 :multiple="true"
@@ -27,6 +28,7 @@
               ></multi-select>
               <br />
               <multi-select
+              class="multiSelectOption"
                 placeholder="סוג האירוע"
                 v-model="selectedType"
                 :options="eventsNames"
@@ -53,7 +55,8 @@
           </div>
           <hr />
         </div>
-        <div class="alertTable">
+        <div  v-if="formattedAlerts.length" class="alertTable">
+          <h5 class="text-center" > {{ formattedAlerts.length }} :כמות התרעות </h5>
           <div class="row">
             <th class="col-4 mb-2" v-for="field in fields" :key="field.label">
               {{ field.label }}
@@ -61,6 +64,7 @@
             <hr class="borderHead mb-2" />
           </div>
         </div>
+        <h5 v-else class="text-center">אין התרעות</h5>
         <div class="tableContainer" :class="{ tableClosedFilter: !openFilter }">
           <table class="table table-hover alertTable">
             <tbody>
@@ -90,6 +94,7 @@
     </div>
 
     <popUp
+      v-if="selectedAlert"
       :open="open"
       @modal-change="changeModalState"
       :alert="selectedAlert"
@@ -103,9 +108,9 @@
 import api from "../api/api.js";
 import newAlert from "./newAlert.vue";
 import popUp from "../components/eventPopup.vue";
-import { mapState, mapActions } from "vuex";
 import MultiSelect from "vue-multiselect";
 const THIRTY_SECONDS = 30000;
+
 
 export default {
   name: "LatestAlerts",
@@ -225,21 +230,21 @@ export default {
 
       return filteredTable;
     },
-    formattedDates() {
+    formattedAlert() {
       return this.alerts.map((alert) => {
         const fixedAlert = { ...alert };
         fixedAlert.time = new Date(fixedAlert.time);
-
+        fixedAlert.coordinates = fixedAlert.coordinates.reverse();
         return fixedAlert;
       });
     },
     filteredTableByType() {
       if (this.selectedType) {
-        return this.formattedDates.filter(
+        return this.formattedAlert.filter(
           (alert) => alert.event_type === this.selectedType
         );
       } else {
-        return this.formattedDates;
+        return this.formattedAlert;
       }
     },
     weopensNames() {
@@ -286,7 +291,19 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="css" scoped>
+.multiSelectOption >>>.multiselect__element :hover {
+  background-color: gray;
+}
+.multiSelectTag >>>.multiselect__tag{
+  background-color: rgb(240, 100, 73);
+}
+.multiselectTagIcon >>>.multiselect__tag-icon::after{
+  color: white !important;
+}
+.multiselectTagIconBox >>>.multiselect__tag-icon:hover{
+  background-color: rgb(240, 100, 73) !important;
+}
 .latest-alerts {
   background-color: rgb(43, 58, 103);
   color: rgb(245, 245, 245);
@@ -303,14 +320,14 @@ export default {
   height: 100%;
   overflow: auto;
   position: relative;
-  max-height: 15pc;
+  max-height: 10pc;
 }
 
 .tableClosedFilter {
   height: 100%;
   overflow: auto;
   position: relative;
-  max-height: 34pc;
+  max-height: 30pc;
 }
 
 @keyframes blinking {
@@ -364,5 +381,23 @@ table thead tr th {
   height: 3ch;
   width: 70%;
   margin-bottom: 3%;
+}
+
+::-webkit-scrollbar {
+  width: 20px;
+}
+
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background:  rgb(240, 100, 73);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background:  rgb(240, 100, 73);
 }
 </style>

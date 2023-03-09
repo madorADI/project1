@@ -16,9 +16,9 @@
         :key="marker._id"
         :lat-lng="marker.coordinates"
         @click="changeSelectedAlertId(marker._id)"
-        :icon="bomb"
+        :icon="getIconByName(marker.weapon).icon"
       >
-        <l-tooltip>{{ marker.event_type }}</l-tooltip>
+         <l-tooltip>{{ marker.event_type }}</l-tooltip>
       </l-marker>
       <l-marker
         v-if="this.selectedLat && this.selectedLng"
@@ -35,7 +35,8 @@
 import "leaflet/dist/leaflet.css";
 import { latLng, icon } from "leaflet";
 import { mapActions, mapState } from "vuex";
-import { LMap, LTileLayer, LTooltip, LMarker } from "vue2-leaflet";
+import { LMap, LTileLayer, LTooltip, LMarker, LIcon } from "vue2-leaflet";
+import LatestAlerts from "./LatestAlerts.vue";
 
 export default {
   name: "IsraelMap",
@@ -44,6 +45,8 @@ export default {
     LTileLayer,
     LTooltip,
     LMarker,
+    LatestAlerts,
+    LIcon
   },
   data() {
     return {
@@ -53,16 +56,70 @@ export default {
       mapOptions: {
         zoomSnap: 0.5,
       },
-      // markers: [],
-      bomb: icon({
-        iconUrl:
-          "http://www.clker.com/cliparts/y/e/Q/T/p/N/red-bomb.svg.hi.png",
-        iconSize: [30, 37],
-        iconAnchor: [16, 37],
-      }),
+      icons: [
+        {
+          name: "אבנים",
+          icon: icon({
+            iconUrl: require("../assets/catapult.png"),
+            iconSize: [30, 37],
+            iconAnchor: [16, 37],
+          }),
+        },
+        {
+          name: "רכב",
+          icon: icon({
+            iconUrl:
+            require("../assets/car.png"),
+            iconSize: [30, 37],
+            iconAnchor: [16, 37],
+          }),
+        },
+        {
+          name: "בקת''ב",
+          icon: icon({
+            iconUrl: require("../assets/danger.png"),
+            iconSize: [30, 37],
+            iconAnchor: [16, 37],
+            html: `<span style="filter: invert(46%) sepia(96%) saturate(597%) hue-rotate(325deg) brightness(95%) contrast(99%);" />`,
+          }),
+        },
+        {
+          name: "סכין",
+          icon: icon({
+            iconUrl: require("../assets/knife.png"),
+            iconSize: [30, 37],
+            iconAnchor: [16, 37],
+          }),
+        },
+        {
+          name: "נשק חם",
+          icon: icon({
+            iconUrl:
+            require("../assets/handgun.png"),
+            iconSize: [30, 37],
+            iconAnchor: [16, 37],
+          }),
+        },
+        {
+          name: "ארטילריה",
+          icon: icon({
+            iconUrl: require("../assets/tank.png"),
+            iconSize: [30, 37],
+            iconAnchor: [16, 37],
+          }),
+        },
+        {
+          name: "רחפן",
+          icon: icon({
+            iconUrl: require("../assets/drone.png"),
+            iconSize: [30, 37],
+            iconAnchor: [16, 37],
+          }),
+        }
+      ],
       selected: icon({
         iconUrl:
-          "https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Red_Arrow_Down.svg/1200px-Red_Arrow_Down.svg.png",
+        require("../assets/pin.png"),
         iconSize: [30, 37],
         iconAnchor: [16, 37],
       }),
@@ -87,6 +144,9 @@ export default {
       this.changeSelectedLat(event.latlng.lat);
       this.changeSelectedLng(event.latlng.lng);
     },
+    getIconByName(name) {
+      return this.icons.find((elem) => elem.name === name);
+    },
   },
 };
 </script>
@@ -98,4 +158,5 @@ export default {
   height: 100%;
   overflow: visible;
 }
+
 </style>
