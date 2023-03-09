@@ -44,9 +44,8 @@
             <div></div>
           </b-col>
           <b-col class="text-center my-2"
-            ><h4>תאריך, שעה</h4>
-            <h5>{{ formattedDate }}</h5>
-            <h5>{{ formattedHour }}</h5>
+            ><h4>תאריך</h4>
+            <h5 class="mt-3">{{ formattedDate }}</h5>
           </b-col>
         </b-row>
         <b-row class="d-flex justify-content-around">
@@ -98,11 +97,8 @@ export default {
   },
   computed: {
     formattedDate() {
-      return new Date(this.alert.time).toLocaleDateString();
-    },
-    formattedHour() {
-      return new Date(this.alert.time).toLocaleTimeString();
-    },
+      return new Date(this.alert.time).toLocaleString();
+    }
   },
   watch: {
     open() {

@@ -89,6 +89,7 @@
           id="newAlert"
           @newAlertChange="changeNewAlert"
           :open="isNewAlert"
+          :event_types ="event_types"
         ></new-alert>
       </div>
     </div>
@@ -98,7 +99,6 @@
       :open="open"
       @modal-change="changeModalState"
       :alert="selectedAlert"
-      :event_types="event_types"
     />
   </div>
 </template>
@@ -179,8 +179,8 @@ export default {
     changeNewAlert(state) {
       this.isNewAlert = state;
     },
-    openModal(alert) {
-      this.selectedAlert = alert;
+    openModal(newAlert) {
+      this.selectedAlert = this.alerts.find(({_id})=> _id === newAlert._id);
       this.open = !this.open;
     },
     changeModalState(state) {
@@ -201,7 +201,7 @@ export default {
       });
       this.$refs[this.selectedAlertId][0].classList.add("blink");
     },
-    formatDate(date) {
+     formatDate(date) {
       let d = new Date(date),
         month = "" + (d.getMonth() + 1),
         day = "" + d.getDate(),
@@ -289,6 +289,7 @@ export default {
     },
   },
 };
+
 </script>
 
 <style lang="css" scoped>
