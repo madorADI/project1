@@ -255,7 +255,7 @@ export default {
         const newALert = {
           name: this.selectedEventType,
           description: this.description,
-          time: new Date(),
+          time: new Date().getTime(),
           weapon: this.selectedWeapons,
           event_type: this.eventsTypes.find(
             ({ name }) => name === this.selectedEventType
@@ -278,7 +278,7 @@ export default {
             timer: 800,
             confirmButtonText: "אוקיי",
           });
-          setTimeout(() => location.reload(), 800);
+          //setTimeout(() => location.reload(), 800);
           // location.reload();
         } catch (err) {
           Swal.fire({
