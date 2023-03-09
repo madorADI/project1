@@ -1,0 +1,29 @@
+name: CI for frontend
+on:
+  push:
+    branches: [ real_real_dev,cicd,main ]
+  pull_request:
+    branches: [ real_real_dev,cicd,main ]
+jobs:
+    test-application:
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v2
+
+            - uses: actions/setup-node@v1
+              with:
+                  node-version: 16
+            
+            - uses: docker-practice/actions-setup-docker@master 
+            
+            - uses: azure/setup-kubectl@v3
+            
+            - name: Run Add Test
+              working-directory: ./frontend
+              run: |
+                  docker build . -t smartalertfront:latest
+                  docker login -u sagivb -p MbgVKrrKpv8d 
+                  docker image ls
+                  docker tag smartalertfront:latest sagivb/smartalertfront:latest
+                  docker push sagivb/smartalertfront:latest
