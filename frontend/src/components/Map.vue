@@ -35,8 +35,7 @@
 import "leaflet/dist/leaflet.css";
 import { latLng, icon } from "leaflet";
 import { mapActions, mapState } from "vuex";
-import { LMap, LTileLayer, LTooltip, LMarker, LIcon } from "vue2-leaflet";
-import LatestAlerts from "./LatestAlerts.vue";
+import { LMap, LTileLayer, LTooltip, LMarker } from "vue2-leaflet";
 
 export default {
   name: "IsraelMap",
@@ -44,9 +43,7 @@ export default {
     LMap,
     LTileLayer,
     LTooltip,
-    LMarker,
-    LatestAlerts,
-    LIcon
+    LMarker
   },
   data() {
     return {
@@ -131,8 +128,8 @@ export default {
   computed: {
     ...mapState(["selectedLat", "selectedLng"]),
     markerCoordinates() {
-      return `(${this.selectedLat},${this.selectedLng})`
-    }
+      return `(${this.selectedLat},${this.selectedLng})`;
+    },
   },
   methods: {
     ...mapActions([

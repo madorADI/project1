@@ -8,6 +8,7 @@ var logger = require("morgan");
 var eventRouter = require("./controllers/alert");
 var typesRouter = require("./controllers/types");
 var weaponsRouter = require("./controllers/weapons");
+var brigadeRouter = require("./controllers/brigade");
 
 var app = express();
 
@@ -26,6 +27,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/alerts", eventRouter);
 app.use("/types", typesRouter);
 app.use("/weapons", weaponsRouter);
+app.use("/brigade", brigadeRouter);
 
 db.connect(() => {
   app.listen(port, () => {
