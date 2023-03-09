@@ -2,9 +2,9 @@ FROM node:16.16.0-alpine3.15
 
 WORKDIR .
 
-COPY ./frontend .
+COPY . .
 
-RUN cd frontend && npm i
+RUN npm i
 
 EXPOSE 8080
 ENTRYPOINT ["npm", "run", "serve"]
