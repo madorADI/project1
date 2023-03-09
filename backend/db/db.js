@@ -3,7 +3,7 @@ require("dotenv").config();
 
 const dbName = `${process.env["DB_NAME"]}`;
 // const mongodbUrl = `mongodb://mongo:${process.env["DB_USERNAME"]}@${process.env["DB_IP"]}:${process.env["DB_PORT"]}/?authSource=admin`;
-const mongodbUrl = `mongodb://${process.env["DB_IP"]}:27017`;
+const mongodbUrl = `mongodb://adi:Ad105423%2345p@192.168.5.4:27017/?authSource=admin`;
 
 let mongodb;
 
