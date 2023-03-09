@@ -1,15 +1,30 @@
 <template>
   <div style="height: 100vh; width: 100vw">
     <br />
-    <l-map :zoom="zoom" :center="center" :options="mapOptions" @click="selectBomb" style="height: 80%" class="map">
+    <l-map
+      :zoom="zoom"
+      :center="center"
+      :options="mapOptions"
+      @click="selectBomb"
+      style="height: 80%"
+      class="map"
+    >
       <l-tile-layer :url="url" />
       <!--change key, the markers should be from db-->
-      <l-marker v-for="marker in markers" :key="marker._id" :lat-lng="marker.coordinates"
-        @click="changeSelectedAlertId(marker._id)" :icon="bomb">
+      <l-marker
+        v-for="marker in markers"
+        :key="marker._id"
+        :lat-lng="marker.coordinates"
+        @click="changeSelectedAlertId(marker._id)"
+        :icon="bomb"
+      >
         <l-tooltip>{{ marker.event_type }}</l-tooltip>
       </l-marker>
-      <l-marker v-if="this.selectedLat && this.selectedLng" :lat-lng="[this.selectedLat, this.selectedLng]"
-        :icon="selected">
+      <l-marker
+        v-if="this.selectedLat && this.selectedLng"
+        :lat-lng="[this.selectedLat, this.selectedLng]"
+        :icon="selected"
+      >
         <l-tooltip> {{ markerCoordinates }} </l-tooltip>
       </l-marker>
     </l-map>
@@ -21,7 +36,6 @@ import "leaflet/dist/leaflet.css";
 import { latLng, icon } from "leaflet";
 import { mapActions, mapState } from "vuex";
 import { LMap, LTileLayer, LTooltip, LMarker } from "vue2-leaflet";
-import LatestAlerts from "./LatestAlerts.vue";
 
 export default {
   name: "IsraelMap",
@@ -30,7 +44,6 @@ export default {
     LTileLayer,
     LTooltip,
     LMarker,
-    LatestAlerts,
   },
   data() {
     return {
@@ -61,8 +74,8 @@ export default {
   computed: {
     ...mapState(["selectedLat", "selectedLng"]),
     markerCoordinates() {
-      return `(${this.selectedLat},${this.selectedLng})`
-    }
+      return `(${this.selectedLat},${this.selectedLng})`;
+    },
   },
   methods: {
     ...mapActions([

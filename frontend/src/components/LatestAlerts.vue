@@ -105,6 +105,7 @@ import newAlert from "./newAlert.vue";
 import popUp from "../components/eventPopup.vue";
 import { mapState, mapActions } from "vuex";
 import MultiSelect from "vue-multiselect";
+const THIRTY_SECONDS = 30000;
 
 export default {
   name: "LatestAlerts",
@@ -132,11 +133,18 @@ export default {
       open: false,
       openFilter: false,
       selectedAlert: null,
+      timer: "",
     };
   },
-  created() {
+  beforeUnmount() {
+    this.cancelAutoUpdate();
+  },
+  async created() {
     this.findDateBeforeWeek();
     this.getAllAlerts();
+    this.timer = setInterval(() => {
+      this.getAllAlerts();
+    }, THIRTY_SECONDS);
     this.getAllTypes();
     this.getAllWeapons();
     this.$emit("changeFiltered");
@@ -198,6 +206,9 @@ export default {
       if (day.length < 2) day = "0" + day;
 
       return [year, month, day].join("-");
+    },
+    cancelAutoUpdate() {
+      clearInterval(this.timer);
     },
   },
   computed: {
