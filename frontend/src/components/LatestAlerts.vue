@@ -28,7 +28,7 @@
               ></multi-select>
               <br />
               <multi-select
-              class="multiSelectOption"
+                class="multiSelectOption"
                 placeholder="סוג האירוע"
                 v-model="selectedType"
                 :options="eventsNames"
@@ -55,8 +55,8 @@
           </div>
           <hr />
         </div>
-        <div  v-if="formattedAlerts.length" class="alertTable">
-          <h5 class="text-center" > {{ formattedAlerts.length }} :כמות התרעות </h5>
+        <div v-if="formattedAlerts.length" class="alertTable">
+          <h5 class="text-center">{{ formattedAlerts.length }} :כמות התרעות</h5>
           <div class="row">
             <th class="col-4 mb-2" v-for="field in fields" :key="field.label">
               {{ field.label }}
@@ -89,6 +89,7 @@
           id="newAlert"
           @newAlertChange="changeNewAlert"
           :open="isNewAlert"
+          :event_types ="event_types"
         ></new-alert>
       </div>
     </div>
@@ -98,7 +99,6 @@
       :open="open"
       @modal-change="changeModalState"
       :alert="selectedAlert"
-      :event_types="event_types"
     />
   </div>
 </template>
@@ -109,7 +109,7 @@ import api from "../api/api.js";
 import newAlert from "./newAlert.vue";
 import popUp from "../components/eventPopup.vue";
 import { mapState, mapActions } from "vuex";
-import MultiSelect from "vue-multiselect";  
+import MultiSelect from "vue-multiselect";
 
 export default {
   name: "LatestAlerts",
@@ -171,8 +171,8 @@ export default {
     changeNewAlert(state) {
       this.isNewAlert = state;
     },
-    openModal(alert) {
-      this.selectedAlert = alert;
+    openModal(newAlert) {
+      this.selectedAlert = this.alerts.find(({_id})=> _id === newAlert._id);
       this.open = !this.open;
     },
     changeModalState(state) {
@@ -193,7 +193,7 @@ export default {
       });
       this.$refs[this.selectedAlertId][0].classList.add("blink");
     },
-    formatDate(date) {
+     formatDate(date) {
       let d = new Date(date),
         month = "" + (d.getMonth() + 1),
         day = "" + d.getDate(),
@@ -278,19 +278,20 @@ export default {
     },
   },
 };
+
 </script>
 
 <style lang="css" scoped>
-.multiSelectOption >>>.multiselect__element :hover {
+.multiSelectOption >>> .multiselect__element :hover {
   background-color: gray;
 }
-.multiSelectTag >>>.multiselect__tag{
+.multiSelectTag >>> .multiselect__tag {
   background-color: rgb(240, 100, 73);
 }
-.multiselectTagIcon >>>.multiselect__tag-icon::after{
+.multiselectTagIcon >>> .multiselect__tag-icon::after {
   color: white !important;
 }
-.multiselectTagIconBox >>>.multiselect__tag-icon:hover{
+.multiselectTagIconBox >>> .multiselect__tag-icon:hover {
   background-color: rgb(240, 100, 73) !important;
 }
 .latest-alerts {
@@ -382,11 +383,11 @@ table thead tr th {
 }
 
 ::-webkit-scrollbar-thumb {
-  background:  rgb(240, 100, 73);
+  background: rgb(240, 100, 73);
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background:  rgb(240, 100, 73);
+  background: rgb(240, 100, 73);
 }
 </style>
