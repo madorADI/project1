@@ -131,8 +131,8 @@ export default {
   computed: {
     ...mapState(["selectedLat", "selectedLng"]),
     markerCoordinates() {
-      return `(${this.selectedLat},${this.selectedLng})`
-    }
+      return `(${this.selectedLat},${this.selectedLng})`;
+    },
   },
   methods: {
     ...mapActions([
