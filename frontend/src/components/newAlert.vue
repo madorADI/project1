@@ -124,15 +124,18 @@
         </div>
       </div>
     </div>
-    <template  #modal-footer>
-      <div class="fotter" >
-        <button type="button" class="btn m-2 backgroundColor" @click="sendNewAlert">
-        שמירה
-      </button>
-      <button type="button" class="btn btn-secondary m-2" @click="restart">
-        אתחול
-      </button>
-
+    <template #modal-footer>
+      <div class="fotter">
+        <button
+          type="button"
+          class="btn m-2 backgroundColor"
+          @click="sendNewAlert"
+        >
+          שמירה
+        </button>
+        <button type="button" class="btn btn-secondary m-2" @click="restart">
+          אתחול
+        </button>
       </div>
     </template>
   </b-modal>
@@ -218,14 +221,14 @@ export default {
       }
     },
     restart() {
-      this.selectedEventType = "",
-      this.selectedWeapons = "",
-      this.changeSelectedLat(""),
-      this.changeSelectedLng(""),
-      this.description = "",
-      Object.keys(this.injuries).forEach((item)=> {
-        this.injuries[item].numberOfInjeries = 0;
-      });
+      (this.selectedEventType = ""),
+        (this.selectedWeapons = ""),
+        this.changeSelectedLat(""),
+        this.changeSelectedLng(""),
+        (this.description = ""),
+        Object.keys(this.injuries).forEach((item) => {
+          this.injuries[item].numberOfInjeries = 0;
+        });
       this.validation = false;
     },
     closeNewAlert() {
@@ -278,8 +281,7 @@ export default {
             timer: 800,
             confirmButtonText: "אוקיי",
           });
-          //setTimeout(() => location.reload(), 800);
-          // location.reload();
+          setTimeout(() => location.reload(), 800);
         } catch (err) {
           Swal.fire({
             title: "!שגיאה",
@@ -295,12 +297,11 @@ export default {
 </script>
 
 <style scoped>
-
-.backgroundColor{
+.backgroundColor {
   color: white;
   background-color: rgb(240, 100, 73);
 }
-.backgroundColor:hover{
+.backgroundColor:hover {
   background-color: rgb(240, 100, 73);
 }
 #range {
@@ -314,6 +315,6 @@ export default {
   color: aliceblue;
 }
 .fotter {
-  margin-inline: auto
+  margin-inline: auto;
 }
 </style>
