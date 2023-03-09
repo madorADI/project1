@@ -44,7 +44,7 @@
             <div></div>
           </b-col>
           <b-col class="text-center my-2"
-            ><h4>תאריך, שעה</h4>
+            ><h4>תאריך</h4>
             <h5 class="mt-3">{{ formattedDate }}</h5>
           </b-col>
         </b-row>
